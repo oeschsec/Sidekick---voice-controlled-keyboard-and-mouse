@@ -25,6 +25,9 @@ def callback(r,audio):
         words = text.split(' ')
         if words[0].lower() == "click":
             click()
+        elif words[0].lower() == "hit":
+            if words[1] == "enter": 
+                hitEnter()
         elif words[0].lower() == "backspace":
             if len(words) > 1:
                 backspace(words[1])

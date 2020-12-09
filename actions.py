@@ -25,4 +25,7 @@ def backspace(n):
     for i in range(int(n)):
         hotKeyPress(['backspace'])
 
+def hitEnter():
+    hotKeyPress(['enter'])
+
     
