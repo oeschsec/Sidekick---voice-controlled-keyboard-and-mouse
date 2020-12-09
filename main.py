@@ -6,7 +6,8 @@ from actions import *
 #micName = "Webcam C110: USB Audio (hw:1,0)"
 micName = "default"
 
-sampleRate = 44100
+# Higher sample results in better audio / translation, but can slow down translation significantly 
+sampleRate = 8000 #16000 #44100
 chunkSize = 512
 
 # A list of audio cards and microphones
