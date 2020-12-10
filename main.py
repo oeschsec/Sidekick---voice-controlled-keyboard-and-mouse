@@ -1,13 +1,14 @@
 import speech_recognition as sr
 import time
-from actions import *
+from googleparser import *
+from sphinxparser import *
 
 # Name of the microphone you want to use (print them below to get correct value)
 #micName = "Webcam C110: USB Audio (hw:1,0)"
 micName = "default"
 
 # Higher sample results in better audio / translation, but can slow down translation significantly 
-sampleRate = 16000 #16000 #44100
+sampleRate = 8000 #16000 #44100
 chunkSize = 512
 
 # A list of audio cards and microphones
@@ -21,43 +22,20 @@ for i, microphone_name in enumerate(mic_list):
 
 def callback(r,audio):
     try:
-        text = r.recognize_google(audio)
-        #text = r.recognize_sphinx(audio)
-        print(text)
-        words = text.split(' ')
-        if words[0].lower() == "click":
-            click()
-        elif words[0].lower() == "hit":
-            if words[1] == "enter": 
-                hitEnter()
-        elif words[0] == "space":
-            hitSpace()
-        elif words[0].lower() == "backspace":
-            if len(words) > 1:
-                backspace(words[1])
-            else:
-                backspace(1)
-        elif words[0].lower() == "scroll":
-            if words[1] == "up":
-                if len(words) > 2:
-                    if words[2] == "surf":
-                        surfScrollUp(20)
-                    else:
-                        scrollUp(20)
-                else:
-                    scrollUp(10)
-            elif words[1] == "down":
-                if len(words) > 2:
-                    if words[2] == "surf":
-                        surfScrollUp(-20)
-                    else:
-                        scrollUp(-20)
-                else:
-                    scrollUp(-10)
-        elif words[0].lower() == "stop":
-            stop_listening(wait_for_stop=False)
+        use_sphinx = False
+        if not use_sphinx: 
+            text = r.recognize_google(audio)
         else:
-            writeToScreen(text)
+            text = r.recognize_sphinx(audio)
+        
+        #print(text)
+        words = text.split(' ')
+        
+        if not use_sphinx: 
+            act_google(text, words)
+        else:
+            act_sphinx(text, words)
+
     except sr.UnknownValueError:
         pass # when silent this is thrown, so no use printing an error constantly
         print("Google Speech Recognition could not understand audio")

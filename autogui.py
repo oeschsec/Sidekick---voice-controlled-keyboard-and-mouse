@@ -64,6 +64,9 @@ def hotKeyPress(listOfKeys):
 def moveMouseTo(x,y): 
     pyautogui.moveTo(x,y)
 
+def moveMouse(x,y):
+    pyautogui.move(x,y,2)
+
 def clickCurrent(): 
     pyautogui.click(pyautogui.position())
 
