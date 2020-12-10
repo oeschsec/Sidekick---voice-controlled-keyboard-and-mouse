@@ -8,7 +8,7 @@ from sphinxparser import *
 micName = "default"
 
 # Higher sample results in better audio / translation, but can slow down translation significantly 
-sampleRate = 8000 #16000 #44100
+sampleRate = 16000 #16000 #44100
 chunkSize = 512
 
 # A list of audio cards and microphones
@@ -38,7 +38,7 @@ def callback(r,audio):
 
     except sr.UnknownValueError:
         pass # when silent this is thrown, so no use printing an error constantly
-        print("Google Speech Recognition could not understand audio")
+        #print("Google Speech Recognition could not understand audio")
 
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
