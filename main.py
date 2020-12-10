@@ -7,7 +7,7 @@ from actions import *
 micName = "default"
 
 # Higher sample results in better audio / translation, but can slow down translation significantly 
-sampleRate = 8000 #16000 #44100
+sampleRate = 16000 #16000 #44100
 chunkSize = 512
 
 # A list of audio cards and microphones
@@ -15,7 +15,7 @@ mic_list = sr.Microphone.list_microphone_names()
 
 # Set value of microphone
 for i, microphone_name in enumerate(mic_list):
-    print(microphone_name)
+    #print(microphone_name)
     if microphone_name == micName:
         devID = i
 
@@ -23,12 +23,15 @@ def callback(r,audio):
     try:
         text = r.recognize_google(audio)
         #text = r.recognize_sphinx(audio)
+        print(text)
         words = text.split(' ')
         if words[0].lower() == "click":
             click()
         elif words[0].lower() == "hit":
             if words[1] == "enter": 
                 hitEnter()
+        elif words[0] == "space":
+            hitSpace()
         elif words[0].lower() == "backspace":
             if len(words) > 1:
                 backspace(words[1])
@@ -57,7 +60,7 @@ def callback(r,audio):
             writeToScreen(text)
     except sr.UnknownValueError:
         pass # when silent this is thrown, so no use printing an error constantly
-        #print("Google Speech Recognition could not understand audio")
+        print("Google Speech Recognition could not understand audio")
 
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))

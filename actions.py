@@ -28,4 +28,7 @@ def backspace(n):
 def hitEnter():
     hotKeyPress(['enter'])
 
+def hitSpace():
+    hotKeyPress(['space'])
+
     
