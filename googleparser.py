@@ -48,4 +48,8 @@ def act_google(text, words):
             else:
                 scrollUp(-10)
     else:
-        writeToScreen(text)
+        if "capital" in words[-1]:
+            texttowrite = ' '.join(words[:-1])
+            writeToScreen(texttowrite.capitalize())
+        else:
+            writeToScreen(text)

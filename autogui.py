@@ -65,7 +65,7 @@ def moveMouseTo(x,y):
     pyautogui.moveTo(x,y)
 
 def moveMouse(x,y):
-    pyautogui.move(x,y,2)
+    pyautogui.move(x,y,1)
 
 def clickCurrent(): 
     pyautogui.click(pyautogui.position())
