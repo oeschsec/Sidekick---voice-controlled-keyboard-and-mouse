@@ -2,13 +2,16 @@
 from actions import *
 
 def act_google(text, words):
-    if words[0].lower() == "click" and len(words) == 1:
+    if (words[0].lower() == "click" or words[0].lower() == "quick") and len(words) == 1:
         click()
-    elif words[0].lower() == "hit" and len(words) == 2:
-        if words[1] == "enter": 
-            hitEnter()
+    elif (words[0].lower() == "inter" or words[0].lower() == "enter") and len(words) == 1:
+        hitEnter()
     elif words[0] == "space" and len(words) == 1:
         hitSpace()
+    elif words[0] == "copy" and len(words) == 1:
+        hotKeyPress(["ctrl","c"])
+    elif words[0] == "paste" and len(words) == 1:
+        hotKeyPress(["ctrl","v"])
     elif words[0].lower() == "backspace" and (len(words) == 1 or len(words) == 2):
         if len(words) > 1:
             backspace(words[1])
