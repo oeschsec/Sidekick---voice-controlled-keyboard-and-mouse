@@ -7,6 +7,8 @@ class CheetahParser:
         self.command_buffer = []
         self.steps = {
             "one":10,
+            "an":10,
+            "on":10,
             "two":30,
             "to":30,
             "three":50,
@@ -107,7 +109,7 @@ class CheetahParser:
                     self.command_buffer = ["west"]
                 else:
                     self.command_buffer = []
-        elif self.command_buffer[0] == "surf" or self.command_buffer[0] == "sir":
+        elif self.command_buffer[0] == "surf" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serve":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in ["up","down","left","right"]:
                     if len(self.command_buffer) >= 3: 
