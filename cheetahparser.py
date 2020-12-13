@@ -29,7 +29,7 @@ class CheetahParser:
             self.evaluate()
 
     def evaluate(self):
-        if self.command_buffer[0] == "mode" and len(self.command_buffer) == 2:
+        if self.command_buffer[0] == "state" and len(self.command_buffer) >= 2:
             if self.command_buffer[1] == "command":
                 self.state = "command"
                 self.command_buffer = []
@@ -39,14 +39,14 @@ class CheetahParser:
             else:
                 self.command_buffer = []
 
-        if len(self.command_buffer) > 0 and self.command_buffer[0] != "mode":
+        if len(self.command_buffer) > 0 and self.command_buffer[0] != "state":
             if self.state == "command":
                 self.evaluate_command()
             elif self.state == "text":
                 self.evaluate_text()
 
     def evaluate_command(self):
-        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "quick"):
+        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "quick" or self.command_buffer[0] == 'ec'):
             click()
             self.command_buffer = []
         elif (self.command_buffer[0] == "inter" or self.command_buffer[0] == "enter" or self.command_buffer[0] == "engage"):
@@ -55,11 +55,17 @@ class CheetahParser:
         elif self.command_buffer[0] == "space":
             hitSpace()
             self.command_buffer = []
+        elif self.command_buffer[0] == "back":
+            backspace(1)
+            self.command_buffer = []
         elif self.command_buffer[0] == "copy":
             hotKeyPress(["ctrl","c"])
             self.command_buffer = []
         elif self.command_buffer[0] == "paste":
             hotKeyPress(["ctrl","v"])
+            self.command_buffer = []
+        elif self.command_buffer[0] == "save":
+            hotKeyPress(["ctrl","s"])
             self.command_buffer = []
         elif self.command_buffer[0] == "north":
             if len(self.command_buffer) >= 2:
@@ -117,9 +123,10 @@ class CheetahParser:
         text = text.replace("period",".")
         text = text.replace("colon",":")
         text = text.replace("dash","-")
-        text = text.replace("comma",",")
+        text = text.replace("comma",",").replace("com",",")
         text = text.replace("pork","?")
         text = text.replace("dot",".")
+        text = text.replace("hash","#")
         return text
 
     def evaluate_text(self):
@@ -132,7 +139,7 @@ class CheetahParser:
                     self.command_buffer = []
         else:
             for i in range(0,len(self.command_buffer)):
-                if self.command_buffer[i] in ["period","dash","colon","comma","pork"]:
+                if self.command_buffer[i] in ["period","dash","colon","comma","pork", "hash"]: # these don't really work...speech recognition poor on single words
                     backspace(1)
                     writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
                 elif self.command_buffer[i] in ["dot"]:
