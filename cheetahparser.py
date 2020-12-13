@@ -55,6 +55,18 @@ class CheetahParser:
         elif self.command_buffer[0] == "space":
             hitSpace()
             self.command_buffer = []
+        elif self.command_buffer[0] == "up":
+            hotKeyPress(["up"])
+            self.command_buffer = []
+        elif self.command_buffer[0] == "down":
+            hotKeyPress(["down"])
+            self.command_buffer = []
+        elif self.command_buffer[0] == "left":
+            hotKeyPress(["left"])
+            self.command_buffer = []
+        elif self.command_buffer[0] == "right":
+            hotKeyPress(["right"])
+            self.command_buffer = []
         elif self.command_buffer[0] == "back":
             backspace(1)
             self.command_buffer = []
@@ -139,7 +151,7 @@ class CheetahParser:
                     self.command_buffer = []
         else:
             for i in range(0,len(self.command_buffer)):
-                if self.command_buffer[i] in ["period","dash","colon","comma","pork", "hash"]: # these don't really work...speech recognition poor on single words
+                if self.command_buffer[i] in ["period","dash","comma","pork", "hash"]:
                     backspace(1)
                     writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
                 elif self.command_buffer[i] in ["dot"]:
