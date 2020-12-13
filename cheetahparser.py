@@ -25,14 +25,15 @@ class CheetahParser:
             if word != '':
                 self.command_buffer.append(word.lower())
         print(self.command_buffer)
-        self.evaluate()
+        if len(self.command_buffer) > 0: 
+            self.evaluate()
 
     def evaluate(self):
         if self.command_buffer[0] == "state" and len(self.command_buffer) == 2:
             if self.command_buffer[1] == "command":
                 self.state = "command"
                 self.command_buffer = []
-            elif self.command_buffer[1] == "text" or self.command_buffer[1] == "taxed":
+            elif self.command_buffer[1] == "text" or "tax" in self.command_buffer[1]:
                 self.state = "text"
                 self.command_buffer = []
             else:
@@ -112,6 +113,28 @@ class CheetahParser:
         else:
             self.command_buffer = []
 
+    def insert_punctuation(self, text):
+        text = text.replace("period",".")
+        text = text.replace("colon",":")
+        text = text.replace("dash","-")
+        text = text.replace("comma",",")
+        text = text.replace("pork","?")
+        return text
+
     def evaluate_text(self):
-        writeToScreen(' '.join(self.command_buffer))
+        if "cap" in self.command_buffer[0] or "chap" in self.command_buffer[0]:
+            if len(self.command_buffer) >= 2:
+                writeToScreen(self.command_buffer[1].capitalize() + ' ')
+                if len(self.command_buffer) > 2:
+                    self.command_buffer = self.command_buffer[2:]
+                else:
+                    self.command_buffer = []
+        else:
+            for i in range(0,len(self.command_buffer)):
+                if self.command_buffer[i] in ["period","dash","colon","comma","pork"]:
+                    backspace(1)
+                    writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
+                else:
+                    writeToScreen(self.command_buffer[i] + ' ')
+
         self.command_buffer = []
