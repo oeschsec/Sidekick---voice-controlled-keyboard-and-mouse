@@ -29,7 +29,7 @@ class CheetahParser:
             self.evaluate()
 
     def evaluate(self):
-        if self.command_buffer[0] == "state" and len(self.command_buffer) == 2:
+        if self.command_buffer[0] == "mode" and len(self.command_buffer) == 2:
             if self.command_buffer[1] == "command":
                 self.state = "command"
                 self.command_buffer = []
@@ -39,7 +39,7 @@ class CheetahParser:
             else:
                 self.command_buffer = []
 
-        if len(self.command_buffer) > 0 and self.command_buffer[0] != "state":
+        if len(self.command_buffer) > 0 and self.command_buffer[0] != "mode":
             if self.state == "command":
                 self.evaluate_command()
             elif self.state == "text":
@@ -119,6 +119,7 @@ class CheetahParser:
         text = text.replace("dash","-")
         text = text.replace("comma",",")
         text = text.replace("pork","?")
+        text = text.replace("dot",".")
         return text
 
     def evaluate_text(self):
@@ -134,6 +135,9 @@ class CheetahParser:
                 if self.command_buffer[i] in ["period","dash","colon","comma","pork"]:
                     backspace(1)
                     writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
+                elif self.command_buffer[i] in ["dot"]:
+                    backspace(1)
+                    writeToScreen(self.insert_punctuation(self.command_buffer[i]))
                 else:
                     writeToScreen(self.command_buffer[i] + ' ')
 
