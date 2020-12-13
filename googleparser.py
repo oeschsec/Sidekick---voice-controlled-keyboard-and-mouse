@@ -4,7 +4,7 @@ from actions import *
 def act_google(text, words):
     if (words[0].lower() == "click" or words[0].lower() == "quick") and len(words) == 1:
         click()
-    elif (words[0].lower() == "inter" or words[0].lower() == "enter") and len(words) == 1:
+    elif (words[0].lower() == "inter" or words[0].lower() == "enter" or words[0].lower() == "engage") and len(words) == 1:
         hitEnter()
     elif words[0] == "space" and len(words) == 1:
         hitSpace()
@@ -51,7 +51,7 @@ def act_google(text, words):
             else:
                 scrollUp(-10)
     else:
-        if "capital" in words[-1]:
+        if "capital" in words[-1].lower():
             texttowrite = ' '.join(words[:-1])
             writeToScreen(texttowrite.capitalize())
         else:
