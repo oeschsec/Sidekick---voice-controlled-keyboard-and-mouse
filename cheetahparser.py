@@ -78,7 +78,7 @@ class CheetahParser:
         elif self.command_buffer[0] == "paste":
             hotKeyPress(["ctrl","v"])
             self.command_buffer = []
-        elif self.command_buffer[0] == "save":
+        elif self.command_buffer[0] == "save" or self.command_buffer[0] == "say":
             hotKeyPress(["ctrl","s"])
             self.command_buffer = []
         elif self.command_buffer[0] == "north":

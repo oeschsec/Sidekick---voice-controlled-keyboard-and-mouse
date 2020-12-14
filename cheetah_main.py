@@ -75,12 +75,15 @@ class CheetahRealtimeDemo(Thread):
                 if self._output_path is not None:
                     self._recorded_frames.append(pcm)
 
-                partial_transcript, is_endpoint = cheetah.process(pcm)
-                #print(partial_transcript, end='', flush=True)
-                if partial_transcript != '':
-                    self.parser.ingest(partial_transcript)
-                if is_endpoint:
-                    self.parser.ingest(cheetah.flush())
+                try:
+                    partial_transcript, is_endpoint = cheetah.process(pcm)
+                    #print(partial_transcript, end='', flush=True)
+                    if partial_transcript != '':
+                        self.parser.ingest(partial_transcript)
+                    if is_endpoint:
+                        self.parser.ingest(cheetah.flush())
+                except Exception as e:
+                    pass
         except Exception as e:
             print(e)
         finally:
