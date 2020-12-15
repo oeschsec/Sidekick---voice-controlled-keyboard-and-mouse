@@ -5,6 +5,8 @@ import pyaudio
 import time
 from deepparser import *
 import enchant
+import math
+import struct
 
 d = enchant.Dict("en_US")
 # DeepSpeech parameters
@@ -25,27 +27,35 @@ model.setBeamWidth(BEAM_WIDTH)
 context = model.createStream()
 parser = CheetahParser()
 
+SHORT_NORMALIZE = (1.0/32768.0)
+swidth = 2
+
+def rms(data):
+    d = np.frombuffer(data, np.int16).astype(np.float)
+    return np.sqrt((d*d).sum()/len(d))
+
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
 text_so_far = ''
 lastlength = 0
 def process_audio(in_data, frame_count, time_info, status):
     global text_so_far
     global lastlength 
-    data16 = np.frombuffer(in_data, dtype=np.int16)
-    context.feedAudioContent(data16)
-    text = context.intermediateDecode()
-    if text != text_so_far:
-        #print('Interim text = {}'.format(text))
-        vals = text.split(' ')
-        if len(vals) > 1:
-            diff = len(vals) - lastlength
-            if diff > 1:
-                for word in vals[-diff:-1]:
-                    if word != "" and word != None:
-                        if word != "go" and word != "co" and d.check(word):
-                            parser.ingest(word)
-                    lastlength += 1
-            text_so_far = text
+    if rms(in_data) > 70:
+        data16 = np.frombuffer(in_data, dtype=np.int16)
+        context.feedAudioContent(data16)
+        text = context.intermediateDecode()
+        if text != text_so_far:
+            #print('Interim text = {}'.format(text))
+            vals = text.split(' ')
+            if len(vals) > 1:
+                diff = len(vals) - lastlength
+                if diff > 1:
+                    for word in vals[-diff:-1]:
+                        if word != "" and word != None:
+                            if word != "go" and word != "co" and d.check(word):
+                                parser.ingest(word)
+                        lastlength += 1
+                text_so_far = text
     return (in_data, pyaudio.paContinue)
 
 # PyAudio parameters
