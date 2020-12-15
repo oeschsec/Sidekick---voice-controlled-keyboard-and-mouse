@@ -41,8 +41,9 @@ def process_audio(in_data, frame_count, time_info, status):
             diff = len(vals) - lastlength
             if diff > 1:
                 for word in vals[-diff:-1]:
-                    if word != "go" and word != "co" and d.check(word):
-                        parser.ingest(word)
+                    if word != "" and word != None:
+                        if word != "go" and word != "co" and d.check(word):
+                            parser.ingest(word)
                     lastlength += 1
             text_so_far = text
     return (in_data, pyaudio.paContinue)

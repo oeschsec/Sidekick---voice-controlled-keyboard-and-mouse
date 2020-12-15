@@ -109,7 +109,7 @@ class CheetahParser:
                     self.command_buffer = ["west"]
                 else:
                     self.command_buffer = []
-        elif self.command_buffer[0] == "surf" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serve":
+        elif self.command_buffer[0] == "surf" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serf":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in ["up","down","left","right"]:
                     if len(self.command_buffer) >= 3: 
