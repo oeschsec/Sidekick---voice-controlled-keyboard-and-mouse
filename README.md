@@ -1,6 +1,8 @@
 # speech-driven-keyboard-and-mouse
 To avoid too much wrist pain I decided to create an app that will convert voice to common keyboard actions - such as scrolling, mouse clicks, text input, etc. If you want to contribute please contact me. 
 
+- grab the latest version of the deepspeech pbmm file (https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3)
+
 ## Install
 
 - pip install pyautogui
