@@ -48,7 +48,7 @@ class CheetahParser:
                 self.evaluate_text()
 
     def evaluate_command(self):
-        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "quick" or self.command_buffer[0] == 'ec'):
+        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "quick" or self.command_buffer[0] == 'lick'):
             click()
             self.command_buffer = []
         elif (self.command_buffer[0] == "inter" or self.command_buffer[0] == "enter" or self.command_buffer[0] == "engage"):
