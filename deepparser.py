@@ -11,6 +11,7 @@ class CheetahParser:
             "on":10,
             "two":30,
             "to":30,
+            "too":30,
             "three":50,
             "four":100,
             "for":100,
@@ -20,6 +21,8 @@ class CheetahParser:
             "eight":1500,
             "at":1500
         }
+
+        self.commands = ["up","down","left","right","copy","paste","north","south","east","west","save","surf"]
 
     def ingest(self, words): 
         #print(word.lower())
@@ -31,33 +34,47 @@ class CheetahParser:
             self.evaluate()
 
     def evaluate(self):
-        if self.command_buffer[0] == "state" and len(self.command_buffer) >= 2:
-            if self.command_buffer[1] == "command":
+            if self.command_buffer[0] == "command":
                 self.state = "command"
                 self.command_buffer = []
-            elif self.command_buffer[1] == "text" or "tax" in self.command_buffer[1]:
+            elif self.command_buffer[0] == "text":
                 self.state = "text"
                 self.command_buffer = []
             else:
-                self.command_buffer = []
+                if len(self.command_buffer) > 0:
+                    if not self.stateless_command():
+                        if self.state == "command":
+                            self.evaluate_command()
+                        elif self.state == "text":
+                            self.evaluate_text()
 
-        if len(self.command_buffer) > 0 and self.command_buffer[0] != "state":
-            if self.state == "command":
-                self.evaluate_command()
-            elif self.state == "text":
-                self.evaluate_text()
-
-    def evaluate_command(self):
-        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "quick" or self.command_buffer[0] == "lick" or self.command_buffer[0] == "jump"):
+    def stateless_command(self):
+        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "jump"):
             click()
             self.command_buffer = []
-        elif (self.command_buffer[0] == "inter" or self.command_buffer[0] == "enter" or self.command_buffer[0] == "engage"):
+        elif (self.command_buffer[0] == "inter" or self.command_buffer[0] == "enter"):
             hitEnter()
             self.command_buffer = []
         elif self.command_buffer[0] == "space":
             hitSpace()
             self.command_buffer = []
-        elif self.command_buffer[0] == "up":
+        elif self.command_buffer[0] == "back":
+            backspace(1)
+            self.command_buffer = []
+        else:
+            return False
+
+        return True
+
+    def handle_invalid_command(self, val):
+        if val in self.commands:
+            self.command_buffer = [val]
+            self.evaluate_command()
+        else:
+            self.command_buffer = []
+
+    def evaluate_command(self):
+        if self.command_buffer[0] == "up":
             hotKeyPress(["up"])
             self.command_buffer = []
         elif self.command_buffer[0] == "down":
@@ -68,9 +85,6 @@ class CheetahParser:
             self.command_buffer = []
         elif self.command_buffer[0] == "right":
             hotKeyPress(["right"])
-            self.command_buffer = []
-        elif self.command_buffer[0] == "back":
-            backspace(1)
             self.command_buffer = []
         elif self.command_buffer[0] == "copy":
             hotKeyPress(["ctrl","c"])
@@ -87,28 +101,28 @@ class CheetahParser:
                     moveMouse(0,-1*int(self.steps[self.command_buffer[1]]))
                     self.command_buffer = ["north"]
                 else:
-                    self.command_buffer = []
+                    self.handle_invalid_command(self.command_buffer[1])
         elif self.command_buffer[0] == "south":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in self.steps:
                     moveMouse(0,int(self.steps[self.command_buffer[1]]))
                     self.command_buffer = ["south"]
                 else:
-                    self.command_buffer = []
+                    self.handle_invalid_command(self.command_buffer[1])
         elif self.command_buffer[0] == "east" or self.command_buffer[0] == "is":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in self.steps:
                     moveMouse(int(self.steps[self.command_buffer[1]]),0)
                     self.command_buffer = ["east"]
                 else:
-                    self.command_buffer = []
+                    self.handle_invalid_command(self.command_buffer[1])
         elif self.command_buffer[0] == "west":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in self.steps:
                     moveMouse(-1*int(self.steps[self.command_buffer[1]]),0)
                     self.command_buffer = ["west"]
                 else:
-                    self.command_buffer = []
+                    self.handle_invalid_command(self.command_buffer[1])
         elif self.command_buffer[0] == "surf" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serf":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in ["up","down","left","right"]:
@@ -127,9 +141,9 @@ class CheetahParser:
                                 scrollRight(int(self.steps[self.command_buffer[2]]))
                                 self.command_buffer = ["surf","right"]
                         else:
-                            self.command_buffer = []
+                            self.handle_invalid_command(self.command_buffer[2])
                 else:
-                    self.command_buffer = []
+                    self.handle_invalid_command(self.command_buffer[1])
         else:
             self.command_buffer = []
 
