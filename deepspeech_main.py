@@ -28,39 +28,46 @@ model.setBeamWidth(BEAM_WIDTH)
 context = model.createStream()
 parser = CheetahParser()
 
+threshold = 65 # decibels above which we record
 SHORT_NORMALIZE = (1.0/32768.0)
 swidth = 2
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
 text_so_far = ''
 lastlength = 0
-silentcount = 0
-flush = False
+silentcount = 0 # Counts number of reads lower than X decibels (=silence)
+countingsilence = False # True if silent periods after threshold crossed not reached
+flush = False # Enough silence has occurred after threshold breached to flush (intermediateDecode) and safely use the last word in the stiring
 def process_audio(in_data, frame_count, time_info, status):
     global text_so_far
     global lastlength
     global silentcount 
+    global countingsilence
     global flush
     dB = 20 * math.log10(audioop.rms(in_data,2))
     data16 = np.frombuffer(in_data, dtype=np.int16)
-    if dB > 60 or flush == True:
+    if dB > threshold or countingsilence == True:
         silentcount += 1
-        if dB > 60:
+        if dB > threshold:
             silentcount = 0
-            flush = True
+            countingsilence = True
         if silentcount >= 10:
-            flush = False
+            countingsilence = False
+            flush = True
         #print(dB)
         data16 = np.frombuffer(in_data, dtype=np.int16)
         context.feedAudioContent(data16)
         text = context.intermediateDecode()
+        if flush:
+            #print(text)
+            flush = False
         #print(text)
-        if text != text_so_far:
+        #if text != text_so_far:
             #print('Interim text = {}'.format(text))
             vals = text.split(' ')
             if len(vals) > 1:
                 diff = len(vals) - lastlength
-                if diff > 1:
-                    for word in vals[-diff:-1]:
+                if diff > 0:
+                    for word in vals[-diff:]:
                         if word != "" and word != None:
                             if word != "go" and word != "co" and d.check(word):
                                 parser.ingest(word)
