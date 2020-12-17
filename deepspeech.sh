@@ -10,6 +10,6 @@ function ctrl_c() {
 
 while true; do
     python3 deepspeech_main.py &
-    sleep 45
+    sleep 600
     kill $(pgrep -f 'python3 deepspeech_main.py')
 done
