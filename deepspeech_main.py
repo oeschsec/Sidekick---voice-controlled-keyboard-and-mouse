@@ -30,7 +30,6 @@ parser = CheetahParser()
 
 SHORT_NORMALIZE = (1.0/32768.0)
 swidth = 2
-f = open("silence.txt","w")
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
 text_so_far = ''
 lastlength = 0
