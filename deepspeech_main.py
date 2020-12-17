@@ -7,6 +7,7 @@ from deepparser import *
 import enchant
 import math
 import struct
+import audioop
 
 d = enchant.Dict("en_US")
 # DeepSpeech parameters
@@ -29,21 +30,31 @@ parser = CheetahParser()
 
 SHORT_NORMALIZE = (1.0/32768.0)
 swidth = 2
-
-def rms(data):
-    d = np.frombuffer(data, np.int16).astype(np.float)
-    return np.sqrt((d*d).sum()/len(d))
-
+f = open("silence.txt","w")
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
 text_so_far = ''
 lastlength = 0
+silentcount = 0
+flush = False
 def process_audio(in_data, frame_count, time_info, status):
     global text_so_far
-    global lastlength 
-    if rms(in_data) > 70:
+    global lastlength
+    global silentcount 
+    global flush
+    dB = 20 * math.log10(audioop.rms(in_data,2))
+    data16 = np.frombuffer(in_data, dtype=np.int16)
+    if dB > 60 or flush == True:
+        silentcount += 1
+        if dB > 60:
+            silentcount = 0
+            flush = True
+        if silentcount >= 10:
+            flush = False
+        #print(dB)
         data16 = np.frombuffer(in_data, dtype=np.int16)
         context.feedAudioContent(data16)
         text = context.intermediateDecode()
+        #print(text)
         if text != text_so_far:
             #print('Interim text = {}'.format(text))
             vals = text.split(' ')
@@ -56,6 +67,7 @@ def process_audio(in_data, frame_count, time_info, status):
                                 parser.ingest(word)
                         lastlength += 1
                 text_so_far = text
+          
     return (in_data, pyaudio.paContinue)
 
 # PyAudio parameters
