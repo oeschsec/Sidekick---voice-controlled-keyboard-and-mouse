@@ -22,7 +22,7 @@ class CheetahParser:
             "at":1500
         }
 
-        self.commands = ["up","down","left","right","copy","paste","north","south","east","west","save","surf"]
+        self.commands = ["click", "jump", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","surf"]
 
     def ingest(self, words): 
         #print(word.lower())
@@ -69,7 +69,8 @@ class CheetahParser:
     def handle_invalid_command(self, val):
         if val in self.commands:
             self.command_buffer = [val]
-            self.evaluate_command()
+            if not self.stateless_command():
+                self.evaluate_command()
         else:
             self.command_buffer = []
 
