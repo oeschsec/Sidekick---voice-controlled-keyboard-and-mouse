@@ -159,10 +159,12 @@ class CheetahParser:
         text = text.replace("period",".")
         text = text.replace("colon",":")
         text = text.replace("dash","-")
-        text = text.replace("comma",",").replace("com",",")
+        text = text.replace("comma",",").replace("coma",",")
         text = text.replace("pork","?")
         text = text.replace("dot",".")
         text = text.replace("hash","#")
+        text = text.replace("sem",";")
+        text = text.replace("corn",":")
         return text
 
     def evaluate_text(self):
@@ -176,7 +178,7 @@ class CheetahParser:
                     self.command_buffer = []
         else:
             for i in range(0,len(self.command_buffer)):
-                if self.command_buffer[i] in ["period","dash","comma","pork", "hash"]:
+                if self.command_buffer[i] in ["period","coma","comma","corn","pork", "hash","sim"]:
                     backspace(1)
                     writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
                 elif self.command_buffer[i] in ["dot"]:
