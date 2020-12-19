@@ -104,7 +104,6 @@ except KeyboardInterrupt:
     stream.stop_stream()
     stream.close()
     audio.terminate()
-    print('Finished recording.')
+    print('\nThank you for using the speech driven keyboard. Have a nice day.')
     # DeepSpeech
-    text = model.finishStream(context)
-    print('Final text = {}'.format(text))
+    context.finishStream()

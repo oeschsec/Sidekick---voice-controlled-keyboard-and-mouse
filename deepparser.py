@@ -22,7 +22,7 @@ class CheetahParser:
             "at":1500
         }
 
-        self.commands = ["click", "jump", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","surf"]
+        self.commands = ["click", "jump", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","mouse"]
 
     def ingest(self, words): 
         #print(word.lower())
@@ -59,15 +59,22 @@ class CheetahParser:
             hitSpace()
             self.command_buffer = []
         elif self.command_buffer[0] == "back":
-            backspace(1)
-            self.command_buffer = []
+            if len(self.command_buffer) >= 2:
+                if self.command_buffer[1] in self.steps:
+                    backspace(int(self.steps[self.command_buffer[1]])/10)
+                    self.command_buffer = ["back"]
+                else:
+                    self.handle_invalid_command(self.command_buffer[1])
         else:
             return False
 
         return True
 
     def handle_invalid_command(self, val):
-        if val in self.commands:
+        if val == "text":
+                self.state = "text"
+                self.command_buffer = []
+        elif val in self.commands:
             self.command_buffer = [val]
             if not self.stateless_command():
                 self.evaluate_command()
@@ -124,23 +131,23 @@ class CheetahParser:
                     self.command_buffer = ["west"]
                 else:
                     self.handle_invalid_command(self.command_buffer[1])
-        elif self.command_buffer[0] == "surf" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serf":
+        elif self.command_buffer[0] == "mouse" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serf":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in ["up","down","left","right"]:
                     if len(self.command_buffer) >= 3: 
                         if self.command_buffer[2] in self.steps:
                             if self.command_buffer[1] == "up":
                                 scrollUp(int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["surf","up"]
+                                self.command_buffer = ["mouse","up"]
                             if self.command_buffer[1] == "down":
                                 scrollUp(-1*int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["surf","down"]
+                                self.command_buffer = ["mouse","down"]
                             if self.command_buffer[1] == "left":
                                 scrollRight(-1*int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["surf","left"]
+                                self.command_buffer = ["mouse","left"]
                             if self.command_buffer[1] == "right":
                                 scrollRight(int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["surf","right"]
+                                self.command_buffer = ["mouse","right"]
                         else:
                             self.handle_invalid_command(self.command_buffer[2])
                 else:
