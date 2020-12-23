@@ -28,7 +28,8 @@ model.setBeamWidth(BEAM_WIDTH)
 context = model.createStream()
 parser = CheetahParser()
 
-threshold = 60 # decibels above which we record
+# Make sure to set threshold correctly (test dB level for silence and adjust)
+threshold = 30 # decibels above which we record
 SHORT_NORMALIZE = (1.0/32768.0)
 swidth = 2
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
@@ -57,6 +58,7 @@ def process_audio(in_data, frame_count, time_info, status):
         data16 = np.frombuffer(in_data, dtype=np.int16)
         context.feedAudioContent(data16)
         text = context.intermediateDecode()
+
         if flush:
             #print(text)
             flush = False
