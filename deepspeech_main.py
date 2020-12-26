@@ -29,7 +29,7 @@ context = model.createStream()
 parser = CheetahParser()
 
 # Make sure to set threshold correctly (test dB level for silence and adjust)
-threshold = 30 # decibels above which we record
+threshold = 40 # decibels above which we record
 SHORT_NORMALIZE = (1.0/32768.0)
 swidth = 2
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
@@ -51,7 +51,7 @@ def process_audio(in_data, frame_count, time_info, status):
         if dB > threshold:
             silentcount = 0
             countingsilence = True
-        if silentcount >= 10:
+        if silentcount >= 20:
             countingsilence = False
             flush = True
         #print(dB)
