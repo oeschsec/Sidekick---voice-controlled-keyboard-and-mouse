@@ -16,8 +16,8 @@ MODEL_FILE_PATH = os.path.join(DEEPSPEECH_MODEL_DIR, 'graph.pbmm')
 BEAM_WIDTH = 500
 #LM_FILE_PATH = os.path.join(DEEPSPEECH_MODEL_DIR, 'lm.binary')
 #TRIE_FILE_PATH = os.path.join(DEEPSPEECH_MODEL_DIR, 'trie')
-LM_ALPHA = 0.75
-LM_BETA = 1.85
+#LM_ALPHA = 0.75
+#LM_BETA = 1.85
 
 # Make DeepSpeech Model
 model = deepspeech.Model(MODEL_FILE_PATH)#, BEAM_WIDTH)
@@ -30,43 +30,53 @@ parser = CheetahParser()
 
 # Make sure to set threshold correctly (test dB level for silence and adjust)
 threshold = 40 # decibels above which we record
-SHORT_NORMALIZE = (1.0/32768.0)
-swidth = 2
 # Encapsulate DeepSpeech audio feeding into a callback for PyAudio
-text_so_far = ''
 lastlength = 0
-silentcount = 0 # Counts number of reads lower than X decibels (=silence)
-countingsilence = False # True if silent periods after threshold crossed not reached
-flush = False # Enough silence has occurred after threshold breached to flush (intermediateDecode) and safely use the last word in the stiring
+waittoflush = 0 
+silentcount = 0 
+cleared = True
+wait = False # Need to feed additional audio data so that intermediate decode returns meaningful result 
+flush = False # Enough input data to flush (intermediateDecode) and safely use the resultant string
 def process_audio(in_data, frame_count, time_info, status):
-    global text_so_far
     global lastlength
-    global silentcount 
-    global countingsilence
+    global waittoflush 
+    global wait
     global flush
+    global context
+    global silentcount
+    global cleared 
     dB = 20 * math.log10(audioop.rms(in_data,2))
     data16 = np.frombuffer(in_data, dtype=np.int16)
-    if dB > threshold or countingsilence == True:
+    if dB < threshold and wait == False:
         silentcount += 1
+
+    # After extended period of silence, clear the stream and recreate so that it doesn't start to consume undesirable amounts of memory
+    if silentcount > 150 and cleared == False:
+        context.freeStream()
+        context = model.createStream()
+        cleared = True
+        lastlength = 0 # reset 
+
+    if dB > threshold or wait == True:
+        silentcount = 0
+        cleared = False
+        waittoflush += 1
         if dB > threshold:
-            silentcount = 0
-            countingsilence = True
-        if silentcount >= 20:
-            countingsilence = False
+            waittoflush = 0
+            wait = True
+
+        if waittoflush >= 10:
+            wait = False
             flush = True
-        #print(dB)
+
         data16 = np.frombuffer(in_data, dtype=np.int16)
         context.feedAudioContent(data16)
-        text = context.intermediateDecode()
 
         if flush:
-            #print(text)
+            text = context.intermediateDecode()
             flush = False
-        #print(text)
-        #if text != text_so_far:
-            #print('Interim text = {}'.format(text))
             vals = text.split(' ')
-            if len(vals) > 1:
+            if len(vals) > 0 and text != '':
                 diff = len(vals) - lastlength
                 if diff > 0:
                     for word in vals[-diff:]:
