@@ -1,6 +1,6 @@
 from actions import *
 
-class CheetahParser: 
+class DefaultParser: 
     
     def __init__(self):
         self.state = "command"

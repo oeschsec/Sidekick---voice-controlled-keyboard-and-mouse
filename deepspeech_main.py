@@ -3,40 +3,36 @@ import numpy as np
 import os
 import pyaudio
 import time
-from deepparser import *
+from defaultparser import *
 import enchant
 import math
 import struct
 import audioop
 
-d = enchant.Dict("en_US")
-# DeepSpeech parameters
+d = enchant.Dict("en_US") # using enchant to verify word is actually English before passing it to parser
+
+# Configure deepspeech parameters and instantiate model
 DEEPSPEECH_MODEL_DIR = './'
 MODEL_FILE_PATH = os.path.join(DEEPSPEECH_MODEL_DIR, 'graph.pbmm')
 BEAM_WIDTH = 500
-#LM_FILE_PATH = os.path.join(DEEPSPEECH_MODEL_DIR, 'lm.binary')
-#TRIE_FILE_PATH = os.path.join(DEEPSPEECH_MODEL_DIR, 'trie')
-#LM_ALPHA = 0.75
-#LM_BETA = 1.85
-
-# Make DeepSpeech Model
 model = deepspeech.Model(MODEL_FILE_PATH)#, BEAM_WIDTH)
 model.setBeamWidth(BEAM_WIDTH)
-#model.enableDecoderWithLM(LM_FILE_PATH, TRIE_FILE_PATH, LM_ALPHA, LM_BETA)
 
 # Create a Streaming session
 context = model.createStream()
-parser = CheetahParser()
+parser = DefaultParser()
 
 # Make sure to set threshold correctly (test dB level for silence and adjust)
 threshold = 40 # decibels above which we record
-# Encapsulate DeepSpeech audio feeding into a callback for PyAudio
-lastlength = 0
-waittoflush = 0 
-silentcount = 0 
-cleared = True
+
+# Handle callback from PyAudio - feed audio data to deespeech model and send to parser
+lastlength = 0 # Ensures we only pull new words from intermediate decode (don't pass same thing to parser twice)
+waittoflush = 0 # After threshold breached need to wait to flush several cycles or else model will not be able to decode speech
+silentcount = 0 # Clear stream (if not already cleared) after silentcount reaches certain value
+cleared = True # Periodically clear the stream and recreate for smoth operation
 wait = False # Need to feed additional audio data so that intermediate decode returns meaningful result 
 flush = False # Enough input data to flush (intermediateDecode) and safely use the resultant string
+firstfeed = True # The stream needs to be fed multiple times on first feed to get result
 def process_audio(in_data, frame_count, time_info, status):
     global lastlength
     global waittoflush 
@@ -45,6 +41,7 @@ def process_audio(in_data, frame_count, time_info, status):
     global context
     global silentcount
     global cleared 
+    global firstfeed
     dB = 20 * math.log10(audioop.rms(in_data,2))
     data16 = np.frombuffer(in_data, dtype=np.int16)
     if dB < threshold and wait == False:
@@ -55,26 +52,38 @@ def process_audio(in_data, frame_count, time_info, status):
         context.freeStream()
         context = model.createStream()
         cleared = True
+        firstfeed = True
         lastlength = 0 # reset 
 
+    # if sound above threshold or we are waiting to flush 
     if dB > threshold or wait == True:
-        silentcount = 0
-        cleared = False
+        silentcount = 0 # reset silent count whenever sound crosses threshold
+        cleared = False 
         waittoflush += 1
         if dB > threshold:
             waittoflush = 0
             wait = True
 
-        if waittoflush >= 10:
+        if waittoflush >= 10: # 10 was chosen because it worked - can be tweaked
             wait = False
             flush = True
 
-        data16 = np.frombuffer(in_data, dtype=np.int16)
-        context.feedAudioContent(data16)
+        data16 = np.frombuffer(in_data, dtype=np.int16) # get our audio data into right format
+
+        if firstfeed: # on first feed have to feed multiple times for model to process
+            firstfeed = False
+            for i in range(0,5):
+                context.feedAudioContent(data16)
+        else:
+            context.feedAudioContent(data16)
 
         if flush:
+            # running this twice helped with accuracy
+            text = context.intermediateDecode()
             text = context.intermediateDecode()
             flush = False
+
+            # now we decide which words to pass to the parser
             vals = text.split(' ')
             if len(vals) > 0 and text != '':
                 diff = len(vals) - lastlength
@@ -105,7 +114,6 @@ stream = audio.open(
     stream_callback=process_audio
 )
 
-print('Please start speaking, when done press Ctrl-C ...')
 stream.start_stream()
 
 try: 

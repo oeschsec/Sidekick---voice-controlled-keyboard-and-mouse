@@ -1,4 +1,4 @@
-from autogui import *
+from automategui import *
 import time
 
 def hoverTaskBar():
