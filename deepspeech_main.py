@@ -72,7 +72,7 @@ def process_audio(in_data, frame_count, time_info, status):
 
         if firstfeed: # on first feed have to feed multiple times for model to process
             firstfeed = False
-            for i in range(0,5):
+            for i in range(0,10):
                 context.feedAudioContent(data16)
         else:
             context.feedAudioContent(data16)
