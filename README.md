@@ -1,24 +1,24 @@
 # speech-driven-keyboard-and-mouse
-To avoid too much wrist pain I decided to create an app that will convert voice to common keyboard actions - such as scrolling, mouse clicks, text input, etc. If you want to contribute please contact me. 
-
-- grab the latest version of the deepspeech pbmm file (https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3)
+To avoid too much hand/wrist pain I decided to create an app that will convert voice to common keyboard actions - such as scrolling, mouse clicks, text input, etc. It is not intended to replace the keyboard and mouse, but rather to reduce their use. If you want to contribute please contact me. Custom parsers and ways to make speech recognition of commands more accurate / efficient of particular interest, though I'm open to any way the tool can be improved.
 
 ## Install
 
+Several of the following instructions are specific to Ubuntu (sudo apt-get intall...) Every library used should function cross-platform, but it has only been tested on Linux. See also requirements.txt file.
+
+- grab the latest version of the deepspeech pbmm file (https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and include in main project directory
 - pip install pyautogui
 - sudo apt-get install scrot python3-tk python3-dev
 - sudo apt-get install portaudio19-dev python-all-dev python3-all-dev
 - sudo apt-get install python3-pyaudio
 - pip install SpeechRecognition
 - pip install pyaudio
+- pip install numpy pyenchant
 
-## For Offline Speech Recognition
+## Approach
 
-In my testing pocketsphinx didn't work so well - very inaccurate. 
+- I wanted to use a speech recognition library that worked out-of-the-box and did not require retraining
+- I decided to use deepspeech from Mozilla for speech-to-text because it is a) offline (unlike services such as Google's API), b) more accurate than offline alternatives such as CMU's PocketSphinx, c) entirely open source, unlike picovoice. I initially tried to use python's SR library with google (see srmodule_old folder), but found it too slow and, as mentioned before, requiring internet.
+- Because deepspeech was not intended for this application, I had to use some workarounds. They are certainly not perfect, and any suggestions for improvement welcome. 
 
-- sudo apt-get install swig
-- sudo apt-get install libpulse-dev
-- sudo apt-get install -y python-pocketsphinx
-- python -m pip install --upgrade pip setuptools wheel
-- pip install --upgrade pocketsphinx
+## Usage
 
