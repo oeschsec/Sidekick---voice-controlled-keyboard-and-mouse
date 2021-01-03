@@ -29,6 +29,8 @@ parser = DefaultParser()
 threshold = 55 # decibels above which we record
 
 # Handle callback from PyAudio - feed audio data to deespeech model and send to parser
+ambientvals = []
+thresholdset = False # Set threshold once on start
 lastlength = 0 # Ensures we only pull new words from intermediate decode (don't pass same thing to parser twice)
 waittoflush = 0 # After threshold breached need to wait to flush several cycles or else model will not be able to decode speech
 silentcount = 0 # Clear stream (if not already cleared) after silentcount reaches certain value
@@ -45,8 +47,21 @@ def process_audio(in_data, frame_count, time_info, status):
     global silentcount
     global cleared 
     global firstfeed
+    global thresholdset
+    global threshold
+    global ambientvals
     dB = 20 * math.log10(audioop.rms(in_data,2))
     #print(dB) #- check dB level of silence
+    
+    if not thresholdset:
+        ambientvals.append(int(dB))
+
+    if silentcount == 15 and not thresholdset:
+        thresholdset = True
+        threshold = max(ambientvals) + 5
+        print("Threshold is now set at " + str(threshold))
+        print("The speech driven keyboard now awaits your command")
+
     data16 = np.frombuffer(in_data, dtype=np.int16)
     if dB < threshold and wait == False:
         silentcount += 1
@@ -60,7 +75,7 @@ def process_audio(in_data, frame_count, time_info, status):
         lastlength = 0 # reset 
 
     # if sound above threshold or we are waiting to flush 
-    if dB > threshold or wait == True:
+    if dB > threshold or wait == True and thresholdset:
         silentcount = 0 # reset silent count whenever sound crosses threshold
         cleared = False 
         waittoflush += 1
@@ -118,6 +133,7 @@ stream = audio.open(
     stream_callback=process_audio
 )
 
+print("\nPlease wait silently for the threshold to be set based on ambient noise before use")
 stream.start_stream()
 
 try: 
