@@ -23,7 +23,10 @@ context = model.createStream()
 parser = DefaultParser()
 
 # Make sure to set threshold correctly (test dB level for silence and adjust)
-threshold = 40 # decibels above which we record
+# Test by uncommenting print(dB) in process_audio function and running program while remaining silent
+# Different mics and environments likely require a different threshold
+# I generally set it to be about 5 or 10 decibels above the maximum dB level of silence
+threshold = 55 # decibels above which we record
 
 # Handle callback from PyAudio - feed audio data to deespeech model and send to parser
 lastlength = 0 # Ensures we only pull new words from intermediate decode (don't pass same thing to parser twice)
@@ -43,6 +46,7 @@ def process_audio(in_data, frame_count, time_info, status):
     global cleared 
     global firstfeed
     dB = 20 * math.log10(audioop.rms(in_data,2))
+    #print(dB) #- check dB level of silence
     data16 = np.frombuffer(in_data, dtype=np.int16)
     if dB < threshold and wait == False:
         silentcount += 1

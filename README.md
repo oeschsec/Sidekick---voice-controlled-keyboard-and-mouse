@@ -22,3 +22,5 @@ Several of the following instructions are specific to Ubuntu (sudo apt-get intal
 
 ## Usage
 
+- When I used a microphone with too high of a sample rate (48 kHz) I had some issues with the program freezing after it ran for a while and taking longer to process input - works fine at 16 kHz. Didn't track down the root source of this issue, so may not be an issue for you. The default model was trained at 16 kHz, so that is ideal. I currently use a headset mic and it works great. 
+- Make sure that the threshold is set to 5 or 10 dB above silence / ambient noise level 
