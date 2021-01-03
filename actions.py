@@ -10,6 +10,9 @@ def openChrome():
 def click():
     clickCurrent()
 
+def doubleclick():
+    doubleClickCurrent()
+
 def scrollUp(y):
     scrollVertical(y)
 

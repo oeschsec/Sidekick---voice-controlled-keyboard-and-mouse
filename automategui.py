@@ -42,6 +42,9 @@ def moveMouse(x,y):
 def clickCurrent(): 
     pyautogui.click(pyautogui.position())
 
+def doubleClickCurrent():
+    pyautogui.doubleClick(pyautogui.position())
+
 def scrollVertical(y):
     pyautogui.scroll(y)
 

@@ -1,5 +1,5 @@
 # speech-driven-keyboard-and-mouse
-To avoid too much hand/wrist pain I decided to create an app that will convert voice to common keyboard actions - such as scrolling, mouse clicks, text input, etc. It is not intended to replace the keyboard and mouse, but rather to reduce their use. If you want to contribute please contact me. Custom parsers and ways to make speech recognition of commands more accurate / efficient of particular interest, though I'm open to any way the tool can be improved.
+To avoid too much hand/wrist pain I decided to create a program that will convert voice to common keyboard actions - such as scrolling, mouse clicks, text input, etc. It is not intended to replace the keyboard and mouse, but rather to reduce their use. If you want to contribute please contact me. Custom parsers and ways to make speech recognition of commands more accurate / efficient of particular interest, though I'm open to any way the tool can be improved.
 
 ## Install
 

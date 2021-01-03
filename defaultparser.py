@@ -52,6 +52,9 @@ class DefaultParser:
         if (self.command_buffer[0] == "click" or self.command_buffer[0] == "jump"):
             click()
             self.command_buffer = []
+        elif self.command_buffer[0] == "double":
+            doubleclick()
+            self.command_buffer = []
         elif (self.command_buffer[0] == "inter" or self.command_buffer[0] == "enter"):
             hitEnter()
             self.command_buffer = []
