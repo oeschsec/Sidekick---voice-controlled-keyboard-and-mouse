@@ -22,11 +22,10 @@ model.setBeamWidth(BEAM_WIDTH)
 context = model.createStream()
 parser = DefaultParser()
 
-# Make sure to set threshold correctly (test dB level for silence and adjust)
+# Currently threshold is automatically set to 
 # Test by uncommenting print(dB) in process_audio function and running program while remaining silent
-# Different mics and environments likely require a different threshold
-# I generally set it to be about 5 or 10 decibels above the maximum dB level of silence
 threshold = 55 # decibels above which we record
+threshold_buffer = 2 # dB above ambient noise required to process audio (too high and you have to talk loud, too low and may process too much ambient noise)
 
 # Handle callback from PyAudio - feed audio data to deespeech model and send to parser
 ambientvals = []
@@ -58,7 +57,7 @@ def process_audio(in_data, frame_count, time_info, status):
 
     if silentcount == 15 and not thresholdset:
         thresholdset = True
-        threshold = max(ambientvals) + 5
+        threshold = max(ambientvals) + threshold_buffer
         print("Threshold is now set at " + str(threshold))
         print("The speech driven keyboard now awaits your command")
 
