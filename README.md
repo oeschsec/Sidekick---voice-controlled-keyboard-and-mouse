@@ -7,10 +7,10 @@ Several of the following instructions are specific to Ubuntu (sudo apt-get intal
 
 - grab the latest version of the deepspeech pbmm file (https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and include in main project directory
 - pip install pyautogui
-- sudo apt-get install scrot python3-tk python3-dev
+- sudo apt-get install scrot python3-tk python3-dev (for pyautogui on Ubuntu)
 - sudo apt-get install portaudio19-dev python-all-dev python3-all-dev
 - sudo apt-get install python3-pyaudio
-- pip install SpeechRecognition
+- pip install deepspeech
 - pip install pyaudio
 - pip install numpy pyenchant
 
