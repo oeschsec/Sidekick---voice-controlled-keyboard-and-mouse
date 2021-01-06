@@ -29,6 +29,7 @@ threshold_buffer = 2 # dB above ambient noise required to process audio (too hig
 
 # Handle callback from PyAudio - feed audio data to deespeech model and send to parser
 ambientvals = []
+threshcount = 0
 thresholdset = False # Set threshold once on start
 lastlength = 0 # Ensures we only pull new words from intermediate decode (don't pass same thing to parser twice)
 waittoflush = 0 # After threshold breached need to wait to flush several cycles or else model will not be able to decode speech
@@ -48,6 +49,7 @@ def process_audio(in_data, frame_count, time_info, status):
     global firstfeed
     global thresholdset
     global threshold
+    global threshcount
     global ambientvals
     dB = 20 * math.log10(audioop.rms(in_data,2))
     #print(dB) #- check dB level of silence
@@ -55,63 +57,65 @@ def process_audio(in_data, frame_count, time_info, status):
     if not thresholdset:
         ambientvals.append(int(dB))
 
-    if silentcount == 15 and not thresholdset:
-        thresholdset = True
-        threshold = max(ambientvals) + threshold_buffer
-        print("Threshold is now set at " + str(threshold))
-        print("The speech driven keyboard now awaits your command")
+    if not thresholdset:
+        threshcount += 1
+        if threshcount >= 15:
+            thresholdset = True
+            print("The speech driven keyboard now awaits your command")
+            threshold = max(ambientvals) + threshold_buffer
+            print("Threshold is now set at " + str(threshold))
+    else:
+        data16 = np.frombuffer(in_data, dtype=np.int16)
+        if dB < threshold and wait == False:
+            silentcount += 1
 
-    data16 = np.frombuffer(in_data, dtype=np.int16)
-    if dB < threshold and wait == False:
-        silentcount += 1
+        # After extended period of silence, clear the stream and recreate so that it doesn't start to consume undesirable amounts of memory
+        if silentcount > 150 and cleared == False:
+            context.freeStream()
+            context = model.createStream()
+            cleared = True
+            firstfeed = True
+            lastlength = 0 # reset 
 
-    # After extended period of silence, clear the stream and recreate so that it doesn't start to consume undesirable amounts of memory
-    if silentcount > 150 and cleared == False:
-        context.freeStream()
-        context = model.createStream()
-        cleared = True
-        firstfeed = True
-        lastlength = 0 # reset 
+        # if sound above threshold or we are waiting to flush 
+        if dB > threshold or wait == True and thresholdset:
+            silentcount = 0 # reset silent count whenever sound crosses threshold
+            cleared = False 
+            waittoflush += 1
+            if dB > threshold:
+                waittoflush = 0
+                wait = True
 
-    # if sound above threshold or we are waiting to flush 
-    if dB > threshold or wait == True and thresholdset:
-        silentcount = 0 # reset silent count whenever sound crosses threshold
-        cleared = False 
-        waittoflush += 1
-        if dB > threshold:
-            waittoflush = 0
-            wait = True
+            if waittoflush >= 7: # 10 was chosen because it worked - can be tweaked
+                wait = False
+                flush = True
 
-        if waittoflush >= 10: # 10 was chosen because it worked - can be tweaked
-            wait = False
-            flush = True
+            data16 = np.frombuffer(in_data, dtype=np.int16) # get our audio data into right format
 
-        data16 = np.frombuffer(in_data, dtype=np.int16) # get our audio data into right format
-
-        if firstfeed: # on first feed have to feed multiple times for model to process
-            firstfeed = False
-            for i in range(0,10):
+            if firstfeed: # on first feed have to feed multiple times for model to process
+                firstfeed = False
+                for i in range(0,10):
+                    context.feedAudioContent(data16)
+            else:
                 context.feedAudioContent(data16)
-        else:
-            context.feedAudioContent(data16)
 
-        if flush:
-            # running this twice helped with accuracy
-            text = context.intermediateDecode()
-            text = context.intermediateDecode()
-            flush = False
+            if flush:
+                # running this twice helped with accuracy
+                text = context.intermediateDecode()
+                text = context.intermediateDecode()
+                flush = False
 
-            # now we decide which words to pass to the parser
-            vals = text.split(' ')
-            if len(vals) > 0 and text != '':
-                diff = len(vals) - lastlength
-                if diff > 0:
-                    for word in vals[-diff:]:
-                        if word != "" and word != None:
-                            if word != "go" and word != "co" and d.check(word):
-                                parser.ingest(word)
-                        lastlength += 1
-                text_so_far = text
+                # now we decide which words to pass to the parser
+                vals = text.split(' ')
+                if len(vals) > 0 and text != '':
+                    diff = len(vals) - lastlength
+                    if diff > 0:
+                        for word in vals[-diff:]:
+                            if word != "" and word != None:
+                                if word != "go" and word != "co" and d.check(word):
+                                    parser.ingest(word)
+                            lastlength += 1
+                    text_so_far = text
           
     return (in_data, pyaudio.paContinue)
 
@@ -132,7 +136,7 @@ stream = audio.open(
     stream_callback=process_audio
 )
 
-print("\nPlease wait silently for the threshold to be set based on ambient noise before use")
+print("\nPlease wait silently for the threshold to be set based on ambient noise before use.")
 stream.start_stream()
 
 try: 

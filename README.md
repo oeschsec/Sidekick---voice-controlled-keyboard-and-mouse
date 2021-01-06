@@ -25,6 +25,7 @@ Several of the following instructions are specific to Ubuntu (sudo apt-get intal
 
 #### Usage Notes
 
+- make sure the input volume of your mic is turned up 
 - when first starting, wait just a second for the program to adapt to ambient noise levels (the threshold is set above the max value of ambient noise levels on program start)
 - you may need to repeat the very first command twice for it to be processed
 - occassionally the model will inaccurately interpret a word - just repeat a command if it doesn't work the first time
