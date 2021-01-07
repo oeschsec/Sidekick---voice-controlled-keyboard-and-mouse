@@ -5,7 +5,7 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 
 Several of the following instructions are specific to Ubuntu (sudo apt-get intall...) Every library used should function cross-platform, but it has only been tested on Linux. See also requirements.txt file.
 
-- grab the latest version of the deepspeech pbmm file (https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and include in main project directory
+- grab the latest version of the deepspeech pbmm and scorer files (https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and include in main project directory as graph.pbmm and score.scorer
 - pip install pyautogui
 - sudo apt-get install scrot python3-tk python3-dev (for pyautogui on Ubuntu)
 - sudo apt-get install portaudio19-dev python-all-dev python3-all-dev
