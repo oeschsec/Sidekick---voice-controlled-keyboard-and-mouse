@@ -25,7 +25,7 @@ parser = DefaultParser()
 # Currently threshold is automatically set to 
 # Test by uncommenting print(dB) in process_audio function and running program while remaining silent
 threshold = 55 # decibels above which we record
-threshold_buffer = 2 # dB above ambient noise required to process audio (too high and you have to talk loud, too low and may process too much ambient noise)
+threshold_buffer = 3 # dB above ambient noise required to process audio (too high and you have to talk loud, too low and may process too much ambient noise)
 
 # Handle callback from PyAudio - feed audio data to deespeech model and send to parser
 ambientvals = []
@@ -53,14 +53,13 @@ def process_audio(in_data, frame_count, time_info, status):
     global ambientvals
     dB = 20 * math.log10(audioop.rms(in_data,2))
     #print(dB) #- check dB level of silence
-    
     if not thresholdset:
         ambientvals.append(int(dB))
         threshcount += 1
         if threshcount >= 15:
             thresholdset = True
             print("The speech driven keyboard now awaits your command")
-            threshold = max(ambientvals) + threshold_buffer
+            threshold = sum(ambientvals) / len(ambientvals) + threshold_buffer
             print("Threshold is now set at " + str(threshold))
     else:
         data16 = np.frombuffer(in_data, dtype=np.int16)
@@ -76,7 +75,7 @@ def process_audio(in_data, frame_count, time_info, status):
             lastlength = 0 # reset 
 
         # if sound above threshold or we are waiting to flush 
-        if dB > threshold or wait == True and thresholdset:
+        if (dB > threshold or wait == True) and thresholdset:
             silentcount = 0 # reset silent count whenever sound crosses threshold
             cleared = False 
             waittoflush += 1
@@ -85,6 +84,7 @@ def process_audio(in_data, frame_count, time_info, status):
                 wait = True
 
             if waittoflush >= 10: # 10 was chosen because it worked - can be tweaked
+                print("flush")
                 wait = False
                 flush = True
 
@@ -101,6 +101,7 @@ def process_audio(in_data, frame_count, time_info, status):
                 # running this twice helped with accuracy
                 text = context.intermediateDecode()
                 text = context.intermediateDecode()
+                print(text)
                 flush = False
 
                 # now we decide which words to pass to the parser
