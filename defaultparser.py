@@ -1,8 +1,10 @@
 from actions import *
+import platform
 
 class DefaultParser: 
     
     def __init__(self):
+        self.os = platform.system()
         self.state = "command"
         self.command_buffer = []
         self.steps = {
@@ -101,7 +103,10 @@ class DefaultParser:
             hotKeyPress(["ctrl","c"])
             self.command_buffer = []
         elif self.command_buffer[0] == "paste":
-            hotKeyPress(["ctrl","v"])
+            if self.os == "Darwin":
+                hotKeyPress(["command","v"])            
+            else:
+                hotKeyPress(["ctrl","v"])
             self.command_buffer = []
         elif self.command_buffer[0] == "save" or self.command_buffer[0] == "say":
             hotKeyPress(["ctrl","s"])
