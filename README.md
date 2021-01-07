@@ -28,6 +28,7 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 
 ## Vosk Documentation
 
+- https://alphacephei.com/vosk/install (requirements for running vosk listed here)
 - https://medium.com/analytics-vidhya/offline-speech-recognition-made-easy-with-vosk-c61f7b720215
 - https://github.com/alphacep/vosk-api/blob/master/python/example/test_text.py
 - https://alphacephei.com/vosk/
