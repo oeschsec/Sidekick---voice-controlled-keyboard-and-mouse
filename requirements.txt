@@ -1,5 +1,0 @@
-deepspeech==0.9.3
-PyAudio==0.2.11
-PyAutoGUI==0.9.52
-pyenchant==3.2.0
-numpy==1.19.4
