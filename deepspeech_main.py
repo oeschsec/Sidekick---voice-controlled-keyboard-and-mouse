@@ -56,8 +56,6 @@ def process_audio(in_data, frame_count, time_info, status):
     
     if not thresholdset:
         ambientvals.append(int(dB))
-
-    if not thresholdset:
         threshcount += 1
         if threshcount >= 15:
             thresholdset = True
@@ -86,7 +84,7 @@ def process_audio(in_data, frame_count, time_info, status):
                 waittoflush = 0
                 wait = True
 
-            if waittoflush >= 7: # 10 was chosen because it worked - can be tweaked
+            if waittoflush >= 10: # 10 was chosen because it worked - can be tweaked
                 wait = False
                 flush = True
 

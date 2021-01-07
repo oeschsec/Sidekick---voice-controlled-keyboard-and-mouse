@@ -14,6 +14,12 @@ Several of the following instructions are specific to Ubuntu (sudo apt-get intal
 - pip install pyaudio
 - pip install numpy pyenchant
 
+#### On Mac
+
+- brew install portaudio
+- brew install enchant
+- pip install numpy pyenchant deepspeech pyautogui pyaudio
+
 ## Approach
 
 - I wanted to use a speech recognition library that worked out-of-the-box and did not require retraining
