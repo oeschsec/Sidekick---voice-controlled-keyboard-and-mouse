@@ -24,7 +24,7 @@ class DefaultParser:
             "at":1500
         }
 
-        self.commands = ["click", "jump", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","mouse"]
+        self.commands = ["click", "go", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","mouse"]
 
     def ingest(self, words): 
         #print(word.lower())
@@ -51,7 +51,7 @@ class DefaultParser:
                             self.evaluate_text()
 
     def stateless_command(self):
-        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "jump"):
+        if (self.command_buffer[0] == "click" or self.command_buffer[0] == "go"):
             click()
             self.command_buffer = []
         elif self.command_buffer[0] == "double":
@@ -100,7 +100,10 @@ class DefaultParser:
             hotKeyPress(["right"])
             self.command_buffer = []
         elif self.command_buffer[0] == "copy":
-            hotKeyPress(["ctrl","c"])
+            if self.os == "Darwin":
+                hotKeyPress(["command","c"])            
+            else:
+                hotKeyPress(["ctrl","c"])        
             self.command_buffer = []
         elif self.command_buffer[0] == "paste":
             if self.os == "Darwin":
@@ -109,7 +112,10 @@ class DefaultParser:
                 hotKeyPress(["ctrl","v"])
             self.command_buffer = []
         elif self.command_buffer[0] == "save" or self.command_buffer[0] == "say":
-            hotKeyPress(["ctrl","s"])
+            if self.os == "Darwin":
+                hotKeyPress(["command","s"])            
+            else:
+                hotKeyPress(["ctrl","s"])
             self.command_buffer = []
         elif self.command_buffer[0] == "north":
             if len(self.command_buffer) >= 2:
@@ -165,19 +171,17 @@ class DefaultParser:
 
     def insert_punctuation(self, text):
         text = text.replace("period",".")
-        text = text.replace("colon",":")
+        text = text.replace("colon",":").replace("colin",":")
         text = text.replace("dash","-")
         text = text.replace("comma",",").replace("coma",",")
-        text = text.replace("pork","?")
+        text = text.replace("q","?")
         text = text.replace("dot",".")
         text = text.replace("hash","#")
-        text = text.replace("sem",";")
-        text = text.replace("corn",":")
+        text = text.replace("semi",";")
         return text
 
     def evaluate_text(self):
-        if "cap" in self.command_buffer[0] or "chap" in self.command_buffer[0]:
-            print("cappy")
+        if "cap" in self.command_buffer[0]:
             if len(self.command_buffer) >= 2:
                 writeToScreen(self.command_buffer[1].capitalize() + ' ')
                 if len(self.command_buffer) > 2:
@@ -186,7 +190,7 @@ class DefaultParser:
                     self.command_buffer = []
         else:
             for i in range(0,len(self.command_buffer)):
-                if self.command_buffer[i] in ["period","coma","comma","corn","pork", "hash","sim"]:
+                if self.command_buffer[i] in ["period","coma","comma","dash","colon","colin","q", "hash","semi"]:
                     backspace(1)
                     writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
                 elif self.command_buffer[i] in ["dot"]:
