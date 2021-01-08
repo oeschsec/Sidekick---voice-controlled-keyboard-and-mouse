@@ -145,7 +145,7 @@ class DefaultParser:
                     self.command_buffer = ["west"]
                 else:
                     self.handle_invalid_command(self.command_buffer[1])
-        elif self.command_buffer[0] == "mouse" or self.command_buffer[0] == "sir" or self.command_buffer[0] == "serf":
+        elif self.command_buffer[0] == "mouse" or self.command_buffer[0] == "miles":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in ["up","down","left","right"]:
                     if len(self.command_buffer) >= 3: 
