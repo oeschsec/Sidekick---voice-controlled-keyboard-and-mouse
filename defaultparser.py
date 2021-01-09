@@ -9,6 +9,7 @@ class DefaultParser:
         self.os = platform.system()
         self.state = "command"
         self.command_buffer = []
+        self.mouseStarted = False
         self.steps = {
             "one":10,
             "an":10,
@@ -210,11 +211,10 @@ class DefaultParser:
             self.command_buffer = []
 
     def evaluate_mouse(self):
-        
+
         if not self.mouseStarted:
             self.stopMouse = False
             self.magnitude = 5 # in pixels
-            self.mouseStarted = False
             self.setMouseCoord(90)
 
         if len(self.command_buffer) > 0:
@@ -223,11 +223,18 @@ class DefaultParser:
                 self.state = "command"
                 self.command_buffer = []
             elif "slow" in self.command_buffer[0]:
-                self.magnitude = 5
+                self.magnitude = 15
+                self.setMouseCoord(self.currentangle)
             elif "fast" in self.command_buffer[0]:
-                self.magnitude = 300
+                self.magnitude = 50
+                self.setMouseCoord(self.currentangle)
             elif "medium" in self.command_buffer[0]:
-                self.magnitude = 100
+                self.magnitude = 30
+                self.setMouseCoord(self.currentangle)
+            elif "up" in self.command_buffer[0] or "counter" in self.command_buffer[0]:
+                self.setMouseCoord(self.currentangle + 15)
+            elif "down" in self.command_buffer[0] or "clock" in self.command_buffer[0]:
+                self.setMouseCoord(self.currentangle - 15)
             elif "north" in self.command_buffer[0]:
                 self.setMouseCoord(90)
             elif "south" in self.command_buffer[0]:
@@ -238,11 +245,11 @@ class DefaultParser:
                 self.setMouseCoord(180)
             elif "northeast" in self.command_buffer[0] or "one" in self.command_buffer[0]:
                 self.setMouseCoord(35)
-            elif "northwest" in self.command_buffer[0] or "two" in self.command_buffer[0]:
+            elif "northwest" in self.command_buffer[0] or "two" in self.command_buffer[0] or "too" in self.command_buffer[0]:
                 self.setMouseCoord(135)
             elif "southwest" in self.command_buffer[0] or "three" in self.command_buffer[0]:
                 self.setMouseCoord(225)
-            elif "southeast" in self.command_buffer[0] or "four" in self.command_buffer[0]:
+            elif "southeast" in self.command_buffer[0] or "four" in self.command_buffer[0]  or "for" in self.command_buffer[0]:
                 self.setMouseCoord(315)
 
             self.command_buffer = []
@@ -250,16 +257,14 @@ class DefaultParser:
             if not self.mouseStarted:
                 self.startMouse() 
 
-
-
     def startMouse(self):
         thread = threading.Thread(target=self.mouse_thread)
         thread.daemon = True
         thread.start()
         self.mouseStarted = True
 
-
     def setMouseCoord(self,degrees):
+        self.currentangle = degrees
         self.x = self.magnitude * math.cos(math.radians(degrees))
         if self.os == "Darwin":
             self.y = -1*self.magnitude * math.sin(math.radians(degrees))
@@ -269,7 +274,8 @@ class DefaultParser:
     def mouse_thread(self):
         while True:
             if self.stopMouse:
+                self.mouseStarted = False
                 break
             else:
                 moveMouse(self.x,self.y)
-                time.sleep(.05)
+                time.sleep(.2)
