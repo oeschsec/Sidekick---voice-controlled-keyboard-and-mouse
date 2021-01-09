@@ -3,7 +3,7 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 
 ## Install
 
-- Download the vosk-model-en-us-aspire-0.2 model folder from https://alphacephei.com/vosk/models, place in same directory as vosk_main.py, and rename the folder to 'model'
+- Download either the vosk-model-en-us-aspire-0.2 or vosk-model-small-en-us-0.15 model folder from https://alphacephei.com/vosk/models, place in same directory as vosk_main.py, and rename the folder to 'model'. The small model is faster / more responsive, but not noticeably less acurrate in my testing, so I recommend it - especially for controlling the mouse. 
 - pip install numpy vosk pyautogui pyaudio
 
 #### On Mac

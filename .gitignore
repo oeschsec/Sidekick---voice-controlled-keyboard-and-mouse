@@ -3,3 +3,4 @@ __pycache__/
 *.scorer
 model/*
 env/*
+model_big/*
