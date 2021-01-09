@@ -1,5 +1,6 @@
 from actions import *
 import platform
+import threading
 
 class DefaultParser: 
     
@@ -24,7 +25,7 @@ class DefaultParser:
             "at":1500
         }
 
-        self.commands = ["click", "go", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","mouse"]
+        self.commands = ["click", "go", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
     def ingest(self, words): 
         #print(word.lower())
@@ -42,6 +43,10 @@ class DefaultParser:
             elif self.command_buffer[0] == "text":
                 self.state = "text"
                 self.command_buffer = []
+            elif self.command_buffer[0] == "mouse" or self.command_buffer[0] == "miles":
+                self.state = "mouse"
+                self.command_buffer = []
+                self.evaluate_mouse()
             else:
                 if len(self.command_buffer) > 0:
                     if not self.stateless_command():
@@ -49,6 +54,8 @@ class DefaultParser:
                             self.evaluate_command()
                         elif self.state == "text":
                             self.evaluate_text()
+                        elif self.state == "mouse":
+                            self.evaluate_mouse()
 
     def stateless_command(self):
         if (self.command_buffer[0] == "click" or self.command_buffer[0] == "go"):
@@ -145,23 +152,23 @@ class DefaultParser:
                     self.command_buffer = ["west"]
                 else:
                     self.handle_invalid_command(self.command_buffer[1])
-        elif self.command_buffer[0] == "mouse" or self.command_buffer[0] == "miles":
+        elif self.command_buffer[0] == "scroll" or self.command_buffer[0] == "surf":
             if len(self.command_buffer) >= 2:
                 if self.command_buffer[1] in ["up","down","left","right"]:
                     if len(self.command_buffer) >= 3: 
                         if self.command_buffer[2] in self.steps:
                             if self.command_buffer[1] == "up":
                                 scrollUp(int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["mouse","up"]
+                                self.command_buffer = ["scroll","up"]
                             if self.command_buffer[1] == "down":
                                 scrollUp(-1*int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["mouse","down"]
+                                self.command_buffer = ["scroll","down"]
                             if self.command_buffer[1] == "left":
                                 scrollRight(-1*int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["mouse","left"]
+                                self.command_buffer = ["scroll","left"]
                             if self.command_buffer[1] == "right":
                                 scrollRight(int(self.steps[self.command_buffer[2]]))
-                                self.command_buffer = ["mouse","right"]
+                                self.command_buffer = ["scroll","right"]
                         else:
                             self.handle_invalid_command(self.command_buffer[2])
                 else:
@@ -200,3 +207,31 @@ class DefaultParser:
                     writeToScreen(self.command_buffer[i] + ' ')
 
             self.command_buffer = []
+
+    def evaluate_mouse(self):
+        self.stopMouse = False
+        self.mouseSpeed = .5
+        self.x = 20
+        self.y = 20
+        self.mouseStarted = False
+
+        if not self.mouseStarted:
+            print("start thread")
+            thread = threading.Thread(target=self.mouse_thread)
+            thread.daemon = True
+            thread.start()
+
+        if len(self.command_buffer) > 0:
+            if "stop" in self.command_buffer[0]:
+                self.stopMouse = True
+                self.state = "command"
+                self.command_buffer = []
+
+    def mouse_thread(self):
+        while True:
+            if self.stopMouse:
+                break
+            else:
+                print("here")
+                moveMouse(self.x,self.y)
+                time.sleep(self.mouseSpeed)

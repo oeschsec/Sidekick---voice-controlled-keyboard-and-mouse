@@ -50,3 +50,6 @@ def scrollVertical(y):
 
 def scrollHorizontal(x):
     pyautogui.scroll(x)
+
+def moveMouseRelative(x,y):
+    pyautogui.moveRel(x,y)
