@@ -35,5 +35,6 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 
 ## Ideas
 
-- faster speech recognition would help significantly
+- faster speech recognition would help significantly (smaller vosk model helped some)
+- when in text mode, minimize the command words that still function - especially if commonly used
 - dash and hash don't need backspace before writing
