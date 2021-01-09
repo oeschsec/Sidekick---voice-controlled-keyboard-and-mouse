@@ -32,3 +32,8 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 - https://medium.com/analytics-vidhya/offline-speech-recognition-made-easy-with-vosk-c61f7b720215
 - https://github.com/alphacep/vosk-api/blob/master/python/example/test_text.py
 - https://alphacephei.com/vosk/
+
+## Ideas
+
+- for mouse, add five angles in between cardinal directions in fifteen degree increments (0-5, where zero is the cardinal direction) - three speeds (low, medium, fast - default medium) - a new number alters course, "stop" or switch command stops it
+- dash and hash don't need backspace before writing
