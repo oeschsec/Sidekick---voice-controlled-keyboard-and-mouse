@@ -1,6 +1,7 @@
 from actions import *
 import platform
 import threading
+import math
 
 class DefaultParser: 
     
@@ -209,29 +210,66 @@ class DefaultParser:
             self.command_buffer = []
 
     def evaluate_mouse(self):
-        self.stopMouse = False
-        self.mouseSpeed = .5
-        self.x = 20
-        self.y = 20
-        self.mouseStarted = False
-
+        
         if not self.mouseStarted:
-            print("start thread")
-            thread = threading.Thread(target=self.mouse_thread)
-            thread.daemon = True
-            thread.start()
+            self.stopMouse = False
+            self.magnitude = 5 # in pixels
+            self.mouseStarted = False
+            self.setMouseCoord(90)
 
         if len(self.command_buffer) > 0:
             if "stop" in self.command_buffer[0]:
                 self.stopMouse = True
                 self.state = "command"
                 self.command_buffer = []
+            elif "slow" in self.command_buffer[0]:
+                self.magnitude = 5
+            elif "fast" in self.command_buffer[0]:
+                self.magnitude = 300
+            elif "medium" in self.command_buffer[0]:
+                self.magnitude = 100
+            elif "north" in self.command_buffer[0]:
+                self.setMouseCoord(90)
+            elif "south" in self.command_buffer[0]:
+                self.setMouseCoord(270)
+            elif "east" in self.command_buffer[0]:
+                self.setMouseCoord(0)
+            elif "west" in self.command_buffer[0]:
+                self.setMouseCoord(180)
+            elif "northeast" in self.command_buffer[0] or "one" in self.command_buffer[0]:
+                self.setMouseCoord(35)
+            elif "northwest" in self.command_buffer[0] or "two" in self.command_buffer[0]:
+                self.setMouseCoord(135)
+            elif "southwest" in self.command_buffer[0] or "three" in self.command_buffer[0]:
+                self.setMouseCoord(225)
+            elif "southeast" in self.command_buffer[0] or "four" in self.command_buffer[0]:
+                self.setMouseCoord(315)
+
+            self.command_buffer = []
+
+            if not self.mouseStarted:
+                self.startMouse() 
+
+
+
+    def startMouse(self):
+        thread = threading.Thread(target=self.mouse_thread)
+        thread.daemon = True
+        thread.start()
+        self.mouseStarted = True
+
+
+    def setMouseCoord(self,degrees):
+        self.x = self.magnitude * math.cos(math.radians(degrees))
+        if self.os == "Darwin":
+            self.y = -1*self.magnitude * math.sin(math.radians(degrees))
+        else:
+            self.y = self.magnitude * math.sin(math.radians(degrees))    
 
     def mouse_thread(self):
         while True:
             if self.stopMouse:
                 break
             else:
-                print("here")
                 moveMouse(self.x,self.y)
-                time.sleep(self.mouseSpeed)
+                time.sleep(.05)
