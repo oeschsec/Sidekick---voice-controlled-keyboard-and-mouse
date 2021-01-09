@@ -39,13 +39,13 @@ class DefaultParser:
             self.evaluate()
 
     def evaluate(self):
-            if self.command_buffer[0] == "command":
+            if self.command_buffer[-1] == "command":
                 self.state = "command"
                 self.command_buffer = []
-            elif self.command_buffer[0] == "text":
+            elif self.command_buffer[-1] == "text":
                 self.state = "text"
                 self.command_buffer = []
-            elif self.command_buffer[0] == "mouse" or self.command_buffer[0] == "miles":
+            elif self.command_buffer[-1] == "mouse" or self.command_buffer[-1] == "miles":
                 self.state = "mouse"
                 self.command_buffer = []
                 self.evaluate_mouse()
@@ -222,11 +222,14 @@ class DefaultParser:
                 self.stopMouse = True
                 self.state = "command"
                 self.command_buffer = []
+            elif "snail" in self.command_buffer[0]:
+                self.magnitude = 5
+                self.setMouseCoord(self.currentangle)
             elif "slow" in self.command_buffer[0]:
-                self.magnitude = 15
+                self.magnitude = 5
                 self.setMouseCoord(self.currentangle)
             elif "fast" in self.command_buffer[0]:
-                self.magnitude = 50
+                self.magnitude = 70
                 self.setMouseCoord(self.currentangle)
             elif "medium" in self.command_buffer[0]:
                 self.magnitude = 30

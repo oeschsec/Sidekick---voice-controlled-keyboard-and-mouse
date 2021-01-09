@@ -62,11 +62,11 @@ while True:
             break
         if rec.AcceptWaveform(data): # if this returns true model has determined best word candidate
             #print(type(rec.Result()))
-            res = json.loads(rec.Result())
+            res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
             if res["text"] != "":
                 for result in res["result"]:
                     #print(waittime)
                     parser.ingest(result["word"]) 
         else: # if false only a partial result returned - not useful for this application
             pass
-            #print(rec.PartialResult())
+            #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use

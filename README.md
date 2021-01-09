@@ -35,5 +35,5 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 
 ## Ideas
 
-- for mouse, add five angles in between cardinal directions in fifteen degree increments (0-5, where zero is the cardinal direction) - three speeds (low, medium, fast - default medium) - a new number alters course, "stop" or switch command stops it
+- faster speech recognition would help significantly
 - dash and hash don't need backspace before writing
