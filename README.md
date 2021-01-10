@@ -3,7 +3,7 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 
 ## Install
 
-- Download either the vosk-model-en-us-aspire-0.2 or vosk-model-small-en-us-0.15 model folder from https://alphacephei.com/vosk/models, place in same directory as vosk_main.py, and rename the folder to 'model'. The small model is faster / more responsive, but not noticeably less acurrate in my testing, so I recommend it - especially for controlling the mouse. 
+- Download the vosk-model-en-us-daanzu-20200905-lgraph (129M) model folder from https://alphacephei.com/vosk/models, place in same directory as vosk_main.py, and rename the folder to 'model'. I used the smaller model because it was faster and responsiveness is important for this application. 
 - pip install numpy vosk pyautogui pyaudio
 
 #### On Mac
@@ -32,6 +32,7 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 - https://medium.com/analytics-vidhya/offline-speech-recognition-made-easy-with-vosk-c61f7b720215
 - https://github.com/alphacep/vosk-api/blob/master/python/example/test_text.py
 - https://alphacephei.com/vosk/
+- https://alphacephei.com/vosk/adaptation#updating-the-language-model - update the language model to more heavily weight certain words
 
 ## Ideas / Notes
 

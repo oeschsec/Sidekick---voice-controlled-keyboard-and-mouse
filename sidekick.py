@@ -12,9 +12,12 @@ if not os.path.exists("model"):
 
 import pyaudio
 
+#wordlist = '["colon","mouse"]' # limit the words available to the model
+
 parser = DefaultParser()
 model = Model("model")
 rec = KaldiRecognizer(model, 16000)
+#rec = KaldiRecognizer(model, 16000, wordlist)
 
 p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
@@ -28,8 +31,6 @@ threshcount = 0 # count that determines when threshold is set
 ambientvals = [] # Ambient noise level in dB is used to calculate appropriate threshold at which to send audio to vosk
 wait = False # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold 
 waittime = 0 # when to toggle wait from True to False 
-start = None
-end = None
 while True:
     # read in audio data
     data = stream.read(4000,exception_on_overflow = False)

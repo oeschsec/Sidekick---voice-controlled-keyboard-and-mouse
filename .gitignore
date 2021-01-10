@@ -1,6 +1,5 @@
 __pycache__/
 *.pbmm
 *.scorer
-model/*
+model*/*
 env/*
-model_big/*
