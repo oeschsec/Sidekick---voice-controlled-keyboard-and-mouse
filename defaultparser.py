@@ -199,8 +199,10 @@ class DefaultParser:
                     self.command_buffer = []
         else:
             for i in range(0,len(self.command_buffer)):
-                if self.command_buffer[i] in ["period","coma","comma","dash","colon","colin","q", "hash","semi"]:
+                if self.command_buffer[i] in ["period","coma","comma","colon","colin","q","semi"]:
                     backspace(1)
+                    writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
+                elif self.command_buffer[i] in ["hash", "dash"]:
                     writeToScreen(self.insert_punctuation(self.command_buffer[i]) + ' ')
                 elif self.command_buffer[i] in ["dot"]:
                     backspace(1)

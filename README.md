@@ -33,8 +33,8 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 - https://github.com/alphacep/vosk-api/blob/master/python/example/test_text.py
 - https://alphacephei.com/vosk/
 
-## Ideas
+## Ideas / Notes
 
 - faster speech recognition would help significantly (smaller vosk model helped some)
 - when in text mode, minimize the command words that still function - especially if commonly used
-- dash and hash don't need backspace before writing
+- it's possible mouseStarted can be True when actually false if thread terminates oddly?
