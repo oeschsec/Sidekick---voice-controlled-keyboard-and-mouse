@@ -39,7 +39,7 @@ class CommandParser:
                 command_buffer = []
         elif val in self.commands:
             command_buffer = [val]
-            if not self.stateless_command():
+            if not self.stateless_command(command_buffer):
                 self.evaluate_command()
         else:
             command_buffer = []
