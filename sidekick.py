@@ -4,6 +4,7 @@ import json
 from defaultparser import *
 import audioop
 import math
+from parsepackage import *
 
 if not os.path.exists("model"):
     # tested with vosk-model-en-us-aspire-0.2
@@ -14,7 +15,7 @@ import pyaudio
 
 #wordlist = '["colon","mouse"]' # limit the words available to the model
 
-parser = DefaultParser()
+parser = parser.Parser() # DefaultParser()
 model = Model("model")
 rec = KaldiRecognizer(model, 16000)
 #rec = KaldiRecognizer(model, 16000, wordlist)

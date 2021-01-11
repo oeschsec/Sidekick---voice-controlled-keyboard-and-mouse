@@ -35,6 +35,6 @@ def hitSpace():
     hotKeyPress(['space'])
 
 def moveMouse(x,y):
-    moveMouseRelative(x,y)
+    moveMouseRelative(x,ypass )
 
     

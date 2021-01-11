@@ -39,3 +39,4 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 - faster speech recognition would help significantly (smaller vosk model helped some)
 - when in text mode, minimize the command words that still function - especially if commonly used
 - it's possible mouseStarted can be True when actually false if thread terminates oddly?
+- https://github.com/dictation-toolbox/dragonfly
