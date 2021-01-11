@@ -54,10 +54,12 @@ class MouseParser:
                 self.setMouseCoord(315)
 
             command_buffer = []
-            return command_buffer
 
             if not self.mouseStarted:
                 self.startMouse() 
+
+            return command_buffer
+
 
     def startMouse(self):
         thread = threading.Thread(target=self.mouse_thread)
@@ -68,10 +70,12 @@ class MouseParser:
     def setMouseCoord(self,degrees):
         self.currentangle = degrees
         self.x = self.magnitude * math.cos(math.radians(degrees))
-        if self.os == "Darwin":
-            self.y = -1*self.magnitude * math.sin(math.radians(degrees))
-        else:
-            self.y = self.magnitude * math.sin(math.radians(degrees))    
+        self.y = -1*self.magnitude * math.sin(math.radians(degrees))
+
+        #if self.os == "Darwin":
+        #    self.y = -1*self.magnitude * math.sin(math.radians(degrees))
+        #else:
+        #    self.y = self.magnitude * math.sin(math.radians(degrees))    
 
     def mouse_thread(self):
         while True:
