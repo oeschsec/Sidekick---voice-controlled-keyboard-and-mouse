@@ -35,10 +35,7 @@ class CommandParser:
         return [True, command_buffer]
 
     def handle_invalid_command(self, val, command_buffer):
-        if val == "text":
-                self.state = "text"
-                command_buffer = []
-        elif val in self.commands:
+        if val in self.commands or val in self.stateless_commands:
             command_buffer = [val]
             if not self.stateless_command(command_buffer):
                 self.evaluate_command()
@@ -88,7 +85,7 @@ class CommandParser:
         elif command_buffer[0] == "south":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.steps:
-                    moveMouse(0,int(self.steps[command_buffer[1]]), command_buffer)
+                    moveMouse(0,int(self.steps[command_buffer[1]]))
                     command_buffer = ["south"]
                 else:
                     return self.handle_invalid_command(command_buffer[1], command_buffer)
