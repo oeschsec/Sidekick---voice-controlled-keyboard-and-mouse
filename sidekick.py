@@ -1,7 +1,6 @@
 from vosk import Model, KaldiRecognizer
 import os
 import json
-from defaultparser import *
 import audioop
 import math
 from parsepackage import *

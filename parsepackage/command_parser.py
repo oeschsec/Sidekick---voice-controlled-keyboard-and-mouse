@@ -28,7 +28,7 @@ class CommandParser:
                     backspace(int(self.steps[command_buffer[1]])/10)
                     command_buffer = ["back"]
                 else:
-                    return self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return [False, self.handle_invalid_command(command_buffer[1], command_buffer)]
         else:
             return [False, command_buffer]
 
@@ -37,8 +37,8 @@ class CommandParser:
     def handle_invalid_command(self, val, command_buffer):
         if val in self.commands or val in self.stateless_commands:
             command_buffer = [val]
-            if not self.stateless_command(command_buffer):
-                self.evaluate_command()
+            if not self.stateless_command(command_buffer)[0]:
+                self.evaluate_command(command_buffer)
         else:
             command_buffer = []
 
