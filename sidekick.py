@@ -16,9 +16,18 @@ import pyaudio
 #wordlist = '["colon","mouse"]' # limit the words available to the model
 
 parser = parser.Parser() # DefaultParser()
+
+# create wordlist for our command model so that commands will be more accurately detected
+wordlist = '['
+for word in parser.nontextcommands:
+    wordlist = wordlist + "\"" + word + "\"" + ","
+wordlist = wordlist.strip(",") + "]"
+
 model = Model("model")
-rec = KaldiRecognizer(model, 16000)
-#rec = KaldiRecognizer(model, 16000, wordlist)
+# the text recommender uses the standard model for transcription
+textrec = KaldiRecognizer(model, 16000)
+# use wordlist in our command recommender
+commandrec = KaldiRecognizer(model, 16000, wordlist)
 
 p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
@@ -62,13 +71,22 @@ while True:
 
         if len(data) == 0:
             break
-        if rec.AcceptWaveform(data): # if this returns true model has determined best word candidate
-            #print(type(rec.Result()))
-            res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
-            if res["text"] != "":
-                for result in res["result"]:
-                    #print(waittime)
-                    parser.ingest(result["word"]) 
-        else: # if false only a partial result returned - not useful for this application
-            pass
-            #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
+        if parser.state == "text":
+            if textrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+                #print(type(rec.Result()))
+                res = json.loads(textrec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
+                if res["text"] != "":
+                    for result in res["result"]:
+                        #print(waittime)
+                        parser.ingest(result["word"]) 
+            else: # if false only a partial result returned - not useful for this application
+                pass
+                #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
+        else:
+            if commandrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+                #print(type(rec.Result()))
+                res = json.loads(commandrec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
+                if res["text"] != "":
+                    for result in res["result"]:
+                        #print(waittime)
+                        parser.ingest(result["word"]) 

@@ -35,6 +35,10 @@ class Parser:
         self.textParser = TextParser(self.os, self.stepmapping)
         self.commandParser = CommandParser(self.os, self.stepmapping)
 
+        # nontextcommands can be fed to a speech to text model to make it work more effectively for commands
+        self.nontextcommands = list(set(self.states) | set(self.steps) | set(self.commandParser.stateless_commands) | set(self.commandParser.commands) | set(self.mouseParser.commands) )
+
+
     def ingest(self, words): 
         #print(word.lower())
         for word in words.split(' '):
