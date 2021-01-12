@@ -10,7 +10,8 @@ class Parser:
         self.os = platform.system()
         self.state = "command"
         self.command_buffer = []
-        self.steps = {
+
+        self.stepmapping = {
             "one":10,
             "an":10,
             "on":10,
@@ -27,9 +28,12 @@ class Parser:
             "at":1500
         }
 
-        self.mouseParser = MouseParser(self.os, self.steps)
-        self.textParser = TextParser(self.os, self.steps)
-        self.commandParser = CommandParser(self.os, self.steps)
+        self.states = ["text","command","mouse"]
+        self.steps = ["one","two","three","four","five","six","seven","eight"]
+
+        self.mouseParser = MouseParser(self.os, self.stepmapping)
+        self.textParser = TextParser(self.os, self.stepmapping)
+        self.commandParser = CommandParser(self.os, self.stepmapping)
 
     def ingest(self, words): 
         #print(word.lower())
@@ -50,7 +54,7 @@ class Parser:
             elif self.command_buffer[-1] == "mouse" or self.command_buffer[-1] == "miles":
                 self.state = "mouse"
                 self.command_buffer = []
-                self.mouseParser.evaluate_mouse(self.command_buffer)
+                self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
             else:
                 if len(self.command_buffer) > 0:
                     stateless, self.command_buffer = self.commandParser.stateless_command(self.command_buffer)
@@ -60,7 +64,7 @@ class Parser:
                         elif self.state == "text":
                             self.command_buffer = self.textParser.evaluate_text(self.command_buffer)
                         elif self.state == "mouse":
-                            self.command_buffer = self.mouseParser.evaluate_mouse(self.command_buffer)
+                            self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
 
 
 

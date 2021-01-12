@@ -9,6 +9,8 @@ class MouseParser:
         self.os = system
         self.steps = steps
 
+        self.commands = ["stop","snail","slow","fast","medium","up","down","counter","clock","north","south","east","west","one","two","three","four","northeast","northwest","southeast","southwest"]
+
     def evaluate_mouse(self, command_buffer):
         if not self.mouseStarted:
             self.stopMouse = False
@@ -18,8 +20,8 @@ class MouseParser:
         if len(command_buffer) > 0:
             if "stop" in command_buffer[0]:
                 self.stopMouse = True
-                self.state = "command"
                 command_buffer = []
+                return [command_buffer,"command"]
             elif "snail" in command_buffer[0]:
                 self.magnitude = 5
                 self.setMouseCoord(self.currentangle)
@@ -58,7 +60,7 @@ class MouseParser:
             if not self.mouseStarted:
                 self.startMouse() 
 
-            return command_buffer
+        return [command_buffer,"mouse"]
 
 
     def startMouse(self):

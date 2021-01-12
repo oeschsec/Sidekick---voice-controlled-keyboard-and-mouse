@@ -6,7 +6,8 @@ class CommandParser:
         self.os = system
         self.steps = steps
 
-        self.commands = ["click", "go", "inter", "enter", "space", "back", "up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
+        self.stateless_commands = ["click","go","double","enter","space","back"]
+        self.commands = ["up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
     def stateless_command(self, command_buffer):
         if (command_buffer[0] == "click" or command_buffer[0] == "go"):
