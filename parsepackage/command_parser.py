@@ -27,7 +27,7 @@ class CommandParser:
                     backspace(int(self.steps[command_buffer[1]])/10)
                     command_buffer = ["back"]
                 else:
-                    self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         else:
             return [False, command_buffer]
 
@@ -43,6 +43,8 @@ class CommandParser:
                 self.evaluate_command()
         else:
             command_buffer = []
+
+        return command_buffer
 
     def evaluate_command(self, command_buffer):
         if command_buffer[0] == "up":
@@ -81,28 +83,28 @@ class CommandParser:
                     moveMouse(0,-1*int(self.steps[command_buffer[1]]))
                     command_buffer = ["north"]
                 else:
-                    self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "south":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.steps:
                     moveMouse(0,int(self.steps[command_buffer[1]]), command_buffer)
                     command_buffer = ["south"]
                 else:
-                    self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "east" or command_buffer[0] == "is":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.steps:
                     moveMouse(int(self.steps[command_buffer[1]]),0)
                     command_buffer = ["east"]
                 else:
-                    self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "west":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.steps:
                     moveMouse(-1*int(self.steps[command_buffer[1]]),0)
                     command_buffer = ["west"]
                 else:
-                    self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "scroll" or command_buffer[0] == "surf":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in ["up","down","left","right"]:
@@ -121,9 +123,9 @@ class CommandParser:
                                 scrollRight(int(self.steps[command_buffer[2]]))
                                 command_buffer = ["scroll","right"]
                         else:
-                            self.handle_invalid_command(command_buffer[2], command_buffer)
+                            return self.handle_invalid_command(command_buffer[2], command_buffer)
                 else:
-                    self.handle_invalid_command(command_buffer[1], command_buffer)
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         else:
             command_buffer = []
 
