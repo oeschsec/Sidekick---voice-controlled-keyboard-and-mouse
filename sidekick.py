@@ -7,15 +7,12 @@ import math
 from parsepackage import *
 
 if not os.path.exists("model"):
-    # tested with vosk-model-en-us-aspire-0.2
     print ("Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.")
     exit (1)
 
 import pyaudio
 
-#wordlist = '["colon","mouse"]' # limit the words available to the model
-
-parser = parser.Parser() # DefaultParser()
+parser = parser.Parser() 
 
 # create wordlist for our command model so that commands will be more accurately detected
 wordlist = '['
