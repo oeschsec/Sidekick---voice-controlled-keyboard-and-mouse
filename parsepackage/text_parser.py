@@ -39,4 +39,5 @@ class TextParser:
                     writeToScreen(command_buffer[i] + ' ')
 
             command_buffer = []
-            return command_buffer
+        
+        return command_buffer
