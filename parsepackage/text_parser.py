@@ -31,7 +31,7 @@ class TextParser:
                 if command_buffer[i] in ["period","coma","comma","colon","colin","q","semi","exclamation"]:
                     backspace(1)
                     writeToScreen(self.insert_punctuation(command_buffer[i]) + ' ')
-                elif command_buffer[i] in ["hash", "dash"]:
+                elif command_buffer[i] in ["hash", "dash","dot"]:
                     writeToScreen(self.insert_punctuation(command_buffer[i]))
                 elif command_buffer[i] in ["dot"]:
                     backspace(1)

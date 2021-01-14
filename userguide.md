@@ -32,3 +32,17 @@ Some commands are stateless, in that they function no matter what state/mode you
 ## Mouse
 
 ## Text
+
+In text mode, speech will be transcribed to text. There are, however, somekeywords used for punctuation. 
+
+A space is automatically added after each word when speaking. Therefore, punctuation is added by first going back one space, adding the punctuation, and then adding a space afterwards. The exceptions are `hash` and `dash`, which are written directly to text without any backspaces or spaces, and `dot`, which uses backspace but inserts no space after (for web addresses).
+
+- `period`
+- `comma` or `coma`
+- `colon` or `colin`
+- `q` for question mark
+- `semi` for semicolon
+- `exclamation` for exclamation point
+- `hash`
+- `dash`
+- `dot`
