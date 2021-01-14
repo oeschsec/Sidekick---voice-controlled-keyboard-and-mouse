@@ -19,6 +19,7 @@ To avoid too much hand/wrist pain I decided to create a program that will conver
 ## Usage
 
 - python3 sidekick.py
+- see `userguide.md` for instructions on use
 
 ## Approach
 
