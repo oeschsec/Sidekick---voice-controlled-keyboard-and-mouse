@@ -10,7 +10,7 @@ In each mode certain keywords are linked to certain actions. To switch between m
 
 ## Command
 
-Some commands are stateless, in that they function no matter what state/mode you are in. Others only function when in the command state.
+Some commands are stateless, in that they function no matter what state/mode you are in. Others only function when in the command state. The mouse can be moved using both cardinal directions and the `grid` command, but this is different from the `mouse` mode which tries to replicate normal mouse movement. 
 
 #### Stateless
 
@@ -22,11 +22,12 @@ Some commands are stateless, in that they function no matter what state/mode you
 
 #### Stateful
 
+- `north [1-7]`, `south [1-7]`, `east [1-7]`, `west [1-7]` - move mouse in cardinal directions 
+- `grid [a-i] [1-9]` - snap mouse to a point on a grid (like in chess or battleship - move to a1 would be near bottom left, i9 top right)
 - `up`, `left`, `down`, `right` - arrow keys
 - `copy`
 - `paste`
 - `save`
-- `north [1-7]`, `south [1-7]`, `east [1-7]`, `west [1-7]` - move mouse in cardinal directions 
 - `scroll [up,down,left,right] [1-7]` 
 
 #### Examples
