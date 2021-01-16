@@ -34,7 +34,7 @@ def hotKeyPress(listOfKeys):
     pyautogui.hotkey(*listOfKeys)
 
 def moveMouseTo(x,y): 
-    pyautogui.moveTo(x,y)
+    pyautogui.moveTo(x,y,.3)
 
 def moveMouse(x,y):
     pyautogui.move(x,y,.3)
@@ -53,3 +53,6 @@ def scrollHorizontal(x):
 
 def moveMouseRelative(x,y):
     pyautogui.moveRel(x,y)
+
+def getScreenSize():
+    return pyautogui.size()

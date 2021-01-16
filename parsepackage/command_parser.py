@@ -1,4 +1,5 @@
 from actions import *
+import string 
 
 class CommandParser: 
     
@@ -6,8 +7,26 @@ class CommandParser:
         self.os = system
         self.steps = steps
 
+        self.grid_horizontal = ["a","b","c","d","e","f","g","h","i"]
+        self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine"]
         self.stateless_commands = ["click","go","double","enter","space","back"]
-        self.commands = ["up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
+        self.commands = ["grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
+
+        self.commandlist = self.grid_horizontal + self.grid_vertical + self.stateless_commands + self.commands
+
+    def word_to_int(self, word):
+        mapping = { 
+            'one': '1', 
+            'two': '2', 
+            'three': '3', 
+            'four': '4', 
+            'five': '5', 
+            'six': '6', 
+            'seven': '7', 
+            'eight': '8', 
+            'nine': '9', 
+        } 
+        return mapping[word]
 
     def stateless_command(self, command_buffer):
         if (command_buffer[0] == "click" or command_buffer[0] == "go"):
@@ -121,6 +140,22 @@ class CommandParser:
                             if command_buffer[1] == "right":
                                 scrollRight(int(self.steps[command_buffer[2]]))
                                 command_buffer = ["scroll","right"]
+                        else:
+                            return self.handle_invalid_command(command_buffer[2], command_buffer)
+                else:
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
+        elif command_buffer[0] == "grid":
+            if len(command_buffer) >= 2:
+                if command_buffer[1] in self.grid_horizontal:
+                    if len(command_buffer) >= 3: 
+                        if command_buffer[2] in self.grid_vertical:
+                            x,y = screenSize()
+                            horizontal = string.ascii_lowercase.index(command_buffer[1]) + 1 # 0 indexed
+                            vertical = self.word_to_int(command_buffer[2])
+                            xpoint = float(horizontal) * (x/9.)
+                            ypoint = y - float(vertical) * (y/9.)
+                            moveMouseAbs(xpoint,ypoint)
+                            command_buffer = ["grid"]
                         else:
                             return self.handle_invalid_command(command_buffer[2], command_buffer)
                 else:

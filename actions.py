@@ -37,4 +37,10 @@ def hitSpace():
 def moveMouse(x,y):
     moveMouseRelative(x,y)
 
+def moveMouseAbs(x,y):
+    moveMouseTo(x,y)
+
+def screenSize():
+    return getScreenSize()
+
     
