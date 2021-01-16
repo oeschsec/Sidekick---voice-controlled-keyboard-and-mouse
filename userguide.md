@@ -2,11 +2,11 @@
 
 Sidekick takes voice commands and converts them to actions on the computer. It operates differently when in different states or modes. There are currently three modes, described below, but more can be added.
 
-- command - this mode allows the user to issue a variety of commands
-- mouse - this mode allows the user to control the mouse
-- text - this mode transcribes spoken speech to text
+- `command` - this mode allows the user to issue a variety of commands
+- `mouse` - this mode allows the user to control the mouse
+- `text` - this mode transcribes spoken speech to text
 
-In each mode certain keywords are linked to certain actions. To switch between modes, simply say 'command', 'mouse', or 'text'. These keywords are reserved to switch between modes. More details provided below, with examples of the more complex commands. 
+In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, or `text`. These keywords are reserved to switch between modes. More details provided below, with examples of the more complex commands. 
 
 ## Command
 
@@ -54,7 +54,7 @@ Once you say `mouse` and provide a direction, such as `north`, the mouse will be
 
 In text mode, speech will be transcribed to text. There are, however, somekeywords used for punctuation. 
 
-A space is automatically added after each word when speaking. Therefore, punctuation is added by first going back one space, adding the punctuation, and then adding a space afterwards. The exceptions are `hash` and `dash`, which are written directly to text without any backspaces or spaces, and `dot`, which uses backspace but inserts no space after (for web addresses).
+A space is automatically added after each word when speaking. Therefore, punctuation is added by first going back one space, adding the punctuation, and then adding a space afterwards. The exceptions are `hash`, `dash`, and `dot`, which are written directly to text without any backspaces or spaces.
 
 - `period`
 - `comma` or `coma`
