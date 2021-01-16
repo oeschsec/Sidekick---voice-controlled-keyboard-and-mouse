@@ -14,7 +14,8 @@ class MouseParser:
     def evaluate_mouse(self, command_buffer):
         if not self.mouseStarted:
             self.stopMouse = False
-            self.magnitude = 5 # in pixels
+            self.magnitude = 15 # in pixels
+            self.sleep = .2
             self.setMouseCoord(90)
 
         if len(command_buffer) > 0:
@@ -24,15 +25,19 @@ class MouseParser:
                 return [command_buffer,"command"]
             elif "snail" in command_buffer[0]:
                 self.magnitude = 5
+                self.sleep = .2
                 self.setMouseCoord(self.currentangle)
             elif "slow" in command_buffer[0]:
-                self.magnitude = 5
+                self.magnitude = 25
+                self.sleep = .2
                 self.setMouseCoord(self.currentangle)
             elif "fast" in command_buffer[0]:
-                self.magnitude = 70
+                self.magnitude = 100
+                self.sleep = .5
                 self.setMouseCoord(self.currentangle)
             elif "medium" in command_buffer[0]:
-                self.magnitude = 30
+                self.magnitude = 50
+                self.sleep = .3
                 self.setMouseCoord(self.currentangle)
             elif "up" in command_buffer[0] or "counter" in command_buffer[0]:
                 self.setMouseCoord(self.currentangle + 15)
@@ -86,5 +91,5 @@ class MouseParser:
                 break
             else:
                 moveMouse(self.x,self.y)
-                time.sleep(.2)
+                time.sleep(self.sleep)
 

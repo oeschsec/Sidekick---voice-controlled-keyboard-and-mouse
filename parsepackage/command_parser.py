@@ -37,8 +37,9 @@ class CommandParser:
     def handle_invalid_command(self, val, command_buffer):
         if val in self.commands or val in self.stateless_commands:
             command_buffer = [val]
-            if not self.stateless_command(command_buffer)[0]:
-                self.evaluate_command(command_buffer)
+            stateless, command_buffer = self.stateless_command(command_buffer)
+            if not stateless:
+                command_buffer = self.evaluate_command(command_buffer)
         else:
             command_buffer = []
 

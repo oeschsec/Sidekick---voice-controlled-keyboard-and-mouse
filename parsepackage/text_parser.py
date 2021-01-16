@@ -33,9 +33,6 @@ class TextParser:
                     writeToScreen(self.insert_punctuation(command_buffer[i]) + ' ')
                 elif command_buffer[i] in ["hash", "dash","dot"]:
                     writeToScreen(self.insert_punctuation(command_buffer[i]))
-                elif command_buffer[i] in ["dot"]:
-                    backspace(1)
-                    writeToScreen(self.insert_punctuation(command_buffer[i]))
                 else:
                     writeToScreen(command_buffer[i] + ' ')
 
