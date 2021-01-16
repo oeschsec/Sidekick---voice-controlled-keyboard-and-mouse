@@ -14,7 +14,7 @@ class MouseParser:
     def evaluate_mouse(self, command_buffer):
         if not self.mouseStarted:
             self.stopMouse = False
-            self.magnitude = 15 # in pixels
+            self.magnitude = 5 # in pixels
             self.sleep = .2
             self.setMouseCoord(90)
 

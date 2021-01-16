@@ -152,8 +152,8 @@ class CommandParser:
                             x,y = screenSize()
                             horizontal = string.ascii_lowercase.index(command_buffer[1]) + 1 # 0 indexed
                             vertical = self.word_to_int(command_buffer[2])
-                            xpoint = float(horizontal) * (x/9.)
-                            ypoint = y - float(vertical) * (y/9.)
+                            xpoint = float(horizontal) * (x/10.)
+                            ypoint = y - float(vertical) * (y/10.)
                             moveMouseAbs(xpoint,ypoint)
                             command_buffer = ["grid"]
                         else:
