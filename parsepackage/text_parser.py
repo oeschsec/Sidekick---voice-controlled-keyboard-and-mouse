@@ -19,7 +19,7 @@ class TextParser:
         return text
 
     def evaluate_text(self, command_buffer):        
-        if "cap" in command_buffer[0]:
+        if command_buffer[0] == "capitalize":
             if len(command_buffer) >= 2:
                 writeToScreen(command_buffer[1].capitalize() + ' ')
                 if len(command_buffer) > 2:

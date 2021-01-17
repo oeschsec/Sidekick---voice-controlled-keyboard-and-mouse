@@ -7,8 +7,8 @@ class CommandParser:
         self.os = system
         self.steps = steps
 
-        self.grid_horizontal = ["a","b","c","d","e","f","g","h","i"]
-        self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine"]
+        self.grid_horizontal = ["a","b","c","d","e","f","g","h","i","j","k"]
+        self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven"]
         self.stateless_commands = ["click","go","double","enter","space","back"]
         self.commands = ["grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
@@ -25,6 +25,8 @@ class CommandParser:
             'seven': '7', 
             'eight': '8', 
             'nine': '9', 
+            'ten': '10',
+            'eleven':'11'
         } 
         return mapping[word]
 
@@ -150,10 +152,18 @@ class CommandParser:
                     if len(command_buffer) >= 3: 
                         if command_buffer[2] in self.grid_vertical:
                             x,y = screenSize()
-                            horizontal = string.ascii_lowercase.index(command_buffer[1]) + 1 # 0 indexed
-                            vertical = self.word_to_int(command_buffer[2])
+                            horizontal = string.ascii_lowercase.index(command_buffer[1]) # 0 indexed
+                            vertical = int(self.word_to_int(command_buffer[2])) - 1
                             xpoint = float(horizontal) * (x/10.)
                             ypoint = y - float(vertical) * (y/10.)
+                            if xpoint == x:
+                                xpoint = xpoint - 20
+                            elif xpoint == 0:
+                                xpoint = xpoint + 20
+                            if ypoint == y:
+                                ypoint = ypoint - 20
+                            elif ypoint == 0:
+                                ypoint = ypoint + 20
                             moveMouseAbs(xpoint,ypoint)
                             command_buffer = ["grid"]
                         else:

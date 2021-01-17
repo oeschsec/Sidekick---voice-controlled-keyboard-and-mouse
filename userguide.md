@@ -14,6 +14,8 @@ My recommended method for controlling the mouse is to use the `grid` command to 
 
 Some commands are stateless, in that they function no matter what state/mode you are in. Others only function when in the command state. The mouse can be moved using both cardinal directions and the `grid` command, but this is different from the `mouse` mode which tries to replicate normal mouse movement. 
 
+- note: `[1-7]` is not literally 1-7 pixels or spaces. For any given command, 1-3 is usally a small movement or number of spaces, with 4-7 being larger relative to the nature of the command.
+
 #### Stateless
 
 - `click` or `go` - double click left mouse button
@@ -25,7 +27,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 #### Stateful
 
 - `north [1-7]`, `south [1-7]`, `east [1-7]`, `west [1-7]` - move mouse in cardinal directions 
-- `grid [a-i] [1-9]` - snap mouse to a point on a grid (like in chess or battleship - move to a1 would be near bottom left, i9 top right)
+- `grid [a-k] [1-11]` - snap mouse to a point on a grid (like in chess or battleship - move to a1 would be near bottom left, k11 top right)
 - `up`, `left`, `down`, `right` - arrow keys
 - `copy`
 - `paste`
@@ -67,7 +69,7 @@ A space is automatically added after each word when speaking. Therefore, punctua
 - `hash`
 - `dash`
 - `dot`
-- `caps` or `capitalize` - word spoken after this keyword will be capitalized
+- `capitalize` - word spoken after this keyword will be capitalized
 
 #### Examples
 
