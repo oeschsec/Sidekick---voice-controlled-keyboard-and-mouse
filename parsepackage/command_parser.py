@@ -156,6 +156,8 @@ class CommandParser:
                             vertical = int(self.word_to_int(command_buffer[2])) - 1
                             xpoint = float(horizontal) * (x/10.)
                             ypoint = y - float(vertical) * (y/10.)
+
+                            # add some buffer to keep mouse off the very edges of the screen / visible
                             if xpoint == x:
                                 xpoint = xpoint - 20
                             elif xpoint == 0:
@@ -164,6 +166,7 @@ class CommandParser:
                                 ypoint = ypoint - 20
                             elif ypoint == 0:
                                 ypoint = ypoint + 20
+                                
                             moveMouseAbs(xpoint,ypoint)
                             command_buffer = ["grid"]
                         else:

@@ -19,7 +19,7 @@ class TextParser:
         return text
 
     def evaluate_text(self, command_buffer):        
-        if command_buffer[0] == "capitalize":
+        if command_buffer[0] == "capitalize": # capitalize next word spoken
             if len(command_buffer) >= 2:
                 writeToScreen(command_buffer[1].capitalize() + ' ')
                 if len(command_buffer) > 2:
@@ -27,11 +27,12 @@ class TextParser:
                 else:
                     command_buffer = []
         else:
-            for i in range(0,len(command_buffer)):
+            for i in range(0,len(command_buffer)): 
+                # some punctuation includes backspace and space after - other does not
                 if command_buffer[i] in ["period","coma","comma","colon","colin","q","semi","exclamation"]:
                     backspace(1)
                     writeToScreen(self.insert_punctuation(command_buffer[i]) + ' ')
-                elif command_buffer[i] in ["hash", "dash","dot"]:
+                elif command_buffer[i] in ["hash", "dash","dot"]: 
                     writeToScreen(self.insert_punctuation(command_buffer[i]))
                 else:
                     writeToScreen(command_buffer[i] + ' ')

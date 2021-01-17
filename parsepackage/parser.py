@@ -39,16 +39,18 @@ class Parser:
         self.nontextcommands = list(set(self.states) | set(self.steps) | set(self.commandParser.commandlist) | set(self.mouseParser.commands) )
 
 
+    # ingest string that may contain multiple space delimited words, where each word is a sent to parser individually
     def ingest(self, words): 
         #print(word.lower())
         for word in words.split(' '):
             if word != '':
                 self.command_buffer.append(word.lower())
-        print(self.command_buffer)
+        print(self.command_buffer) # makes it easy to see current state of command_buffer
         if len(self.command_buffer) > 0: 
             self.evaluate()
 
     def evaluate(self):
+            # either set state or parse command
             if self.command_buffer[-1] == "command":
                 self.state = "command"
                 self.command_buffer = []
@@ -59,7 +61,7 @@ class Parser:
                 self.state = "mouse"
                 self.command_buffer = []
                 self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
-            else:
+            else: # send command to appropriate parsing function
                 if len(self.command_buffer) > 0:
                     stateless, self.command_buffer = self.commandParser.stateless_command(self.command_buffer)
                     if not stateless:
