@@ -34,6 +34,9 @@ def hitEnter():
 def hitSpace():
     hotKeyPress(['space'])
 
+def hitTab():
+    hotKeyPress(['tab'])
+
 def moveMouse(x,y):
     moveMouseRelative(x,y)
 

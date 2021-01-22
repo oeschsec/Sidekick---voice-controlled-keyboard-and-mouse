@@ -9,7 +9,7 @@ class CommandParser:
 
         self.grid_horizontal = ["a","b","c","d","e","f","g","h","i","j","k"]
         self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven"]
-        self.stateless_commands = ["click","go","double","enter","space","back"]
+        self.stateless_commands = ["click","go","tab","double","enter","space","back"]
         self.commands = ["grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
         self.commandlist = self.grid_horizontal + self.grid_vertical + self.stateless_commands + self.commands
@@ -39,6 +39,9 @@ class CommandParser:
             command_buffer = []
         elif (command_buffer[0] == "inter" or command_buffer[0] == "enter"):
             hitEnter()
+            command_buffer = []
+        elif command_buffer[0] == "tab":
+            hitTab()
             command_buffer = []
         elif command_buffer[0] == "space":
             hitSpace()
