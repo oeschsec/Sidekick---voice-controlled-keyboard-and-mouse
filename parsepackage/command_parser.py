@@ -9,10 +9,11 @@ class CommandParser:
 
         self.grid_horizontal = ["a","b","c","d","e","f","g","h","i","j","k"]
         self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven"]
+        self.numbers = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"]
         self.stateless_commands = ["click","go","tab","double","enter","space","back"]
         self.commands = ["grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
-        self.commandlist = self.grid_horizontal + self.grid_vertical + self.stateless_commands + self.commands
+        self.commandlist = self.grid_horizontal + self.grid_vertical + self.stateless_commands + self.commands + self.numbers
 
     def word_to_int(self, word):
         mapping = { 
@@ -26,7 +27,16 @@ class CommandParser:
             'eight': '8', 
             'nine': '9', 
             'ten': '10',
-            'eleven':'11'
+            'eleven':'11',
+            'twelve':'12',
+            'thirteen':'13',
+            'fourteen':'14',
+            'fifteen':'15',
+            'sixteen':'16',
+            'seventeen':'17',
+            'eighteen':'18',
+            'nineteen':'19',
+            'twenty':'20'
         } 
         return mapping[word]
 
@@ -48,8 +58,8 @@ class CommandParser:
             command_buffer = []
         elif command_buffer[0] == "back":
             if len(command_buffer) >= 2:
-                if command_buffer[1] in self.steps:
-                    backspace(int(self.steps[command_buffer[1]])/10)
+                if command_buffer[1] in self.numbers:
+                    backspace(int(self.word_to_int(command_buffer[1])))
                     command_buffer = ["back"]
                 else:
                     return [True, self.handle_invalid_command(command_buffer[1], command_buffer)]

@@ -22,7 +22,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `double` - double click left mouse button
 - `enter` 
 - `space`
-- `back [1-7]` - hit backspace 
+- `back [1-20]` - hit backspace n times
 
 #### Stateful
 
@@ -38,7 +38,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 
 - `scroll up 1 2 1` - will scroll up 1, then 2, then 1 again - number can be repeated without repeating entire command
 - `north 3 1` - moves mouse north 3, then 1
-- `back 1 2` - backspace by 1, then 2
+- `back 1 2` - backspace by 1, then 2 - can backspace up to 20 spaces
 
 ## Mouse
 
