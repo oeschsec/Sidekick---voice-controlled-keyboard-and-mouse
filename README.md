@@ -1,9 +1,9 @@
 # Sidekick (speech driven keyboard and mouse)
-To avoid too much hand/wrist pain I decided to create a program that will convert voice to common keyboard/mouse actions in order to reduce clicks/keypresses. It is not intended to replace the keyboard and mouse, but rather to reduce their use, hence the name Sidekick. 
+To reduce hand/wrist pain from frequent computer use I decided to create a program that will convert voice to common keyboard/mouse actions in order to reduce clicks/keypresses. It is not intended to replace the keyboard and mouse, but rather to reduce their use, hence the name Sidekick. Sidekick handles transcription, mouse movement/click/wheel, and common commands. 
 
 ## Contributing
 
-If you want to contribute, please first creat an issue and wait for me to give you the greenlight. Then use the [fork and pull model](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/forkandpull.md) to make your changes. 
+If you want to contribute, please first create an issue or send me an email and wait for me to give you the greenlight. Then use the [fork and pull model](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/forkandpull.md) to make your changes. 
 
 ## Install
 
@@ -23,7 +23,7 @@ If you want to contribute, please first creat an issue and wait for me to give y
 ## Usage
 
 - python3 sidekick.py
-- see [userguide.md](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/userguide.md) for instructions on use
+- see the [user guide](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/userguide.md) for instructions on use
 
 ## Approach
 
@@ -41,7 +41,7 @@ If you want to contribute, please first creat an issue and wait for me to give y
 
 ## Ideas / Notes
 
-- faster speech recognition would help significantly (smaller vosk model helped some)
-- when in text mode, minimize the command words that still function - especially if commonly used
-- it's possible mouseStarted can be True when actually false if thread terminates oddly? if mouse started and you switch modes, the thread just keeps running - need to fix
-- I am aware of other interesting projects that focus on speech to commands, like [dragonfly](https://github.com/dictation-toolbox/dragonfly), but for this application wanted to minimize dependencies and keep it simple.
+- faster speech recognition would help significantly (smaller vosk model helped)
+- when in text mode, minimize the command words that still function
+- if mouse started and you switch modes, the thread just keeps running - need to fix
+- I am aware of other interesting projects that focus on speech to commands, like [dragonfly](https://github.com/dictation-toolbox/dragonfly), but for this application wanted to minimize dependencies and keep it simple
