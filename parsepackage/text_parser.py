@@ -19,7 +19,7 @@ class TextParser:
         return text
 
     def evaluate_text(self, command_buffer):        
-        if command_buffer[0] == "capitalize": # capitalize next word spoken
+        if command_buffer[0] == "caps": # capitalize next word spoken
             if len(command_buffer) >= 2:
                 writeToScreen(command_buffer[1].capitalize() + ' ')
                 if len(command_buffer) > 2:
