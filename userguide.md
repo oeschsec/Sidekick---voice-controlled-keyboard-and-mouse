@@ -5,8 +5,9 @@ Sidekick takes voice commands and converts them to actions on the computer. It o
 - `command` - this mode allows the user to issue a variety of commands
 - `mouse` - this mode allows the user to control the mouse
 - `text` - this mode transcribes spoken speech to text
+- `pause` - in this mode no commands are processed (convenient if afk or switching between devices)
 
-In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, or `text`. These keywords are reserved to switch between modes. More details provided below, with examples of the more complex commands. 
+In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, or `text`. Say `pause` once to pause. Say `pause` again to restart. When you restart the mode/state will be the same as when you first paused. These keywords are reserved to switch between modes. 
 
 My recommended method for controlling the mouse is to use the `grid` command to navigate to the general area of the screen and then the `mouse` mode or cardinal directions commands to get the mouse to the precise location. 
 

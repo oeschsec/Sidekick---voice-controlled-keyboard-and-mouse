@@ -9,6 +9,7 @@ class Parser:
     def __init__(self):
         self.os = platform.system()
         self.state = "command"
+        self.pause = False
         self.command_buffer = []
 
         self.stepmapping = {
@@ -28,7 +29,7 @@ class Parser:
             "at":1500
         }
 
-        self.states = ["text","command","mouse"]
+        self.states = ["text","command","mouse","pause"]
         self.steps = ["one","two","three","four","five","six","seven","eight"]
 
         self.mouseParser = MouseParser(self.os, self.stepmapping)
@@ -45,32 +46,44 @@ class Parser:
         for word in words.split(' '):
             if word != '':
                 self.command_buffer.append(word.lower())
-        print(self.command_buffer) # makes it easy to see current state of command_buffer
+
         if len(self.command_buffer) > 0: 
+            
+            if not self.pause or self.command_buffer[-1] == "pause":
+                print(self.command_buffer) # makes it easy to see current state of command_buffer
+
             self.evaluate()
 
     def evaluate(self):
-            # either set state or parse command
-            if self.command_buffer[-1] == "command":
-                self.state = "command"
+
+            if self.command_buffer[-1] == "pause":
+                self.pause = not self.pause
+
+            if not self.pause:
+                # either set state or parse command
+                if self.command_buffer[-1] == "command":
+                    self.state = "command"
+                    self.command_buffer = []
+                elif self.command_buffer[-1] == "text":
+                    self.state = "text"
+                    self.command_buffer = []
+                elif self.command_buffer[-1] == "mouse" or self.command_buffer[-1] == "miles":
+                    self.state = "mouse"
+                    self.command_buffer = []
+                    self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
+                else: # send command to appropriate parsing function
+                    if len(self.command_buffer) > 0:
+                        stateless, self.command_buffer = self.commandParser.stateless_command(self.command_buffer)
+                        if not stateless:
+                            if self.state == "command":
+                                self.command_buffer = self.commandParser.evaluate_command(self.command_buffer)
+                            elif self.state == "text":
+                                self.command_buffer = self.textParser.evaluate_text(self.command_buffer)
+                            elif self.state == "mouse":
+                                self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
+            else:
                 self.command_buffer = []
-            elif self.command_buffer[-1] == "text":
-                self.state = "text"
-                self.command_buffer = []
-            elif self.command_buffer[-1] == "mouse" or self.command_buffer[-1] == "miles":
-                self.state = "mouse"
-                self.command_buffer = []
-                self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
-            else: # send command to appropriate parsing function
-                if len(self.command_buffer) > 0:
-                    stateless, self.command_buffer = self.commandParser.stateless_command(self.command_buffer)
-                    if not stateless:
-                        if self.state == "command":
-                            self.command_buffer = self.commandParser.evaluate_command(self.command_buffer)
-                        elif self.state == "text":
-                            self.command_buffer = self.textParser.evaluate_text(self.command_buffer)
-                        elif self.state == "mouse":
-                            self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
+                #print("Sidekick is paused - say 'pause' again to continue")
 
 
 
