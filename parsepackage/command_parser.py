@@ -40,6 +40,7 @@ class CommandParser:
         } 
         return mapping[word]
 
+    # Stateless commands should return an empty buffer 
     def stateless_command(self, command_buffer):
         if (command_buffer[0] == "click" or command_buffer[0] == "go"):
             click()
@@ -60,7 +61,7 @@ class CommandParser:
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.numbers:
                     backspace(int(self.word_to_int(command_buffer[1])))
-                    command_buffer = ["back"]
+                    command_buffer = []
                 else:
                     return [True, self.handle_invalid_command(command_buffer[1], command_buffer)]
         else:
