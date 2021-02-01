@@ -1,4 +1,4 @@
-# Sidekick (speech driven keyboard and mouse)
+# Sidekick (voice controlled keyboard and mouse)
 To reduce hand/wrist pain from frequent computer use I decided to create a program that will convert voice to common keyboard/mouse actions in order to reduce clicks/keypresses. It is not intended to replace the keyboard and mouse, but rather to reduce their use, hence the name Sidekick. Sidekick handles transcription, mouse movement/click/wheel, and common commands. 
 
 Sidekick is still very much a work in progress, but the sky is the limit. One of the more fun challenges has been controlling the mouse with only voice commands (see [user guide](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/userguide.md) for details). 
@@ -46,7 +46,7 @@ If you want to contribute, please first create an issue or send me an email and 
 - faster speech recognition would help significantly (smaller vosk model helped)
 - when in text mode, minimize the command words that still function
 - if mouse started and you switch modes, the thread just keeps running - need to fix
-- external usb sound card such as the Andrea PureAudio
+- external usb sound card such as the Andrea PureAudio / Audix OM7 mic
 
 ## Related Projects & Articles 
 
