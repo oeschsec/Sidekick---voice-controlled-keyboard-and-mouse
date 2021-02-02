@@ -86,6 +86,11 @@ while True:
             else: # if false only a partial result returned - not useful for this application
                 pass
                 #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
+            
+        elif parser.state == "letters":
+            if letterrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+                ingest(letterrec)
+                
         else:
             if commandrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
                 ingest(commandrec)

@@ -28,15 +28,15 @@ class MouseParser:
                 self.sleep = .2
                 self.setMouseCoord(self.currentangle)
             elif "slow" in command_buffer[0]:
-                self.magnitude = 25
+                self.magnitude = 15
                 self.sleep = .2
                 self.setMouseCoord(self.currentangle)
             elif "fast" in command_buffer[0]:
-                self.magnitude = 100
+                self.magnitude = 50
                 self.sleep = .5
                 self.setMouseCoord(self.currentangle)
             elif "medium" in command_buffer[0]:
-                self.magnitude = 50
+                self.magnitude = 25
                 self.sleep = .3
                 self.setMouseCoord(self.currentangle)
             elif "up" in command_buffer[0] or "counter" in command_buffer[0]:
