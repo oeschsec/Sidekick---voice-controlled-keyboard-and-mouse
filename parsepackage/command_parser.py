@@ -82,11 +82,21 @@ class CommandParser:
 
     def evaluate_command(self, command_buffer):
         if command_buffer[0] == "up":
-            hotKeyPress(["up"])
-            command_buffer = []
+            if len(command_buffer) >= 2:
+                if command_buffer[1] in self.numbers:
+                    l = ["up" for i in range(int(self.word_to_int(command_buffer[1])))]
+                    hotKeyPress(l)
+                    command_buffer = []
+                else:
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "down":
-            hotKeyPress(["down"])
-            command_buffer = []
+            if len(command_buffer) >= 2:
+                if command_buffer[1] in self.numbers:
+                    l = ["down" for i in range(int(self.word_to_int(command_buffer[1])))]
+                    hotKeyPress(l)
+                    command_buffer = []
+                else:
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "left":
             hotKeyPress(["left"])
             command_buffer = []
