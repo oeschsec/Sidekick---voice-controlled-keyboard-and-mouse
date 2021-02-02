@@ -50,8 +50,9 @@ If you want to contribute, please first create an issue or send me an email and 
 
 ## Related Projects & Articles 
 
-I am aware of other interesting projects in this space. The benefit of this approach is that it is lightweight, fully open source, and does not require integration with dragon. 
+I am aware of other interesting projects in this space. The benefit of this approach is that it is lightweight, fully open source, and does not require integration with dragon or a thirdy-party app. 
 
+- https://serenade.ai/ - code with voice app
 - [dragonfly](https://github.com/dictation-toolbox/dragonfly), but for this application wanted to minimize dependencies and keep it simple
 - https://github.com/dictation-toolbox/natlink
 - https://talonvoice.com/
