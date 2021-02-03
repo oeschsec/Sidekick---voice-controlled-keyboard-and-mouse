@@ -31,7 +31,7 @@ class AlphaParser:
         text = text.replace("question","?")
         text = text.replace("dot",".")
         text = text.replace("hash","#")
-        text = text.replace("semi",";")
+        text = text.replace("semicolon",";")
         text = text.replace("bang","!").replace("exclamation","!")
         return text
 

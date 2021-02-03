@@ -5,9 +5,10 @@ Sidekick takes voice commands and converts them to actions on the computer. It u
 - `command` - this mode allows the user to issue a variety of commands
 - `mouse` - this mode allows the user to control the mouse
 - `text` - this mode transcribes spoken speech to text
+- `alpha` - this mode provides the ability to write individual letters, numbers, and punctuation
 - `pause` - in this mode no commands are processed (convenient if afk or switching between devices)
 
-In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, or `text`. Say `pause` once to pause. Say `pause` again to restart. When you restart the mode/state will be the same as when you first paused. These keywords are reserved to switch between modes. 
+In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, `text`, or `alpha`. Say `pause` once to pause. Say `pause` again to restart. When you restart the mode/state will be the same as when you first paused. These keywords are reserved to switch between modes. 
 
 My recommended method for controlling the mouse is to use the `grid` command to navigate to the general area of the screen and then the `mouse` mode or cardinal directions commands to get the mouse to the precise location. 
 
@@ -57,21 +58,29 @@ Once you say `mouse` and provide a direction, such as `north`, the mouse will be
 
 ## Text
 
-In text mode, speech will be transcribed to text. There are, however, somekeywords used for punctuation. 
+In text mode, speech will be transcribed to text. A space is automatically added before each word, except for capital words. Capital words have the space after instead of before in order to avoid extra space at beginning of sentences. 
 
-A space is automatically added after each word when speaking. Therefore, punctuation is added by first going back one space, adding the punctuation, and then adding a space afterwards. The exceptions are `hash`, `dash`, and `dot`, which are written directly to text without any backspaces or spaces.
+- `cap` - word spoken after this keyword will be capitalized
+
+## Alpha
+
+The alpha mode enables punctuation as well as single alphanumeric characters.
 
 - `period`
-- `comma` or `coma`
-- `colon` or `colin`
-- `q` for question mark
-- `semi` for semicolon
+- `comma` 
+- `colon`
+- `question` for question mark
+- `semicolon` 
 - `exclamation` for exclamation point
 - `hash`
 - `dash`
 - `dot`
-- `capitalize` - word spoken after this keyword will be capitalized
+- `cap` - character spoken afterwards capitalized
 
 #### Examples
 
-- `caps hello coma how are you q` - will produce the text 'Hello, how are you?'
+- `alpha a dash three` produces 'a-3'
+
+#### Examples
+
+- `cap hello alpha comma text how are you alpha question` - will produce the text 'Hello, how are you?'
