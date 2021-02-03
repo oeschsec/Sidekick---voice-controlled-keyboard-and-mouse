@@ -48,7 +48,7 @@ Once you say `mouse` and provide a direction, such as `north`, the mouse will be
 
 - `north`, `south`, `east`, `west`, `northeast` or `one`, `northwest` or `two`, `southeast` or `three`, `southwest` or `four`
 - `stop` - stop the mouse
-- `snail`, `slow`, `medium`, `fast` - speed at which mouse moves - slow is default
+- `snail`, `slow`, `medium`, `fast` - speed at which mouse moves - starts out at snail speed
 - `counter` or `up` - rotate direction 15 degrees counterclockwise
 - `clock` or `down` - rotate direction 15 degrees clockwise
 
