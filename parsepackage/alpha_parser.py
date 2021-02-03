@@ -1,12 +1,12 @@
 from actions import *
 import string
 
-class AlphaParser: 
+class AlphaParser:
     
     def __init__(self, system):
         self.os = system
         self.numbers = ["zero","one","two","three","four","five","six","seven","eight","nine"]
-        self.punctuation = ["period","colon","dash","comma","question","dot","hash","semicolon","bang","cap","exclamation"]
+        self.punctuation = ["period","colon","dash","comma","question","dot","hash","semicolon","bang","cap","exclamation","par","spar"]
         self.keywords = list(string.ascii_lowercase) + self.punctuation + self.numbers
 
     def word_to_int(self, word):
@@ -24,15 +24,29 @@ class AlphaParser:
         return mapping[word]
 
     def insert_punctuation(self, text):
-        text = text.replace("period",".")
-        text = text.replace("colon",":")
-        text = text.replace("dash","-")
-        text = text.replace("comma",",")
-        text = text.replace("question","?")
-        text = text.replace("dot",".")
-        text = text.replace("hash","#")
-        text = text.replace("semicolon",";")
-        text = text.replace("bang","!").replace("exclamation","!")
+        if text == "period":
+            text = text.replace("period",".") 
+        elif text == "colon":
+            text = text.replace("colon",":")
+        elif text == "dash":
+            text = text.replace("dash","-")
+        elif text == "comma":
+            text = text.replace("comma",",")
+        elif text == "question":
+            text = text.replace("question","?")
+        elif text == "dot":
+            text = text.replace("dot",".")
+        elif text == "par":
+            text = text.replace("par","\"")
+        elif text == "hash":
+            text = text.replace("hash","#")
+        elif text == "spar":
+            text = text.replace("spar","'")
+        elif text == "semicolon":
+            text = text.replace("semicolon",";")
+        elif text == "bang" or text == "exclamation": 
+            text = text.replace("bang","!").replace("exclamation","!")
+            
         return text
 
     def evaluate_text(self, command_buffer):        
@@ -49,7 +63,7 @@ class AlphaParser:
                 if command_buffer[i] in self.punctuation:
                     writeToScreen(self.insert_punctuation(command_buffer[i]))
                 elif command_buffer[i] in self.numbers:
-                    writeToScreen(self.word_to_int(command_buffer[i]))
+                    writeToScreen(shelf.word_to_int(command_buffer[i]))
                 else:
                     writeToScreen(command_buffer[i])
 

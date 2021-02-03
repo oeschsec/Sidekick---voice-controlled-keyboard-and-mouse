@@ -44,7 +44,7 @@ stream.start_stream()
 
 print("\nSidekick at your service. Please wait silently for the threshold to be set based on ambient noise before use.")
 
-threshold_buffer = 5 # how many dB above ambient noise threshold will be set
+threshold_buffer = 1 # how many dB above ambient noise threshold will be set
 thresholdset = False # whether or not threshold has been set
 threshcount = 0 # count that determines when threshold is set
 ambientvals = [] # Ambient noise level in dB is used to calculate appropriate threshold at which to send audio to vosk
