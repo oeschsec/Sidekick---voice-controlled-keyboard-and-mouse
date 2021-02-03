@@ -40,7 +40,7 @@ class Parser:
 
         # nontextcommands can be fed to a speech to text model to make it work more effectively for commands
         self.nontextcommands = list(set(self.states) | set(self.steps) | set(self.commandParser.commandlist) | set(self.mouseParser.commands) )
-        self.alphavalues = self.alphaParser.keywords + self.states
+        self.alphavalues = self.alphaParser.keywords + self.states + self.commandParser.stateless_commands
 
     # ingest string that may contain multiple space delimited words, where each word is a sent to parser individually
     def ingest(self, words): 
