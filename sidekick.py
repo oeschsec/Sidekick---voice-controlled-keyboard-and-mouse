@@ -29,14 +29,14 @@ def ingest(rec):
 
 # create wordlist for our command model so that commands will be more accurately detected
 commandwords = listToList(parser.nontextcommands)
-letters = listToList(list(string.ascii_lowercase))
+alphavals = listToList(parser.alphavalues)
 
 model = Model("model")
 # the text recommender uses the standard model for transcription
 textrec = KaldiRecognizer(model, 16000)
 # use wordlist in our command recommender
 commandrec = KaldiRecognizer(model, 16000, commandwords)
-letterrec = KaldiRecognizer(model, 16000, letters)
+alpharec = KaldiRecognizer(model, 16000, alphavals)
 
 p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
@@ -87,9 +87,9 @@ while True:
                 pass
                 #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
             
-        elif parser.state == "letters":
-            if letterrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
-                ingest(letterrec)
+        elif parser.state == "alpha":
+            if alpharec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+                ingest(alpharec)
                 
         else:
             if commandrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
