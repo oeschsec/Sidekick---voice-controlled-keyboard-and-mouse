@@ -32,6 +32,7 @@ If you want to contribute, please first create an issue or send me an email and 
 - I wanted to use a speech recognition library that worked out-of-the-box and did not require retraining
 - I wanted it to work offline and be fully open source
 - I decided to use Vosk for speech-to-text because it is a) offline (unlike services such as Google's API), b) more accurate than offline alternatives such as CMU's PocketSphinx, c) entirely open source, unlike picovoice. I initially tried to use python's SR library with google (see srmodule_old folder), but found it too slow and, as mentioned before, requiring internet. I originally used Mozilla's deepspeech, but for this specific application it was less ideal than Vosk using default models.
+- I optimized accuracy by using multiple Vosk models for different states. And then made optimizations to help with the speed of switching states. 
 
 ## Vosk Documentation
 

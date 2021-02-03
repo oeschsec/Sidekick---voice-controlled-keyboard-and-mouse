@@ -63,7 +63,7 @@ class AlphaParser:
                 if command_buffer[i] in self.punctuation:
                     writeToScreen(self.insert_punctuation(command_buffer[i]))
                 elif command_buffer[i] in self.numbers:
-                    writeToScreen(shelf.word_to_int(command_buffer[i]))
+                    writeToScreen(self.word_to_int(command_buffer[i]))
                 else:
                     writeToScreen(command_buffer[i])
 

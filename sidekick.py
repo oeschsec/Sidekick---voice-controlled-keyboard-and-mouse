@@ -34,7 +34,7 @@ alphavals = listToList(parser.alphavalues)
 model = Model("model")
 # the text recommender uses the standard model for transcription
 textrec = KaldiRecognizer(model, 16000)
-# use wordlist in our command recommender
+# use wordlist to increase accuracy of other models
 commandrec = KaldiRecognizer(model, 16000, commandwords)
 alpharec = KaldiRecognizer(model, 16000, alphavals)
 
@@ -44,12 +44,14 @@ stream.start_stream()
 
 print("\nSidekick at your service. Please wait silently for the threshold to be set based on ambient noise before use.")
 
-threshold_buffer = 1 # how many dB above ambient noise threshold will be set
+threshold_buffer = 5 # how many dB above ambient noise threshold will be set
 thresholdset = False # whether or not threshold has been set
 threshcount = 0 # count that determines when threshold is set
 ambientvals = [] # Ambient noise level in dB is used to calculate appropriate threshold at which to send audio to vosk
 wait = False # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold 
 waittime = 0 # when to toggle wait from True to False 
+flushcount = 0
+flushlimit = 3 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
 while True:
     # read in audio data
     data = stream.read(4000,exception_on_overflow = False)
@@ -77,20 +79,54 @@ while True:
 
         if waittime >= 8: # in my testing max wait time before word sent to parser was 6 - added a bit of buffer 
             wait = False
+ 
+        # By keeping all models up to date with most recent audio data can switch states faster
+        alphadata = alpharec.AcceptWaveform(data)
+        textdata = textrec.AcceptWaveform(data)
+        commanddata = commandrec.AcceptWaveform(data)
 
         if len(data) == 0:
             break
         if parser.state == "text":
-            if textrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+            if textdata: # if this returns true model has determined best word candidate
                 ingest(textrec) 
-            else: # if false only a partial result returned - not useful for this application
-                pass
-                #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
-            
+            else: 
+                partial = json.loads(textrec.PartialResult())["partial"] # using partials to switch states makes the application much more responsive
+                if partial in ["alpha","command","pause","mouse"]:
+                    parser.state = partial
+                    flushcount = 0
+                    textrec.Result() # flush
+
+            if flushcount == flushlimit:
+                alpharec.Result() # flush
+                commandrec.Result() # flush
+                flushcount = 0
+
         elif parser.state == "alpha":
-            if alpharec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+            if alphadata: # if this returns true model has determined best word candidate
                 ingest(alpharec)
-                
+            else: # if false only a partial result returned
+                partial = json.loads(alpharec.PartialResult())["partial"]
+                if partial in ["text","command","pause","mouse"]:
+                    parser.state = partial
+                    flushcount = 0
+
+            if flushcount == flushlimit:
+                textrec.Result() # flush
+                commandrec.Result() # flush
+                flushcount = 0
         else:
-            if commandrec.AcceptWaveform(data): # if this returns true model has determined best word candidate
+            if commanddata: # if this returns true model has determined best word candidate
                 ingest(commandrec)
+            else: # if false only a partial result returned
+                partial = json.loads(commandrec.PartialResult())["partial"]
+                if partial in ["text","alpha"]:
+                    parser.state = partial
+                    flushcount = 0
+
+            if flushcount == flushlimit:
+                alpharec.Result() # flush
+                textrec.Result() # flush
+                flushcount = 0
+
+        flushcount += 1

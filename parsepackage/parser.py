@@ -10,7 +10,6 @@ class Parser:
     def __init__(self):
         self.os = platform.system()
         self.state = "command"
-        self.pause = False
         self.command_buffer = []
 
         self.stepmapping = {
@@ -51,17 +50,14 @@ class Parser:
 
         if len(self.command_buffer) > 0: 
             
-            if not self.pause or self.command_buffer[-1] == "pause":
+            if self.state != "pause":
                 print(self.command_buffer) # makes it easy to see current state of command_buffer
 
             self.evaluate()
 
     def evaluate(self):
 
-            if self.command_buffer[-1] == "pause":
-                self.pause = not self.pause
-
-            if not self.pause:
+            if self.state != "pause":
                 # either set state or parse command
                 if self.command_buffer[-1] == "command":
                     self.state = "command"
@@ -72,7 +68,10 @@ class Parser:
                 elif self.command_buffer[-1] == "alpha":
                     self.state = "alpha"
                     self.command_buffer = []
-                elif self.command_buffer[-1] == "mouse" or self.command_buffer[-1] == "miles":
+                elif self.command_buffer[-1] == "pause":
+                    self.state = "pause"
+                    self.command_buffer = []
+                elif self.command_buffer[-1] == "mouse":
                     self.state = "mouse"
                     self.command_buffer = []
                     self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
