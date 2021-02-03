@@ -10,6 +10,9 @@ def openChrome():
 def click():
     clickCurrent()
 
+def rightclick():
+    rightClickCurrent()
+
 def doubleclick():
     doubleClickCurrent()
 

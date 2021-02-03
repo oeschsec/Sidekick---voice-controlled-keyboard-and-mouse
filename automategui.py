@@ -25,7 +25,7 @@ def clickOnImage(fullpath):
 def writeToScreen(text):
     pyautogui.write(text)
 
-def doubleClickOnImage(fullpath):
+def doubleclickOnImage(fullpath):
     x, y = getImageCoord(fullpath)
     pyautogui.click(x, y)
     pyautogui.click(x, y)
@@ -39,8 +39,11 @@ def moveMouseTo(x,y):
 def clickCurrent(): 
     pyautogui.click(pyautogui.position())
 
-def doubleClickCurrent():
-    pyautogui.doubleClick(pyautogui.position())
+def clickCurrent(): 
+    pyautogui.click(pyautogui.position())
+
+def rightClickCurrent():
+    pyautogui.rightClick(pyautogui.position())
 
 def scrollVertical(y):
     pyautogui.scroll(y)
