@@ -60,6 +60,12 @@ class Parser:
 
             if self.command_buffer[-1] == "pause":
                 self.pause = not self.pause
+                if self.pause:
+                    self.state = "text" # this ensures 'pause' is not accidentally triggered by model with smaller search space
+                    print("Sidekick is taking a rest")
+                else:
+                    self.state = "command"
+                    print("Sidekick is back in action")
                 self.command_buffer = []
 
             elif not self.pause:
