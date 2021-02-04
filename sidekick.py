@@ -92,7 +92,7 @@ while True:
                 ingest(textrec) 
             else: 
                 partial = json.loads(textrec.PartialResult())["partial"] # using partials to switch states makes the application much more responsive
-                if partial in ["alpha","command","pause","mouse"]:
+                if partial in ["alpha","command","mouse"]:
                     parser.state = partial
                     flushcount = 0
                     textrec.Result() # flush
@@ -107,7 +107,7 @@ while True:
                 ingest(alpharec)
             else: # if false only a partial result returned
                 partial = json.loads(alpharec.PartialResult())["partial"]
-                if partial in ["text","command","pause","mouse"]:
+                if partial in ["text","command","mouse"]:
                     parser.state = partial
                     flushcount = 0
 
