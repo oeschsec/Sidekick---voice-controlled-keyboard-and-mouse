@@ -9,7 +9,7 @@ class CommandParser:
 
         self.grid_horizontal = ["a","b","c","d","e","f","g","h","i","j","k"]
         self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven"]
-        self.numbers = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"]
+        self.numbers = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty","thirty","forty","fifty","hundred"]
         self.stateless_commands = ["click","go","tab","double","enter","space","back"]
         self.commands = ["rick","triple","grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
@@ -36,7 +36,11 @@ class CommandParser:
             'seventeen':'17',
             'eighteen':'18',
             'nineteen':'19',
-            'twenty':'20'
+            'twenty':'20',
+            'thirty':'30',
+            'forty':'40',
+            'fifty':'50',
+            'hundred':'100'
         } 
         return mapping[word]
 
@@ -103,11 +107,21 @@ class CommandParser:
                 else:
                     return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "left":
-            hotKeyPress(["left"])
-            command_buffer = []
+            if len(command_buffer) >= 2:
+                if command_buffer[1] in self.numbers:
+                    l = ["left" for i in range(int(self.word_to_int(command_buffer[1])))]
+                    hotKeyPress(l)
+                    command_buffer = []
+                else:
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "right":
-            hotKeyPress(["right"])
-            command_buffer = []
+            if len(command_buffer) >= 2:
+                if command_buffer[1] in self.numbers:
+                    l = ["right" for i in range(int(self.word_to_int(command_buffer[1])))]
+                    hotKeyPress(l)
+                    command_buffer = []
+                else:
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "copy":
             if self.os == "Darwin":
                 hotKeyPress(["command","c"])            

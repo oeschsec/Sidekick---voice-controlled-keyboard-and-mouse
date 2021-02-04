@@ -24,7 +24,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `double` - double click left mouse button
 - `enter` 
 - `space`
-- `back [1-20]` - hit backspace n times
+- `back [1-20,30,40,50,100]` - hit backspace n times - `hundred` = 100
 
 #### Stateful
 
@@ -32,7 +32,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `triple` - triple click
 - `north [1-7]`, `south [1-7]`, `east [1-7]`, `west [1-7]` - move mouse in cardinal directions 
 - `grid [a-k] [1-11]` - snap mouse to a point on a grid (like in chess or battleship - move to a1 would be near bottom left, k11 top right)
-- `up [1-20]`, `left`, `down [1-20]`, `right` - arrow keys
+- `up [1-20,30,40,50,100]`, `left...`, `down...`, `right...` - arrow keys
 - `copy`
 - `paste`
 - `save`
