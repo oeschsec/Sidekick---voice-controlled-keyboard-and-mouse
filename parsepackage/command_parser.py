@@ -87,6 +87,7 @@ class CommandParser:
     def evaluate_command(self, command_buffer):
         if command_buffer[0] == "rick":
             rightclick()
+            command_buffer = []
         elif command_buffer[0] == "triple":
             tripleclick()
             command_buffer = []

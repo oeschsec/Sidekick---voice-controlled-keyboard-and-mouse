@@ -16,6 +16,9 @@ def rightclick():
 def doubleclick():
     doubleClickCurrent()
 
+def dragMouse(x,y):
+    leftDragMouse(x,y)
+    
 def tripleclick():
     tripleClickCurrent()
 

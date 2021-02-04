@@ -6,7 +6,7 @@ class AlphaParser:
     def __init__(self, system):
         self.os = system
         self.numbers = ["zero","one","two","three","four","five","six","seven","eight","nine"]
-        self.punctuation = ["period","colon","dash","comma","question","dot","hash","semicolon","bang","cap","exclamation","par","spar"]
+        self.punctuation = ["ren","len","period","colon","dash","comma","question","dot","hash","semicolon","bang","cap","exclamation","par","spar"]
         self.keywords = list(string.ascii_lowercase) + self.punctuation + self.numbers
 
     def word_to_int(self, word):
@@ -26,6 +26,10 @@ class AlphaParser:
     def insert_punctuation(self, text):
         if text == "period":
             text = text.replace("period",".") 
+        elif text == "ren":
+            text = text.replace("ren",")") 
+        elif text == "len":
+            text = text.replace("len","(") 
         elif text == "colon":
             text = text.replace("colon",":")
         elif text == "dash":

@@ -78,6 +78,7 @@ The alpha mode enables punctuation as well as single alphanumeric characters.
 - `dash`
 - `dot`
 - `cap` - character spoken afterwards capitalized
+- `ren` / `len` - right/left parentheses
 
 #### Examples
 

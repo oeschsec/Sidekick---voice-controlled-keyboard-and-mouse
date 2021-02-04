@@ -51,6 +51,9 @@ def tripleClickCurrent():
 def rightClickCurrent():
     pyautogui.rightClick(pyautogui.position())
 
+def leftDragMouse(x,y):
+    pyautogui.drag(x,y, 2, button='left') 
+
 def scrollVertical(y):
     pyautogui.scroll(y)
 
