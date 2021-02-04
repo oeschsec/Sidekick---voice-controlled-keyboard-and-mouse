@@ -16,6 +16,9 @@ def rightclick():
 def doubleclick():
     doubleClickCurrent()
 
+def tripleclick():
+    tripleClickCurrent()
+
 def scrollUp(y):
     scrollVertical(y)
 

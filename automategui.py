@@ -39,7 +39,13 @@ def moveMouseTo(x,y):
 def clickCurrent(): 
     pyautogui.click(pyautogui.position())
 
-def clickCurrent(): 
+def doubleClickCurrent(): 
+    pyautogui.click(pyautogui.position())
+    pyautogui.click(pyautogui.position())
+
+def tripleClickCurrent(): 
+    pyautogui.click(pyautogui.position())
+    pyautogui.click(pyautogui.position())
     pyautogui.click(pyautogui.position())
 
 def rightClickCurrent():
