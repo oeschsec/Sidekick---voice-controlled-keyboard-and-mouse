@@ -45,7 +45,6 @@ def swapingest(state):
         rec = commandrec
 
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
-    print(res["text"])
     if res["text"] != "":
         for result in res["result"]:
             parser.ingest(result["word"]) 
@@ -69,7 +68,7 @@ ambientvals = [] # Ambient noise level in dB is used to calculate appropriate th
 wait = False # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold 
 waittime = 0 # when to toggle wait from True to False 
 flushcount = 0
-flushlimit = 10 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
+flushlimit = 8 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
 while True:
     # read in audio data
     data = stream.read(4000,exception_on_overflow = False)
