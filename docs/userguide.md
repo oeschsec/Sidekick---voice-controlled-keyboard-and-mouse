@@ -12,6 +12,8 @@ In each mode certain keywords are linked to certain actions. To switch between m
 
 My recommended method for controlling the mouse is to use the `grid` command to navigate to the general area of the screen and then the `mouse` mode or cardinal directions commands to get the mouse to the precise location. 
 
+If you seem to be having trouble try speaking a little slower, especially when switching modes.
+
 ## Command
 
 Some commands are stateless, in that they function no matter what state/mode you are in. Others only function when in the command state. The mouse can be moved using both cardinal directions and the `grid` command, but this is different from the `mouse` mode which tries to replicate normal mouse movement. 

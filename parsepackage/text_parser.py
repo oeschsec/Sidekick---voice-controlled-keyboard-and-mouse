@@ -20,7 +20,7 @@ class TextParser:
                 writeToScreen(self.space + command_buffer[1].capitalize())
                 if len(command_buffer) > 2:
                     command_buffer = command_buffer[2:]
-                else: 
+                else:  
                     command_buffer = []
         else:
             for i in range(0,len(command_buffer)): 
