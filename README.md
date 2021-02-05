@@ -34,6 +34,10 @@ If you want to contribute, please first create an issue or send me an email and 
 - sudo apt-get install portaudio19-dev python-all-dev python3-all-dev
 - sudo apt-get install python3-pyaudio
 
+#### On Windows
+
+If you have issues with pyaudio on Windows with python 3.7, see this [Stack Overflow response](https://stackoverflow.com/questions/52283840/i-cant-install-pyaudio-on-windows-how-to-solve-error-microsoft-visual-c-14).
+
 ## Usage
 
 - python3 sidekick.py
