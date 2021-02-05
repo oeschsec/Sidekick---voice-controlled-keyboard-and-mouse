@@ -25,9 +25,10 @@ def ingest(rec):
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
         for result in res["result"]:
+            parser.ingest(result["word"]) 
             if result["word"] in ["text","alpha","command"]:
                 parser.state = result["word"]
-            parser.ingest(result["word"]) 
+                break
 
 # create wordlist for our command model so that commands will be more accurately detected
 commandwords = listToList(parser.nontextcommands)
@@ -53,7 +54,7 @@ ambientvals = [] # Ambient noise level in dB is used to calculate appropriate th
 wait = False # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold 
 waittime = 0 # when to toggle wait from True to False 
 flushcount = 0
-flushlimit = 1 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
+flushlimit = 5 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
 while True:
     # read in audio data
     data = stream.read(4000,exception_on_overflow = False)
@@ -112,6 +113,7 @@ while True:
                 if partial in ["text","command","mouse"]:
                     parser.state = partial
                     flushcount = 0
+                    alpharec.Result() # flush
 
             if flushcount == flushlimit:
                 textrec.Result() # flush
@@ -125,6 +127,7 @@ while True:
                 if partial in ["text","alpha"]:
                     parser.state = partial
                     flushcount = 0
+                    commandrec.Result() # flush
 
             if flushcount == flushlimit:
                 alpharec.Result() # flush
