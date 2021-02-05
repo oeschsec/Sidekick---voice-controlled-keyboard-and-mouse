@@ -21,15 +21,6 @@ def listToList(words):
     wordlist = wordlist.strip(",") + "]"    
     return wordlist
 
-def ingest(rec):
-    res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
-    if res["text"] != "":
-        for result in res["result"]:
-            parser.ingest(result["word"]) 
-            if result["word"] in ["text","alpha","command"]:
-                parser.state = result["word"]
-                break
-
 # create wordlist for our command model so that commands will be more accurately detected
 commandwords = listToList(parser.nontextcommands)
 alphavals = listToList(parser.alphavalues)
@@ -45,6 +36,30 @@ p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
 stream.start_stream()
 
+def swapingest(state):
+    if state == "text":
+        rec = textrec
+    elif state == "alpha":
+        rec = alpharec
+    elif state == "command":
+        rec = commandrec
+
+    res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
+    print(res["text"])
+    if res["text"] != "":
+        for result in res["result"]:
+            parser.ingest(result["word"]) 
+
+def ingest(rec,state):
+    res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
+    if res["text"] != "":
+        for result in res["result"]:
+            parser.ingest(result["word"]) 
+            if result["word"] in ["text","alpha","command"] and result["word"] != state:
+                parser.state = result["word"]
+                swapingest(parser.state)
+                break
+
 print("\nSidekick at your service. Please wait silently for the threshold to be set based on ambient noise before use.")
 
 threshold_buffer = 5 # how many dB above ambient noise threshold will be set
@@ -54,7 +69,7 @@ ambientvals = [] # Ambient noise level in dB is used to calculate appropriate th
 wait = False # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold 
 waittime = 0 # when to toggle wait from True to False 
 flushcount = 0
-flushlimit = 5 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
+flushlimit = 10 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
 while True:
     # read in audio data
     data = stream.read(4000,exception_on_overflow = False)
@@ -92,7 +107,7 @@ while True:
             break
         if parser.state == "text":
             if textdata: # if this returns true model has determined best word candidate
-                ingest(textrec) 
+                ingest(textrec,"text") 
             else: 
                 partial = json.loads(textrec.PartialResult())["partial"] # using partials to switch states makes the application much more responsive
                 if partial in ["alpha","command","mouse"]:
@@ -107,7 +122,7 @@ while True:
 
         elif parser.state == "alpha":
             if alphadata: # if this returns true model has determined best word candidate
-                ingest(alpharec)
+                ingest(alpharec,"alpha")
             else: # if false only a partial result returned
                 partial = json.loads(alpharec.PartialResult())["partial"]
                 if partial in ["text","command","mouse"]:
@@ -121,7 +136,7 @@ while True:
                 flushcount = 0
         else:
             if commanddata: # if this returns true model has determined best word candidate
-                ingest(commandrec)
+                ingest(commandrec,"command")
             else: # if false only a partial result returned
                 partial = json.loads(commandrec.PartialResult())["partial"]
                 if partial in ["text","alpha"]:
