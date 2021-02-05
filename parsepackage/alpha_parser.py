@@ -6,7 +6,7 @@ class AlphaParser:
     def __init__(self, system):
         self.os = system
         self.numbers = ["zero","one","two","three","four","five","six","seven","eight","nine"]
-        self.punctuation = ["ren","len","period","colon","dash","comma","question","dot","hash","semicolon","bang","cap","exclamation","par","spar"]
+        self.punctuation = ["ren","len","rack","equals","lack","period","colon","dash","comma","question","dot","hash","semicolon","bang","cap","exclamation","quote","single"]
         self.keywords = list(string.ascii_lowercase) + self.punctuation + self.numbers
 
     def word_to_int(self, word):
@@ -27,10 +27,16 @@ class AlphaParser:
     def insert_punctuation(self, text):
         if text == "period":
             text = text.replace("period",".") 
+        elif text == "equals":
+            text = text.replace("equals","=") 
         elif text == "ren":
             text = text.replace("ren",")") 
         elif text == "len":
             text = text.replace("len","(") 
+        elif text == "lack":
+            text = text.replace("lack","[") 
+        elif text == "rack":
+            text = text.replace("rack","]") 
         elif text == "colon":
             text = text.replace("colon",":")
         elif text == "dash":
@@ -41,12 +47,12 @@ class AlphaParser:
             text = text.replace("question","?")
         elif text == "dot":
             text = text.replace("dot",".")
-        elif text == "par":
-            text = text.replace("par","\"")
+        elif text == "quote":
+            text = text.replace("quote","\"")
         elif text == "hash":
             text = text.replace("hash","#")
-        elif text == "spar":
-            text = text.replace("spar","'")
+        elif text == "single":
+            text = text.replace("single","'")
         elif text == "semicolon":
             text = text.replace("semicolon",";")
         elif text == "bang" or text == "exclamation": 

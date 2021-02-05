@@ -61,9 +61,16 @@ Once you say `mouse` and provide a direction, such as `north`, the mouse will be
 
 ## Text
 
-In text mode, speech will be transcribed to text. A space is automatically added before each word, except for capital words. Capital words have the space after instead of before in order to avoid extra space at beginning of sentences. 
+In text mode, speech will be transcribed to text. A space is automatically added before each word. This behavior can be toggled using the commands `spaces` and `pack`. 
 
+- `spaces` - space before every word
+- `pack` - no space before each word - pack the words together (good for coding variables)
 - `cap` - word spoken after this keyword will be capitalized
+
+## Example
+
+- `pack foo cap bar` = fooBar
+- `foo cap bar` or `spaces foo cap bar` = foo Bar
 
 ## Alpha
 
@@ -72,6 +79,7 @@ The alpha mode enables punctuation as well as single alphanumeric characters.
 - `period`
 - `comma` 
 - `colon`
+- `equals` - =
 - `question` for question mark
 - `semicolon` 
 - `exclamation` for exclamation point
@@ -80,6 +88,8 @@ The alpha mode enables punctuation as well as single alphanumeric characters.
 - `dot`
 - `cap` - character spoken afterwards capitalized
 - `ren` / `len` - right/left parentheses
+- `rack` / `lack` - right/left brackets 
+- `quote` / `single` - " and '
 
 #### Examples
 
