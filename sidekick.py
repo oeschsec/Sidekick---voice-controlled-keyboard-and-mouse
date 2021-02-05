@@ -25,6 +25,8 @@ def ingest(rec):
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
         for result in res["result"]:
+            if result["word"] in ["text","alpha","command"]:
+                parser.state = result["word"]
             parser.ingest(result["word"]) 
 
 # create wordlist for our command model so that commands will be more accurately detected

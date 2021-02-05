@@ -103,32 +103,32 @@ class CommandParser:
         elif command_buffer[0] == "up":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.numbers:
-                    l = ["up" for i in range(int(self.word_to_int(command_buffer[1])))]
-                    hotKeyPress(l)
+                    for i in range(int(self.word_to_int(command_buffer[1]))):
+                        hotKeyPress(["up"])
                     command_buffer = []
                 else:
                     return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "down":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.numbers:
-                    l = ["down" for i in range(int(self.word_to_int(command_buffer[1])))]
-                    hotKeyPress(l)
+                    for i in range(int(self.word_to_int(command_buffer[1]))):
+                        hotKeyPress(["down"])
                     command_buffer = []
                 else:
                     return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "left":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.numbers:
-                    l = ["left" for i in range(int(self.word_to_int(command_buffer[1])))]
-                    hotKeyPress(l)
+                    for i in range(int(self.word_to_int(command_buffer[1]))):
+                        hotKeyPress(["left"])
                     command_buffer = []
                 else:
                     return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "right":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.numbers:
-                    l = ["right" for i in range(int(self.word_to_int(command_buffer[1])))]
-                    hotKeyPress(l)
+                    for i in range(int(self.word_to_int(command_buffer[1]))):
+                        hotKeyPress(["right"])
                     command_buffer = []
                 else:
                     return self.handle_invalid_command(command_buffer[1], command_buffer)
