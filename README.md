@@ -34,13 +34,10 @@ If you want to contribute, please first create an issue or send me an email and 
 - I decided to use Vosk for speech-to-text because it is a) offline (unlike services such as Google's API), b) more accurate than offline alternatives such as CMU's PocketSphinx, c) entirely open source, unlike picovoice. I initially tried to use python's SR library with google (see srmodule_old folder), but found it too slow and, as mentioned before, requiring internet. I originally used Mozilla's deepspeech, but for this specific application it was less ideal than Vosk using default models.
 - I optimized accuracy by using multiple Vosk models for different states. And then made optimizations to help with the speed of switching states. 
 
-## Vosk Documentation
+## Vosk Docs
 
 - https://alphacephei.com/vosk/install (requirements for running vosk listed here)
 - https://medium.com/analytics-vidhya/offline-speech-recognition-made-easy-with-vosk-c61f7b720215
-- https://github.com/alphacep/vosk-api/blob/master/python/example/test_text.py
-- https://alphacephei.com/vosk/
-- https://alphacephei.com/vosk/adaptation#updating-the-language-model - update the language model to more heavily weight certain words
 
 ## Ideas / Notes
 
@@ -51,9 +48,9 @@ If you want to contribute, please first create an issue or send me an email and 
 
 ## Related Projects & Articles 
 
-I am aware of other interesting projects in this space. The benefit of this approach is that it is lightweight, fully open source, and does not require integration with dragon or a thirdy-party app. 
+I am aware of other interesting related projects. I highly recommend checking out each of the following resources if you're interested in this space.
 
-- https://serenade.ai/ - code with voice app - exciting possibilities - what I am building is more general purpose (and works offline for free)
+- https://serenade.ai/ - code with voice app - focuses specifically on helping developers write code
 - [dragonfly](https://github.com/dictation-toolbox/dragonfly), but for this application wanted to minimize dependencies and keep it simple
 - https://github.com/dictation-toolbox/natlink
 - https://talonvoice.com/

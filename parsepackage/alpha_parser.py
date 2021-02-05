@@ -10,7 +10,8 @@ class AlphaParser:
         self.keywords = list(string.ascii_lowercase) + self.punctuation + self.numbers
 
     def word_to_int(self, word):
-        mapping = { 
+        mapping = {
+            'zero':'0', 
             'one': '1', 
             'two': '2', 
             'three': '3', 
