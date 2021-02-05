@@ -13,12 +13,21 @@ def click():
 def rightclick():
     rightClickCurrent()
 
+def holdLeft():
+    holdDownLeft()
+
+def position():
+    return getPosition()
+
+def releaseLeft():
+    releaseLeftMouse()
+
 def doubleclick():
     doubleClickCurrent()
 
 def dragMouse(x,y):
     leftDragMouse(x,y)
-    
+
 def tripleclick():
     tripleClickCurrent()
 

@@ -37,6 +37,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `paste`
 - `save`
 - `scroll [up,down,left,right] [1-7]` 
+- `hold` and `release` - say `hold` to save mouse destination location, then move mouse over item you want to drag to that location and say `release` - item will be dragged to that location
 
 #### Examples
 

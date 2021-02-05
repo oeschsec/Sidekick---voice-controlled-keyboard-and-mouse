@@ -11,7 +11,7 @@ class CommandParser:
         self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven"]
         self.numbers = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty","thirty","forty","fifty","hundred"]
         self.stateless_commands = ["click","go","tab","double","enter","space","back"]
-        self.commands = ["rick","triple","grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
+        self.commands = ["rick","hold","release","triple","grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
         self.commandlist = self.grid_horizontal + self.grid_vertical + self.stateless_commands + self.commands + self.numbers
 
@@ -87,10 +87,19 @@ class CommandParser:
     def evaluate_command(self, command_buffer):
         if command_buffer[0] == "rick":
             rightclick()
-            command_buffer = []
+            command_buffer = [] 
         elif command_buffer[0] == "triple":
             tripleclick()
             command_buffer = []
+        elif command_buffer[0] == "hold":
+            if len(command_buffer) == 1:
+                self.x,self.y = getPosition()
+            elif len(command_buffer) >= 2:
+                if command_buffer[1] == "release":
+                    dragMouse(self.x,self.y)
+                    command_buffer = []
+                else:
+                    return self.handle_invalid_command(command_buffer[1], command_buffer)
         elif command_buffer[0] == "up":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.numbers:
