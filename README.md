@@ -7,6 +7,8 @@ Sidekick is still very much a work in progress, but the sky is the limit. One of
 
 Sidekick was created with the goal of being general purpose, lightweight, extensible, and easy to use. It works offline and cross-platform. While some other tools (listed below) specialize in voice coding and entirely replacing the keyboard and mouse in specific application contexts, Sidekick is intended to help rather than replace and to work across all applications.
 
+Also, rather than focusing on macros to make things more efficient, Sidekick attempts to replicate regular workflows. I think this makes it simpler. But additional parsers could be added to go macro crazy if so desired. 
+
 ## Contributing
 
 If you want to contribute, please first create an issue or send me an email and wait for me to give you the greenlight. Then use the [fork and pull model](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/forkandpull.md) to make your changes.
