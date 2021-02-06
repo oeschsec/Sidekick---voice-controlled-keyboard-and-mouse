@@ -9,7 +9,7 @@ class CommandParser:
 
         self.grid_horizontal = ["a","b","c","d","e","f","g","h","i","j","k"]
         self.grid_vertical = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven"]
-        self.numbers = ["one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty","thirty","forty","fifty","hundred"]
+        self.numbers = ["pod","pup","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty","thirty","forty","fifty","hundred"]
         self.stateless_commands = ["click","go","tab","double","enter","space","back"]
         self.commands = ["rick","hold","release","triple","grid","up","down","left","right","copy","paste","north","south","east","west","save","scroll"]
 
@@ -87,6 +87,12 @@ class CommandParser:
     def evaluate_command(self, command_buffer):
         if command_buffer[0] == "rick":
             rightclick()
+            command_buffer = [] 
+        elif command_buffer[0] == "pod":
+            hotKeyPress(["pgdn"])  
+            command_buffer = [] 
+        elif command_buffer[0] == "pup":
+            hotKeyPress(["pgup"])  
             command_buffer = [] 
         elif command_buffer[0] == "triple":
             tripleclick()
