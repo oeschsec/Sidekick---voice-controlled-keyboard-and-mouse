@@ -7,19 +7,23 @@ import math
 from parsepackage import *
 
 if not os.path.exists("model"):
-    print ("Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.")
-    exit (1)
+    print(
+        "Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder."
+    )
+    exit(1)
 
 import pyaudio
 
-parser = parser.Parser() 
+parser = parser.Parser()
+
 
 def listToList(words):
-    wordlist = '['
+    wordlist = "["
     for word in words:
-        wordlist = wordlist + "\"" + word + "\"" + ","
-    wordlist = wordlist.strip(",") + "]"    
+        wordlist = wordlist + '"' + word + '"' + ","
+    wordlist = wordlist.strip(",") + "]"
     return wordlist
+
 
 # create wordlist for our command model so that commands will be more accurately detected
 commandwords = listToList(parser.nontextcommands)
@@ -33,8 +37,11 @@ commandrec = KaldiRecognizer(model, 16000, commandwords)
 alpharec = KaldiRecognizer(model, 16000, alphavals)
 
 p = pyaudio.PyAudio()
-stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+stream = p.open(
+    format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000
+)
 stream.start_stream()
+
 
 def swapingest(state):
     if state == "text":
@@ -44,48 +51,61 @@ def swapingest(state):
     elif state == "command":
         rec = commandrec
 
-    res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
+    res = json.loads(
+        rec.Result()
+    )  # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
         for result in res["result"]:
-            parser.ingest(result["word"]) 
+            parser.ingest(result["word"])
 
-def ingest(rec,state):
-    res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
+
+def ingest(rec, state):
+    res = json.loads(
+        rec.Result()
+    )  # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
         for result in res["result"]:
-            parser.ingest(result["word"]) 
-            if result["word"] in ["text","alpha","command"] and result["word"] != state:
+            parser.ingest(result["word"])
+            if (
+                result["word"] in ["text", "alpha", "command"]
+                and result["word"] != state
+            ):
                 parser.state = result["word"]
                 swapingest(parser.state)
                 break
 
-print("\nSidekick at your service. Please wait silently for the threshold to be set based on ambient noise before use.")
 
-threshold_buffer = 5 # how many dB above ambient noise threshold will be set
-thresholdset = False # whether or not threshold has been set
-threshcount = 0 # count that determines when threshold is set
-ambientvals = [] # Ambient noise level in dB is used to calculate appropriate threshold at which to send audio to vosk
-wait = False # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold 
-waittime = 0 # when to toggle wait from True to False 
+print(
+    "\nSidekick at your service. Please wait silently for the threshold to be set based on ambient noise before use."
+)
+
+threshold_buffer = 5  # how many dB above ambient noise threshold will be set
+thresholdset = False  # whether or not threshold has been set
+threshcount = 0  # count that determines when threshold is set
+ambientvals = (
+    []
+)  # Ambient noise level in dB is used to calculate appropriate threshold at which to send audio to vosk
+wait = False  # after threshold breached, need to process the next 5-10 audio samples through the model even if they don't breach threshold
+waittime = 0  # when to toggle wait from True to False
 flushcount = 0
-flushlimit = 8 # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
+flushlimit = 8  # when the flush limit is reached, flush all non-active models. We want to maintain just enough memory to allow more rapid switching between states.
 while True:
     # read in audio data
-    data = stream.read(4000,exception_on_overflow = False)
+    data = stream.read(4000, exception_on_overflow=False)
 
     # calculate decibels
-    dB = 20 * math.log10(audioop.rms(data,2))
+    dB = 20 * math.log10(audioop.rms(data, 2))
 
     # we want to set threshold based on ambient noise prior to processing audio data
-    if not thresholdset: 
+    if not thresholdset:
         ambientvals.append(int(dB))
         threshcount += 1
         if threshcount >= 10:
             thresholdset = True
             print("Your sidekick now awaits your command.")
             threshold = sum(ambientvals) / len(ambientvals) + threshold_buffer
-            print("Threshold is now set at " + str(round(threshold,2)) + " dB.")
-    
+            print("Threshold is now set at " + str(round(threshold, 2)) + " dB.")
+
     # send audio data to model for processing when threshold breached and shortly afterward
     elif dB > threshold or wait == True:
 
@@ -94,9 +114,11 @@ while True:
             waittime = 0
             wait = True
 
-        if waittime >= 8: # in my testing max wait time before word sent to parser was 6 - added a bit of buffer 
+        if (
+            waittime >= 8
+        ):  # in my testing max wait time before word sent to parser was 6 - added a bit of buffer
             wait = False
- 
+
         # By keeping all models up to date with most recent audio data can switch states faster
         alphadata = alpharec.AcceptWaveform(data)
         textdata = textrec.AcceptWaveform(data)
@@ -105,47 +127,55 @@ while True:
         if len(data) == 0:
             break
         if parser.state == "text":
-            if textdata: # if this returns true model has determined best word candidate
-                ingest(textrec,"text") 
-            else: 
-                partial = json.loads(textrec.PartialResult())["partial"] # using partials to switch states makes the application much more responsive
-                if partial in ["alpha","command","mouse"]:
+            if (
+                textdata
+            ):  # if this returns true model has determined best word candidate
+                ingest(textrec, "text")
+            else:
+                partial = json.loads(textrec.PartialResult())[
+                    "partial"
+                ]  # using partials to switch states makes the application much more responsive
+                if partial in ["alpha", "command", "mouse"]:
                     parser.state = partial
                     flushcount = 0
-                    textrec.Result() # flush
+                    textrec.Result()  # flush
 
             if flushcount == flushlimit:
-                alpharec.Result() # flush
-                commandrec.Result() # flush
+                alpharec.Result()  # flush
+                commandrec.Result()  # flush
                 flushcount = 0
 
         elif parser.state == "alpha":
-            if alphadata: # if this returns true model has determined best word candidate
-                ingest(alpharec,"alpha")
-            else: # if false only a partial result returned
+            if (
+                alphadata
+            ):  # if this returns true model has determined best word candidate
+                ingest(alpharec, "alpha")
+            else:  # if false only a partial result returned
                 partial = json.loads(alpharec.PartialResult())["partial"]
-                if partial in ["text","command","mouse"]:
+                if partial in ["text", "command", "mouse"]:
                     parser.state = partial
                     flushcount = 0
-                    alpharec.Result() # flush
+                    alpharec.Result()  # flush
 
             if flushcount == flushlimit:
-                textrec.Result() # flush
-                commandrec.Result() # flush
+                textrec.Result()  # flush
+                commandrec.Result()  # flush
                 flushcount = 0
         else:
-            if commanddata: # if this returns true model has determined best word candidate
-                ingest(commandrec,"command")
-            else: # if false only a partial result returned
+            if (
+                commanddata
+            ):  # if this returns true model has determined best word candidate
+                ingest(commandrec, "command")
+            else:  # if false only a partial result returned
                 partial = json.loads(commandrec.PartialResult())["partial"]
-                if partial in ["text","alpha"]:
+                if partial in ["text", "alpha"]:
                     parser.state = partial
                     flushcount = 0
-                    commandrec.Result() # flush
+                    commandrec.Result()  # flush
 
             if flushcount == flushlimit:
-                alpharec.Result() # flush
-                textrec.Result() # flush
+                alpharec.Result()  # flush
+                textrec.Result()  # flush
                 flushcount = 0
 
         flushcount += 1
