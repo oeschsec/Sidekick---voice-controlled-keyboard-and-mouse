@@ -10,7 +10,7 @@ Sidekick takes voice commands and converts them to actions on the computer. It u
 
 In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, `text`, or `alpha`. Say `pause` once to pause. Say `time to work` to restart back in the `command` state. 
 
-NOTE: Make sure to either pause or stop Sidekick when not in use.
+**NOTE**: Make sure to either pause or stop Sidekick when not in use.
 
 My recommended method for controlling the mouse is to use the `grid` command to navigate to the general area of the screen and then the `mouse` mode or cardinal directions commands to get the mouse to the precise location. 
 
