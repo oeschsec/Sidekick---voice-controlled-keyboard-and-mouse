@@ -57,20 +57,29 @@ class Parser:
             self.evaluate()
 
     def evaluate(self):
+        
+            if self.pause:
 
-            if self.command_buffer[-1] == "pause":
-                self.pause = not self.pause
-                if self.pause:
+                if self.command_buffer[0] == "time":
+                    if len(self.command_buffer) >=2:
+                        if self.command_buffer[1] == "to":
+                            if len(self.command_buffer) >=3:
+                                if self.command_buffer[2] == "work":                        
+                                    self.state = "command"
+                                    self.pause = False
+                                    self.command_buffer = []
+                                    print("Sidekick is back in action")
+                else:
+                    self.command_buffer = []
+
+            else:
+                # either set state or parse command
+                if self.command_buffer[-1] == "pause":
+                    self.pause = True
                     self.state = "text" # this ensures 'pause' is not accidentally triggered by model with smaller search space
                     print("Sidekick is taking a rest")
-                else:
-                    self.state = "command"
-                    print("Sidekick is back in action")
-                self.command_buffer = []
-
-            elif not self.pause:
-                # either set state or parse command
-                if self.command_buffer[-1] == "command":
+                    self.command_buffer = []
+                elif self.command_buffer[-1] == "command":
                     self.state = "command"
                     self.command_buffer = []
                 elif self.command_buffer[-1] == "text":
@@ -95,9 +104,6 @@ class Parser:
                                 self.command_buffer = self.alphaParser.evaluate_text(self.command_buffer)
                             elif self.state == "mouse":
                                 self.command_buffer, self.state = self.mouseParser.evaluate_mouse(self.command_buffer)
-            else:
-                self.command_buffer = []
-                #print("Sidekick is paused - say 'pause' again to continue")
 
 
 
