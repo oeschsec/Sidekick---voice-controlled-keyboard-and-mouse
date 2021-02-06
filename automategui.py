@@ -1,34 +1,10 @@
 import pyautogui
 
-# failsafe cuases pyautogui to hang on occasion
+# failsafe can cause hanging
 pyautogui.FAILSAFE = False
-
-def getImageCoord(fullpath):
-    try:
-        conf = 1
-        loc = None
-        while(loc is None):
-            conf -= 0.1
-            loc = pyautogui.locateOnScreen(fullpath, confidence=conf)
-
-        point = pyautogui.center(loc)
-        x, y = point
-        return (x, y)
-    except Exception as e:
-        log.error("Pyautogui error: " + str(e))
-        return None
-
-def clickOnImage(fullpath):
-    x, y = getImageCoord(fullpath)
-    pyautogui.click(x, y)
 
 def writeToScreen(text):
     pyautogui.write(text)
-
-def doubleclickOnImage(fullpath):
-    x, y = getImageCoord(fullpath)
-    pyautogui.click(x, y)
-    pyautogui.click(x, y)
 
 def hotKeyPress(listOfKeys):
     pyautogui.hotkey(*listOfKeys)
