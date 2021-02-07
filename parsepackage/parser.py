@@ -129,3 +129,7 @@ class Parser:
                                 self.command_buffer,
                                 self.state,
                             ) = self.mouseParser.evaluate_mouse(self.command_buffer)
+            
+        # stop mouse if state is switched before stopping
+        if not self.mouseParser.stopMouse and self.state != "mouse":
+            self.mouseParser.stopMouse = True

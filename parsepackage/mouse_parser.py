@@ -8,6 +8,7 @@ class MouseParser:
         self.mouseStarted = False
         self.os = system
         self.steps = steps
+        self.stopMouse = True
 
         self.commands = [
             "stop",

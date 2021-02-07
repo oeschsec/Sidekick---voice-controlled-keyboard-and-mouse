@@ -52,7 +52,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 
 ## Mouse
 
-Once you say `mouse` and provide a direction, such as `north`, the mouse will begin to move that direction at the `snail` speed. You then use the commands to change direction, change speed, or stop the mouse. When stopped, the state/mode is automatically switched back to the `command` mode. 
+Once you say `mouse` and provide a direction, such as `north`, the mouse will begin to move that direction at the `snail` speed. You then use the commands to change direction, change speed, or stop the mouse. When stopped, the state/mode is automatically switched back to the `command` mode. If you switch states before stopping, the mouse will automatically be stopped. 
 
 - `north`, `south`, `east`, `west`, `northeast` or `one`, `northwest` or `two`, `southeast` or `three`, `southwest` or `four`
 - `stop` - stop the mouse
