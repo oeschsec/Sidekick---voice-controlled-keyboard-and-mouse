@@ -38,6 +38,7 @@ If you want to contribute, please first create an issue or send me an email and 
 
 - install Python 3.8 64-bit (https://www.python.org/downloads/windows/)
 - pip install numpy vosk pyautogui
+- make sure that vosk is at least version 0.3.18 - run pip install vosk --upgrade if not sure
 - pip install PyAudio‑0.2.11‑cp38‑cp38‑win_amd64.whl (download [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio))
 
 ## Usage

@@ -24,7 +24,7 @@ def listToList(words):
 def setRec(state,crec,trec,arec):
     if state == "text":
         return trec
-    elif state == "command":
+    elif state == "command" or state == "mouse":
         return crec
     else:
         return arec 
