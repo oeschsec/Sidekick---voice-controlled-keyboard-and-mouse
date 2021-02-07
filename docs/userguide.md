@@ -43,6 +43,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `scroll [up,down,left,right] [1-7]` 
 - `hold` and `release` - say `hold` to save mouse destination location, then move mouse over item you want to drag to that location and say `release` - item will be dragged to that location
 - `pup` / `pod` - page up / page down
+- `in` / `out` - zoom in / zoom out
 
 #### Examples
 

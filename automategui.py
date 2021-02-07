@@ -26,9 +26,7 @@ def doubleClickCurrent():
 
 
 def tripleClickCurrent():
-    pyautogui.click(pyautogui.position())
-    pyautogui.click(pyautogui.position())
-    pyautogui.click(pyautogui.position())
+    pyautogui.click(pyautogui.position(),clicks=3)
 
 
 def rightClickCurrent():
@@ -36,11 +34,11 @@ def rightClickCurrent():
 
 
 def holdDownLeft():
-    pyautogui.mouseDown(button="left")
+    pyautogui.mouseDown()
 
 
 def releaseLeftMouse():
-    pyautogui.mouseUp(button="left")
+    pyautogui.mouseUp()
 
 
 def getPosition():

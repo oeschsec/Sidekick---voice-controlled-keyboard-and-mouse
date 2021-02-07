@@ -59,6 +59,8 @@ class CommandParser:
             "back",
         ]
         self.commands = [
+            "in",
+            "out",
             "rick",
             "hold",
             "release",
@@ -227,6 +229,18 @@ class CommandParser:
                 hotKeyPress(["command", "c"])
             else:
                 hotKeyPress(["ctrl", "c"])
+            command_buffer = []
+        elif command_buffer[0] == "in":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "+"])
+            else:
+                hotKeyPress(["ctrl", "+"])
+            command_buffer = []
+        elif command_buffer[0] == "out":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "-"])
+            else:
+                hotKeyPress(["ctrl", "-"])
             command_buffer = []
         elif command_buffer[0] == "paste":
             if self.os == "Darwin":
