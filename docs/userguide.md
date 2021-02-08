@@ -67,16 +67,16 @@ Once you say `mouse` and provide a direction, such as `north`, the mouse will be
 
 ## Text
 
-In text mode, speech will be transcribed to text. A space is automatically added before each word. This behavior can be toggled using the commands `spaces` and `pack`. 
+In text mode, speech will be transcribed to text. A space is automatically added before each word. This behavior can be toggled using the commands `underscore` and `pack`. 
 
-- `spaces` - space before every word
-- `pack` - no space before each word - pack the words together (good for coding variables)
+- `underscore` - underscore before the following word
+- `pack` - no space before the following word - good for coding variables
 - `cap` - word spoken after this keyword will be capitalized
 
 ## Example
 
-- `pack foo cap bar` = fooBar
-- `foo cap bar` or `spaces foo cap bar` = foo Bar
+- `foo pack cap bar` = fooBar
+- `foo underscore cap bar` = foo_Bar
 
 ## Alpha
 
