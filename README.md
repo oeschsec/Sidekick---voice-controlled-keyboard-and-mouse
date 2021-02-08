@@ -11,7 +11,7 @@ Also, rather than focusing on macros to make things more efficient, Sidekick att
 
 ## Contributing
 
-If you want to contribute, please first create an issue or send me an email and wait for me to give you the greenlight. Then use the [fork and pull model](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/forkandpull.md) to make your changes.
+If you want to contribute, please first create an issue or send me an email describing your intended change and containing the following - "I hereby assign copyright in this code to the project, to be licensed under the same terms as the rest of the code”. This statement just makes it easier to enforce copyright if necessary and in no way impacts your rights or restricts the use of the code beyond the [AGPL license](https://github.com/oeschsec/Sidekick---voice-controlled-keyboard-and-mouse/blob/master/LICENSE). Wait for me to give you the greenlight, then use the [fork and pull model](https://github.com/oeschsec/speech-driven-keyboard/tree/master/docs/forkandpull.md) to make your changes.
 
 #### Things I would like to see
 
