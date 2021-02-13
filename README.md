@@ -7,7 +7,11 @@ Sidekick is still very much a work in progress, but the sky is the limit. One of
 
 Sidekick was created with the goal of being general purpose, lightweight, extensible, and easy to use. It works offline and cross-platform. While some other tools (listed below) specialize in voice coding and entirely replacing the keyboard and mouse in specific application contexts, Sidekick is intended to help rather than replace and to work across all applications.
 
-Also, rather than focusing on macros to make things more efficient, Sidekick attempts to replicate regular workflows. I think this makes it simpler. But additional parsers could be added to go macro crazy if so desired. 
+I use sidekick every day - especially when surfing the web, reading, and writing smaller compositions. Just reducing use of the mouse wheel/buttons alone helped me significantly. Let me know if Sidekick is helpful for you. 
+
+## Contributing
+
+If you would like to contribute, create an issue and let me know. I would be interested in seeing custom parsers, additional features, and improvements in speech recognition.
 
 ## Install
 
