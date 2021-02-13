@@ -60,10 +60,15 @@ class CommandParser:
             "back",
         ]
         self.commands = [
+            "close",
+            "find",
+            "replace",
+            "nab",
             "in",
             "out",
             "rick",
             "hold",
+            "terminate",
             "release",
             "triple",
             "grid",
@@ -249,6 +254,32 @@ class CommandParser:
             else:
                 hotKeyPress(["ctrl", "v"])
             command_buffer = []
+        elif command_buffer[0] == "close":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "w"])
+            else:
+                hotKeyPress(["ctrl", "w"])
+            command_buffer = []
+        elif command_buffer[0] == "find":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "f"])
+            else:
+                hotKeyPress(["ctrl", "f"])
+            command_buffer = []
+        elif command_buffer[0] == "replace":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "shift", "h"])
+            else:
+                hotKeyPress(["ctrl", "h"])
+            command_buffer = []
+        elif command_buffer[0] == "nab":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "t"])
+            else:
+                hotKeyPress(["ctrl", "t"])
+            command_buffer = []
+        elif command_buffer[0] == "terminate":
+            hotKeyPress(["ctrl", "c"])
         elif command_buffer[0] == "save" or command_buffer[0] == "say":
             if self.os == "Darwin":
                 hotKeyPress(["command", "s"])
