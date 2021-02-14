@@ -46,6 +46,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `in` / `out` - zoom in / zoom out
 - `close` / `nab` - close tab or window / new tab 
 - `find` / `replace` - open find or replace dialogue
+- `undo` / `redo`
 - `terminate` - ctrl + c 
 
 #### Examples

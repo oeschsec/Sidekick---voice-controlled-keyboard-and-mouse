@@ -60,6 +60,8 @@ class CommandParser:
             "back",
         ]
         self.commands = [
+            "undo",
+            "redo",
             "close",
             "find",
             "replace",
@@ -265,6 +267,18 @@ class CommandParser:
                 hotKeyPress(["command", "f"])
             else:
                 hotKeyPress(["ctrl", "f"])
+            command_buffer = []
+        elif command_buffer[0] == "undo":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "z"])
+            else:
+                hotKeyPress(["ctrl", "z"])
+            command_buffer = []
+        elif command_buffer[0] == "redo":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "shift","z"])
+            else:
+                hotKeyPress(["ctrl", "shift","z"])
             command_buffer = []
         elif command_buffer[0] == "replace":
             if self.os == "Darwin":
