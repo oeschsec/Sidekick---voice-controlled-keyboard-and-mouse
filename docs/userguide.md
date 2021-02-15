@@ -48,12 +48,14 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `find` / `replace` - open find or replace dialogue
 - `undo` / `redo`
 - `terminate` - ctrl + c 
+- `switch` - hits `alt` + `tab` so you can switch apps - say `next` to move to next application. Say `enter` to pick that application. 
 
 #### Examples
 
 - `scroll up 1 2 1` - will scroll up 1, then 2, then 1 again - number can be repeated without repeating entire command
 - `north 3 1` - moves mouse north 3, then 1
 - `back 1 back 2` - backspace by 1, then 2 - can backspace up to 20 spaces
+- `switch next next enter` - hit `alt` + `tab` and select 4th application option
 
 ## Mouse
 

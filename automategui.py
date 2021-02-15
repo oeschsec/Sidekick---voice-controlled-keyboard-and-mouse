@@ -38,6 +38,14 @@ def holdDownLeft():
     pyautogui.mouseDown()
 
 
+def holdKey(key):
+    pyautogui.keyDown(key)
+
+
+def releaseKey(key):
+    pyautogui.keyUp(key)
+
+
 def releaseLeftMouse():
     pyautogui.mouseUp()
 

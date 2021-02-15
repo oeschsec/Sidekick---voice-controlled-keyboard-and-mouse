@@ -61,6 +61,9 @@ class CommandParser:
         ]
         self.commands = [
             "undo",
+            "switch",
+            "cancel",
+            "next",
             "redo",
             "close",
             "find",
@@ -300,6 +303,29 @@ class CommandParser:
             else:
                 hotKeyPress(["ctrl", "s"])
             command_buffer = []
+        elif command_buffer[0] == "switch":
+
+            if self.os == "Darwin":
+                holdKeyDown("command")
+            else:
+                holdKeyDown("alt")
+
+            if len(command_buffer) == 1:
+                hotKeyPress(["tab"])
+
+            if len(command_buffer) >= 2:
+                if command_buffer[1] == "next":
+                    hotKeyPress(["tab"])
+                    command_buffer = ["switch"]
+
+                else:
+                    if self.os == "Darwin":
+                        keyUp("command")
+                    else:
+                        keyUp("alt")
+
+                    command_buffer = []
+
         elif command_buffer[0] == "north":
             if len(command_buffer) >= 2:
                 if command_buffer[1] in self.steps:

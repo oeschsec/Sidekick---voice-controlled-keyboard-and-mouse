@@ -35,6 +35,14 @@ def doubleclick():
     doubleClickCurrent()
 
 
+def holdKeyDown(key):
+    holdKey(key)
+
+
+def keyUp(key):
+    releaseKey(key)
+
+
 def dragMouse(x, y):
     leftDragMouse(x, y)
 
