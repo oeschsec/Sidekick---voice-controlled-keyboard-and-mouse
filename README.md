@@ -15,7 +15,7 @@ If you would like to contribute, create an issue and let me know. I would be int
 
 ## Install
 
-Download the vosk-model-en-us-daanzu-20200905-lgraph (129M) model folder from https://alphacephei.com/vosk/models, place in same directory as vosk_main.py, and rename the folder to 'model'. 
+Download the vosk-model-en-us-daanzu-20200905-lgraph (129M) model folder from https://alphacephei.com/vosk/models, place in same directory as sidekick.py, and rename the folder to 'model'. 
 
 #### On Mac
 
