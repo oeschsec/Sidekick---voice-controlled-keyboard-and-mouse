@@ -37,9 +37,9 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `north [1-7]`, `south [1-7]`, `east [1-7]`, `west [1-7]` - move mouse in cardinal directions 
 - `grid [a-k] [1-11]` - snap mouse to a point on a grid (like in chess or battleship - move to a1 would be near bottom left, k11 top right)
 - `up [1-20,30,40,50,100]`, `left...`, `down...`, `right...` - arrow keys
-- `copy`
-- `paste`
+- `copy` / `paste`
 - `save`
+- `escape` - hit escape key
 - `scroll [up,down,left,right] [1-7]` 
 - `hold` and `release` - say `hold` to save mouse destination location, then move mouse over item you want to drag to that location and say `release` - item will be dragged to that location
 - `pup` / `pod` - page up / page down
@@ -49,7 +49,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `find` / `replace` - open find or replace dialogue
 - `undo` / `redo`
 - `terminate` - ctrl + c 
-- `switch` - hits `alt` + `tab` so you can switch apps - say `next` to move to next application. Say `enter` to pick that application. 
+- `switch` - hits `alt` + `tab` so you can switch apps - say `next` to move to next application. Say `enter` to pick that application. Say `escape` to go cancel the operation. 
 
 #### Examples
 

@@ -72,6 +72,7 @@ class CommandParser:
             "cab",
             "lab",
             "rab",
+            "escape",
             "in",
             "out",
             "rick",
@@ -310,6 +311,9 @@ class CommandParser:
         elif command_buffer[0] == "rab":
             hotKeyPress(["ctrl", "tab"])
             command_buffer = []
+        elif command_buffer[0] == "escape":
+            hotKeyPress(["escape"])
+            command_buffer = []
         elif command_buffer[0] == "terminate":
             hotKeyPress(["ctrl", "c"])
         elif command_buffer[0] == "save" or command_buffer[0] == "say":
@@ -332,6 +336,15 @@ class CommandParser:
                 if command_buffer[1] == "next":
                     hotKeyPress(["tab"])
                     command_buffer = ["switch"]
+                elif command_buffer[1] == "escape":
+                    hotKeyPress(["escape"])
+                    
+                    if self.os == "Darwin":
+                        keyUp("command")
+                    else:
+                        keyUp("alt")
+
+                    command_buffer = []                    
 
                 else:
                     if self.os == "Darwin":
