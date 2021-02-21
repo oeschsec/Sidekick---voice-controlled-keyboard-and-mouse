@@ -69,6 +69,9 @@ class CommandParser:
             "find",
             "replace",
             "nab",
+            "cab",
+            "lab",
+            "rab",
             "in",
             "out",
             "rick",
@@ -294,6 +297,18 @@ class CommandParser:
                 hotKeyPress(["command", "t"])
             else:
                 hotKeyPress(["ctrl", "t"])
+            command_buffer = []
+        elif command_buffer[0] == "cab":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "shift", "t"])
+            else:
+                hotKeyPress(["ctrl","shift","t"])
+            command_buffer = []
+        elif command_buffer[0] == "lab":
+            hotKeyPress(["ctrl", "shift","tab"])
+            command_buffer = []
+        elif command_buffer[0] == "rab":
+            hotKeyPress(["ctrl", "tab"])
             command_buffer = []
         elif command_buffer[0] == "terminate":
             hotKeyPress(["ctrl", "c"])
