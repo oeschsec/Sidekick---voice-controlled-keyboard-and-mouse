@@ -86,7 +86,7 @@ class AlphaParser:
         elif text == "single":
             text = text.replace("single", "'")
         elif text == "underscore":
-            text = text.replace("single", "_")
+            text = text.replace("underscore", "_")
         elif text == "semicolon":
             text = text.replace("semicolon", ";")
         elif text == "bang" or text == "exclamation":
