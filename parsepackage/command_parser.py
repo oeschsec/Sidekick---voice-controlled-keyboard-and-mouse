@@ -61,6 +61,8 @@ class CommandParser:
         ]
         self.commands = [
             "undo",
+            "lap",
+            "nip",
             "switch",
             "cancel",
             "next",
@@ -178,6 +180,20 @@ class CommandParser:
     def evaluate_command(self, command_buffer):
         if command_buffer[0] == "rick":
             rightclick()
+            command_buffer = []
+        elif command_buffer[0] == "lap":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "left"])
+            else:
+                hotKeyPress(["alt", "left"])
+
+            command_buffer = []
+        elif command_buffer[0] == "nip":
+            if self.os == "Darwin":
+                hotKeyPress(["command", "right"])
+            else:
+                hotKeyPress(["alt", "right"])
+                
             command_buffer = []
         elif command_buffer[0] == "pod":
             hotKeyPress(["pgdn"])

@@ -46,6 +46,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `in` / `out` - zoom in / zoom out
 - `close` / `nab` - close tab or window / new tab 
 - `nab` / `rab` / `lab` / `cab` - new tab in browser, right one tab, left one tab, reopen closed tab
+- `lap` / `nip` - last page / next page in browser
 - `find` / `replace` - open find or replace dialogue
 - `undo` / `redo`
 - `terminate` - ctrl + c 
