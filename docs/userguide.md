@@ -41,7 +41,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `save`
 - `escape` - hit escape key
 - `scroll [up,down,left,right] [1-7]` 
-- `hold` and `release` - say `hold` to save mouse destination location, then move mouse over item you want to drag to that location and say `release` - item will be dragged to that location
+- `lock` and `release` - say `lock` to save mouse destination location, then move mouse over item you want to drag to that location and say `release` - item will be dragged to that location
 - `pup` / `pod` - page up / page down
 - `in` / `out` - zoom in / zoom out
 - `close` / `nab` - close tab or window / new tab 
@@ -51,6 +51,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `undo` / `redo`
 - `terminate` - ctrl + c 
 - `switch` - hits `alt` + `tab` so you can switch apps - say `next` to move to next application. Say `enter` to pick that application. Say `escape` to go cancel the operation. 
+- `escape` + lower case letter - hold letter - can be useful for game if want to just hold button down (ex: `escape a w stop`) will hold down `a` until you say `w`, hold down `w` until you say `stop`and then exit that command
 
 #### Examples
 

@@ -6,7 +6,8 @@ import string
 class CommandParser:
     def __init__(self, system, steps):
         self.os = system
-        self.steps = steps
+        self.steps = steps 
+        self.tempvar = ""
 
         self.grid_horizontal = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]
         self.grid_vertical = [
@@ -79,6 +80,7 @@ class CommandParser:
             "out",
             "rick",
             "hold",
+            "lock",
             "terminate",
             "release",
             "triple",
@@ -204,7 +206,7 @@ class CommandParser:
         elif command_buffer[0] == "triple":
             tripleclick()
             command_buffer = []
-        elif command_buffer[0] == "hold":
+        elif command_buffer[0] == "lock":
             if len(command_buffer) == 1:
                 self.x, self.y = getPosition()
             elif len(command_buffer) >= 2:
@@ -369,6 +371,24 @@ class CommandParser:
                         keyUp("alt")
 
                     command_buffer = []
+
+        elif command_buffer[0] == "hold":
+
+            if len(command_buffer) >= 2:
+
+                if command_buffer[1] in ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']:
+                    if self.tempvar != "":
+                        keyUp(self.tempvar)
+                    holdKeyDown(command_buffer[1])
+                    self.tempvar = command_buffer[1]
+                    command_buffer = ["hold"]
+
+                else:
+                    keyUp(self.tempvar)
+                    self.tempvar = ""
+
+                    command_buffer = []                    
 
         elif command_buffer[0] == "north":
             if len(command_buffer) >= 2:
