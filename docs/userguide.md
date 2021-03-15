@@ -1,6 +1,6 @@
 # User Guide
 
-Sidekick takes voice commands and converts them to actions on the computer. It uses the default system mic. It operates differently when in different states or modes. There are currently three modes, described below, but more can be added.
+Sidekick takes voice commands and converts them to actions on the computer. It uses the default system mic. It operates differently when in different states or modes.
 
 - `command` - this mode allows the user to issue a variety of commands
 - `mouse` - this mode allows the user to control the mouse

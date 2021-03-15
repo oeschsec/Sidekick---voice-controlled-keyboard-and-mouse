@@ -1,4 +1,3 @@
-# Copyright (C) 2021 Sean Oesch
 from automategui import *
 import time
 

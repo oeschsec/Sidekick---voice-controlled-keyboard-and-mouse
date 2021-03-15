@@ -72,7 +72,7 @@ I am aware of other interesting related projects. I highly recommend checking ou
 
 ## Copyright Notice
 
-Copyright (C) 2021 Sean Oesch
+Copyright (C) 2021 - Created by Sean Oesch
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF

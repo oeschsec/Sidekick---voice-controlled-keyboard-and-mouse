@@ -1,4 +1,3 @@
-# Copyright (C) 2021 Sean Oesch
 from actions import *
 import platform
 from .mouse_parser import MouseParser
