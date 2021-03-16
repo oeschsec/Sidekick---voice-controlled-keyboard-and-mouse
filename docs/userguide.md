@@ -51,7 +51,8 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `undo` / `redo`
 - `terminate` - ctrl + c 
 - `switch` - hits `alt` + `tab` so you can switch apps - say `next` to move to next application. Say `enter` to pick that application. Say `escape` to go cancel the operation. 
-- `escape` + lower case letter - hold letter - can be useful for game if want to just hold button down (ex: `escape a w stop`) will hold down `a` until you say `w`, hold down `w` until you say `stop`and then exit that command
+- `letter` + lower case letter - hold letter - can be useful for game if want to just hold button down (ex: `letter a w stop`) will hold down `a` until you say `w`, hold down `w` until you say `stop`and then exit that command
+- `hold` - holds down left mouse button until you say another word - useful for drag and drop or on Mac when need to hold and release to switch windows
 
 #### Examples
 

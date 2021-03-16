@@ -65,6 +65,7 @@ class CommandParser:
             "nip",
             "switch",
             "cancel",
+            "letter",
             "next",
             "redo",
             "close",
@@ -373,6 +374,15 @@ class CommandParser:
 
         elif command_buffer[0] == "hold":
 
+            if len(command_buffer) == 1:
+                holdLeft()
+                command_buffer = ["hold"]
+            else:
+                releaseLeft()
+                command_buffer = []
+
+        elif command_buffer[0] == "letter":
+
             if len(command_buffer) >= 2:
 
                 if command_buffer[1] in ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
@@ -381,7 +391,7 @@ class CommandParser:
                         keyUp(self.tempvar)
                     holdKeyDown(command_buffer[1])
                     self.tempvar = command_buffer[1]
-                    command_buffer = ["hold"]
+                    command_buffer = ["letter"]
 
                 else:
                     keyUp(self.tempvar)
