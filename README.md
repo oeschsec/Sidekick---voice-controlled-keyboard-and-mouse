@@ -73,7 +73,7 @@ I am aware of other interesting related projects. I highly recommend checking ou
 ## Copyright Notice
 
 Sidekick
-Copyright (C) 2021 - Created by Sean Oesch
+Copyright (C) 2021 UT-Battelle - Created by Sean Oesch
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
