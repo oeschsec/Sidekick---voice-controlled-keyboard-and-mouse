@@ -25,7 +25,9 @@ class CommandParser:
         self.steps = steps 
         self.tempvar = ""
 
-        self.grid_horizontal = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]
+        self.keys = ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','alt']
+
         self.grid_vertical = [
             "one",
             "two",
@@ -82,7 +84,7 @@ class CommandParser:
             "nip",
             "switch",
             "cancel",
-            "letter",
+            "key",
             "next",
             "redo",
             "close",
@@ -117,7 +119,7 @@ class CommandParser:
         ]
 
         self.commandlist = (
-            self.grid_horizontal
+            self.keys
             + self.grid_vertical
             + self.stateless_commands
             + self.commands
@@ -152,6 +154,10 @@ class CommandParser:
             "hundred": "100",
         }
         return mapping[word]
+
+    # Maps key commands to actual button press
+    def map_keys(self,val):
+        pass
 
     # Stateless commands should return an empty buffer
     def stateless_command(self, command_buffer):
@@ -398,17 +404,16 @@ class CommandParser:
                 releaseLeft()
                 command_buffer = []
 
-        elif command_buffer[0] == "letter":
+        elif command_buffer[0] == "key":
 
             if len(command_buffer) >= 2:
 
-                if command_buffer[1] in ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']:
+                if command_buffer[1] in self.keys:
                     if self.tempvar != "":
                         keyUp(self.tempvar)
                     holdKeyDown(command_buffer[1])
                     self.tempvar = command_buffer[1]
-                    command_buffer = ["letter"]
+                    command_buffer = ["key"]
 
                 else:
                     keyUp(self.tempvar)
