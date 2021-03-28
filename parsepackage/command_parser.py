@@ -26,7 +26,12 @@ class CommandParser:
         self.tempvar = ""
 
         self.keys = ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','alt']
+'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','alt','delete','control','shift','tab','apple']
+
+        self.keymapping = {
+            "control" : "ctrl",
+            "apple" : "command"
+        }
 
         self.grid_vertical = [
             "one",
@@ -80,6 +85,8 @@ class CommandParser:
         ]
         self.commands = [
             "undo",
+            "hot",
+            "ack",
             "lap",
             "nip",
             "switch",
@@ -148,7 +155,7 @@ class CommandParser:
             "eighteen": "18",
             "nineteen": "19",
             "twenty": "20",
-            "thirty": "30",
+            "thirty": "30", 
             "forty": "40",
             "fifty": "50",
             "hundred": "100",
@@ -157,7 +164,10 @@ class CommandParser:
 
     # Maps key commands to actual button press
     def map_keys(self,val):
-        pass
+        if val in self.keymapping:
+            return self.keymapping[val]
+        else:
+            return val
 
     # Stateless commands should return an empty buffer
     def stateless_command(self, command_buffer):
@@ -175,6 +185,11 @@ class CommandParser:
             command_buffer = []
         elif command_buffer[0] == "space":
             hitSpace()
+            command_buffer = []
+        elif command_buffer[0] == "ack":
+            holdKeyDown("alt")
+            click()
+            keyUp("alt")
             command_buffer = []
         elif command_buffer[0] == "back":
             if len(command_buffer) >= 2:
@@ -411,15 +426,30 @@ class CommandParser:
                 if command_buffer[1] in self.keys:
                     if self.tempvar != "":
                         keyUp(self.tempvar)
-                    holdKeyDown(command_buffer[1])
-                    self.tempvar = command_buffer[1]
+                    holdKeyDown(self.map_keys(command_buffer[1]))
+                    self.tempvar = self.map_keys(command_buffer[1])
                     command_buffer = ["key"]
 
                 else:
                     keyUp(self.tempvar)
                     self.tempvar = ""
 
-                    command_buffer = []                    
+                    command_buffer = []            
+
+        elif command_buffer[0] == "hot":
+
+            if command_buffer[-1] in self.keys or len(command_buffer) == 1:
+                pass
+
+            else:
+                hot_keys = []
+                for val in command_buffer:
+                    if val != "hot":
+                        hot_keys.append(self.map_keys(val))
+                
+                hotKeyPress(hot_keys)
+
+                command_buffer = [] 
 
         elif command_buffer[0] == "north":
             if len(command_buffer) >= 2:

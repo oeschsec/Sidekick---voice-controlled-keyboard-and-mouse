@@ -33,6 +33,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 #### Stateful
 
 - `rick` - right click 
+- `ack` - alt + click
 - `triple` - triple click
 - `north [1-7]`, `south [1-7]`, `east [1-7]`, `west [1-7]` - move mouse in cardinal directions 
 - `grid [a-k] [1-11]` - snap mouse to a point on a grid (like in chess or battleship - move to a1 would be near bottom left, k11 top right)
@@ -53,6 +54,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `switch` - hits `alt` + `tab` so you can switch apps - say `next` to move to next application. Say `enter` to pick that application. Say `escape` to go cancel the operation. 
 - `key` + lower case letter - hold letter - can be useful for game if want to just hold button down (ex: `key a w stop`) will hold down `a` until you say `w`, hold down `w` until you say `stop`and then exit that command
 - `hold` - holds down left mouse button until you say another word - useful for drag and drop or on Mac when need to hold and release to switch windows
+- `hot` - hot key press (ex: `hot control alt delete go` presses `ctrl alt delete`) - using the word `apple` for the command key (ex: `hot apple f go` presses `command f`)
 
 #### Examples
 
