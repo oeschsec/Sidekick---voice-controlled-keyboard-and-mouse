@@ -33,6 +33,8 @@ class CommandParser:
             "apple" : "command"
         }
 
+        self.grid_horizontal = ['a','b','c','d','e','f','g','h','i','j','k']
+
         self.grid_vertical = [
             "one",
             "two",
