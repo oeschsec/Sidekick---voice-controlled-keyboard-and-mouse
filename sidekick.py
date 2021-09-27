@@ -68,11 +68,12 @@ def ingest(currentstate,crec,trec,arec):
     rec = setRec(currentstate,crec,trec,arec)
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
-        if res["text"] in ["text","alpha","command"] and res["text"] != currentstate:
-            parser.ingest(res["text"])
-            stateSwap(res["text"],crec,trec,arec)
-        else:
-            parser.ingest(res["text"]) 
+        for text in res["text"].split(" "):
+            if text in ["text","alpha","command"] and text != currentstate:
+                parser.ingest(text)
+                stateSwap(text,crec,trec,arec)
+            else:
+                parser.ingest(text) 
         
     clearRec(crec,trec,arec)
 
