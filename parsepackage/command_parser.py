@@ -374,6 +374,7 @@ class CommandParser:
             command_buffer = []
         elif command_buffer[0] == "terminate":
             hotKeyPress(["ctrl", "c"])
+            command_buffer = []
         elif command_buffer[0] == "save" or command_buffer[0] == "say":
             if self.os == "Darwin":
                 hotKeyPress(["command", "s"])
