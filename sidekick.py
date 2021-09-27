@@ -56,12 +56,11 @@ def stateSwap(nextstate,crec,trec,arec):
     res = json.loads(rec.Result())
     swap = False
     if res["text"] != "":
-        for result in res["result"]:
-            if swap:
-                parser.ingest(result["word"]) 
+        if swap:
+            parser.ingest(res["text"]) 
 
-            if result["word"] == nextstate:
-                swap = True
+        if res["text"] == nextstate:
+            swap = True
     
     clearRec(crec,trec,arec)
 
@@ -69,13 +68,11 @@ def ingest(currentstate,crec,trec,arec):
     rec = setRec(currentstate,crec,trec,arec)
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
-        for result in res["result"]:
-            if result["word"] in ["text","alpha","command"] and result["word"] != currentstate:
-                parser.ingest(result["word"])
-                stateSwap(result["word"],crec,trec,arec)
-                break
-            else:
-                parser.ingest(result["word"]) 
+        if res["text"] in ["text","alpha","command"] and res["text"] != currentstate:
+            parser.ingest(res["text"])
+            stateSwap(res["text"],crec,trec,arec)
+        else:
+            parser.ingest(res["text"]) 
         
     clearRec(crec,trec,arec)
 
