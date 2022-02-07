@@ -79,11 +79,14 @@ def ingest(currentstate,crec,trec,arec):
 
 # create wordlist for our command model so that commands will be more accurately detected
 commandwords = listToList(parser.nontextcommands)
+print(parser.nontextcommands)
+print(commandwords)
 alphavals = listToList(parser.alphavalues)
 
 model = Model("model")
 # the text recommender uses the standard model for transcription
 textrec = KaldiRecognizer(model, 16000)
+programrec = KaldiRecognizer(model, 16000)
 # use wordlist in our command recommender
 commandrec = KaldiRecognizer(model, 16000, commandwords)
 alpharec = KaldiRecognizer(model, 16000, alphavals)
@@ -105,7 +108,7 @@ while True:
     data = stream.read(4000,exception_on_overflow = False)
 
     # calculate decibels
-    dB = 20 * math.log10(audioop.rms(data,2))
+    dB = 20 * math.log10(audioop.rms(data,2)+1)
 
     # we want to set threshold based on ambient noise prior to processing audio data
     if not thresholdset: 
@@ -127,20 +130,28 @@ while True:
 
         if waittime >= 8: # in my testing max wait time before word sent to parser was 6 - added a bit of buffer 
             wait = False
-
+   
         trec = textrec.AcceptWaveform(data)
+        prec = programrec.AcceptWaveform(data)
         crec = commandrec.AcceptWaveform(data)
         arec = alpharec.AcceptWaveform(data)
-
+        print(parser.state)
         if len(data) == 0:
             break
+        
         if parser.state == "text":
             if trec: # if this returns true model has determined best word candidate
                 ingest(parser.state,commandrec,textrec,alpharec) 
             else: # if false only a partial result returned - not useful for this application
                 pass
                 #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
-            
+        
+        elif parser.state == "program":
+            if prec: # if this returns true model has determined best word candidate
+                ingest("text",commandrec,textrec,alpharec) 
+            else: # if false only a partial result returned - not useful for this application
+                pass
+
         elif parser.state == "alpha":
             if arec: # if this returns true model has determined best word candidate
                 ingest(parser.state,commandrec,textrec,alpharec)                 

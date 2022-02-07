@@ -113,6 +113,9 @@ class Parser:
             elif self.command_buffer[-1] == "text":
                 self.state = "text"
                 self.command_buffer = []
+            elif self.command_buffer[-1] == "program":
+                self.state = "program"
+                self.command_buffer = []
             elif self.command_buffer[-1] == "alpha":
                 self.state = "alpha"
                 self.command_buffer = []
@@ -134,6 +137,10 @@ class Parser:
                                 self.command_buffer
                             )
                         elif self.state == "text":
+                            self.command_buffer = self.textParser.evaluate_text(
+                                self.command_buffer
+                            )
+                        elif self.state == "program":
                             self.command_buffer = self.textParser.evaluate_text(
                                 self.command_buffer
                             )
