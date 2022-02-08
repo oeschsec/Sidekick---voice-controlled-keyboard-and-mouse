@@ -15,6 +15,8 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+from errno import EHOSTDOWN
+from black import wrap_stream_for_windows
 from vosk import Model, KaldiRecognizer
 import os
 import json
@@ -38,21 +40,24 @@ def listToList(words):
     wordlist = wordlist.strip(",") + "]"    
     return wordlist
 
-def setRec(state,crec,trec,arec):
+def setRec(state,crec,trec,arec, prec):
     if state == "text":
         return trec
+    elif state == "program":
+        return prec
     elif state == "command" or state == "mouse":
         return crec
     else:
         return arec 
 
-def clearRec(crec,trec,arec):
+def clearRec(crec,trec,arec,prec):
     crec.Result()
     trec.Result()
     arec.Result()
+    prec.Result()
 
-def stateSwap(nextstate,crec,trec,arec):
-    rec = setRec(nextstate,crec,trec,arec)
+def stateSwap(nextstate,crec,trec,arec, prec):
+    rec = setRec(nextstate,crec,trec,arec, prec)
     res = json.loads(rec.Result())
     swap = False
     if res["text"] != "":
@@ -61,26 +66,41 @@ def stateSwap(nextstate,crec,trec,arec):
 
         if res["text"] == nextstate:
             swap = True
-    
-    clearRec(crec,trec,arec)
+    elif res["program"] != "":
+        if swap:
+            parser.ingest(res["program"]) 
 
-def ingest(currentstate,crec,trec,arec):
-    rec = setRec(currentstate,crec,trec,arec)
+        if res["program"] == nextstate:
+            swap = True    
+    
+    clearRec(crec,trec,arec,prec)
+
+def ingest(currentstate,crec,trec,arec, prec):
+    rec = setRec(currentstate,crec,trec,arec, prec)
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
         for text in res["text"].split(" "):
-            if text in ["text","alpha","command"] and text != currentstate:
+            if text in ["text","alpha","command", "program"] and text != currentstate:
                 parser.ingest(text)
-                stateSwap(text,crec,trec,arec)
+                stateSwap(text,crec,trec,arec, prec)
             else:
                 parser.ingest(text) 
-        
-    clearRec(crec,trec,arec)
+    """
+    I think this breaks things
+    if res["program"] != "":
+        for text in res["program"].split(" "):
+            if text in ["text","alpha","command", "program"] and text != currentstate:
+                parser.ingest(text)
+                stateSwap(text,crec,trec,arec, prec)
+            else:
+                parser.ingest(text)"""
+    
+    clearRec(crec,trec,arec, prec)
 
 # create wordlist for our command model so that commands will be more accurately detected
 commandwords = listToList(parser.nontextcommands)
-print(parser.nontextcommands)
-print(commandwords)
+#print(parser.nontextcommands)
+#print(commandwords)
 alphavals = listToList(parser.alphavalues)
 
 model = Model("model")
@@ -130,31 +150,33 @@ while True:
 
         if waittime >= 8: # in my testing max wait time before word sent to parser was 6 - added a bit of buffer 
             wait = False
-   
+
         trec = textrec.AcceptWaveform(data)
         prec = programrec.AcceptWaveform(data)
         crec = commandrec.AcceptWaveform(data)
         arec = alpharec.AcceptWaveform(data)
-        print(parser.state)
+        #print(parser.state)
         if len(data) == 0:
             break
         
         if parser.state == "text":
             if trec: # if this returns true model has determined best word candidate
-                ingest(parser.state,commandrec,textrec,alpharec) 
+                ingest(parser.state,commandrec,textrec,alpharec, programrec) 
             else: # if false only a partial result returned - not useful for this application
                 pass
                 #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
         
         elif parser.state == "program":
             if prec: # if this returns true model has determined best word candidate
-                ingest("text",commandrec,textrec,alpharec) 
+                ingest(parser.state,commandrec,textrec,alpharec,programrec) 
             else: # if false only a partial result returned - not useful for this application
                 pass
 
         elif parser.state == "alpha":
             if arec: # if this returns true model has determined best word candidate
-                ingest(parser.state,commandrec,textrec,alpharec)                 
+                ingest(parser.state,commandrec,textrec,alpharec, programrec)                 
         else:
             if crec: # if this returns true model has determined best word candidate
-                ingest(parser.state,commandrec,textrec,alpharec) 
+                ingest(parser.state,commandrec,textrec,alpharec, programrec) 
+
+
