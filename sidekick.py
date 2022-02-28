@@ -24,6 +24,7 @@ import audioop
 import string
 import math
 from parsepackage import *
+from parsepackage.volume_parser import VolumeParser
 
 if not os.path.exists("model"):
     print ("Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.")
@@ -176,6 +177,19 @@ while True:
         elif parser.state == "alpha":
             if arec: # if this returns true model has determined best word candidate
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)                 
+        
+        elif parser.state == "volume":
+            if parser.volumeParser.volumeStarted == True:
+                print(dB)
+                if dB < 35:
+                    print("MOM")
+                    y = parser.volumeParser.setVolumeCoord(270)
+                    print(y)
+                elif dB >= 35:
+                    print("WOW")
+                    parser.volumeParser.setVolumeCoord(90)
+                    command_buffer = []
+
         else:
             if crec: # if this returns true model has determined best word candidate
                 ingest(parser.state,commandrec,textrec,alpharec, programrec) 

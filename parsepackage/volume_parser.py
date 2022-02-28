@@ -56,13 +56,13 @@ class VolumeParser:
         self.threshold = threshold
         
         self.midpoint = (self.threshold + 55) /2
-        print(self.threshold)
     
     def set_audio_stream(self, stream):
         self.stream = stream
 
     def evaluate_volume(self, command_buffer):
         if not self.volumeStarted:
+            
             self.stopVolume = False
             self.magnitude = 5  # in pixels
             self.sleep = 0.2
@@ -73,17 +73,17 @@ class VolumeParser:
         dB = 20 * math.log10(audioop.rms(data,2)+1)
 
        # if len(command_buffer) > 0:     
-        print("Volume " + str(dB))
+        """print("Volume " + str(dB))
         if dB < 45:
             print("MOM")
             self.setVolumeCoord(self.currentangle + 15)
         elif dB >= 45:
             print("WOW")
-            self.setVolumeCoord(self.currentangle - 15)
-            command_buffer = []
+            self.setVolumeCoord(self.currentangle - 15)"""
+        command_buffer = []
 
-            if not self.volumeStarted:
-                self.startVolume()
+        if not self.volumeStarted:
+            self.startVolume()
 
         return [command_buffer, "volume"]
 
@@ -94,9 +94,13 @@ class VolumeParser:
         self.volumeStarted = True
 
     def setVolumeCoord(self, degrees):
+        print("start")
         self.currentangle = degrees
         self.x = self.magnitude * math.cos(math.radians(degrees))
+        print(self.x)
         self.y = -1 * self.magnitude * math.sin(math.radians(degrees))
+        print(self.y)
+        return
 
     def volume_thread(self):
         while True:
