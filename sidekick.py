@@ -114,7 +114,7 @@ alpharec = KaldiRecognizer(model, 16000, alphavals)
 p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
 stream.start_stream()
-
+parser.set_audio_stream(stream)
 print("\nSidekick at your service. Please wait silently for the threshold to be set based on ambient noise before use.")
 
 threshold_buffer = 1 # how many dB above ambient noise threshold will be set
@@ -139,7 +139,8 @@ while True:
             print("Your sidekick now awaits your command.")
             threshold = sum(ambientvals) / len(ambientvals) + threshold_buffer
             print("Threshold is now set at " + str(round(threshold,2)) + " dB.")
-    
+            parser.set_threshold(threshold)
+
     # send audio data to model for processing when threshold breached and shortly afterward
     elif dB > threshold or wait == True:
 
@@ -165,7 +166,7 @@ while True:
             else: # if false only a partial result returned - not useful for this application
                 pass
                 #print(rec.PartialResult()) - partial result is faster, but not accurate enough for use
-        
+              
         elif parser.state == "program":
             if prec: # if this returns true model has determined best word candidate
                 ingest(parser.state,commandrec,textrec,alpharec,programrec) 

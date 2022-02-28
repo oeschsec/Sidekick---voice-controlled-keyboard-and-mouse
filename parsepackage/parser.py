@@ -21,7 +21,7 @@ from .mouse_parser import MouseParser
 from .text_parser import TextParser
 from .command_parser import CommandParser
 from .alpha_parser import AlphaParser
-
+from .volume_parser import VolumeParser
 
 class Parser:
     def __init__(self):
@@ -47,13 +47,14 @@ class Parser:
             "at": 1500,
         }
 
-        self.states = ["text", "command", "mouse", "pause", "alpha"]
+        self.states = ["text", "command", "pause", "alpha", "volume"] #mouse
         self.steps = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
         self.mouseParser = MouseParser(self.os, self.stepmapping)
         self.textParser = TextParser(self.os, self.stepmapping)
         self.commandParser = CommandParser(self.os, self.stepmapping)
         self.alphaParser = AlphaParser(self.os)
+        self.volumeParser = VolumeParser(self.os, self.stepmapping)
 
         # nontextcommands can be fed to a speech to text model to make it work more effectively for commands
         self.nontextcommands = list(
@@ -62,6 +63,8 @@ class Parser:
             | set(self.commandParser.commandlist)
             | set(self.mouseParser.commands)
         )
+        print(self.nontextcommands)
+        print(set(self.states))
         self.alphavalues = (
             self.alphaParser.keywords
             + self.states
@@ -69,6 +72,13 @@ class Parser:
         )
 
     # ingest string that may contain multiple space delimited words, where each word is a sent to parser individually
+    def set_threshold(self, threshold):
+        self.volumeParser.set_threshold(threshold)
+
+    def set_audio_stream(self, stream):
+        self.volumeParser.set_audio_stream(stream)
+
+
     def ingest(self, words):
         # print(word.lower())
         for word in words.split(" "):
@@ -119,10 +129,17 @@ class Parser:
             elif self.command_buffer[-1] == "alpha":
                 self.state = "alpha"
                 self.command_buffer = []
-            elif self.command_buffer[-1] == "mouse":
+            elif self.command_buffer[-1] == "mouse": 
                 self.state = "mouse"
                 self.command_buffer = []
                 self.command_buffer, self.state = self.mouseParser.evaluate_mouse(
+                    self.command_buffer
+                )
+            elif self.command_buffer[-1] == "volume":
+                print("S\n~\n~\n~witch to volume\n\n\n\n\n\n")
+                self.state = "volume"
+                self.command_buffer = []
+                self.command_buffer, self.state = self.volumeParser.evaluate_volume(
                     self.command_buffer
                 )
             else:  # send command to appropriate parsing function
@@ -153,7 +170,13 @@ class Parser:
                                 self.command_buffer,
                                 self.state,
                             ) = self.mouseParser.evaluate_mouse(self.command_buffer)
-            
+                        elif self.state == "volume":
+                            (
+                                self.command_buffer,
+                                self.state,
+                            ) = self.volumeParser.evaluate_volume(self.command_buffer)            
         # stop mouse if state is switched before stopping
         if not self.mouseParser.stopMouse and self.state != "mouse":
             self.mouseParser.stopMouse = True
+        if not self.volumeParser.stopVolume and self.state != "volume":
+            self.volumeParser.stopVolume = True
