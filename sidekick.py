@@ -141,6 +141,7 @@ while True:
             threshold = sum(ambientvals) / len(ambientvals) + threshold_buffer
             print("Threshold is now set at " + str(round(threshold,2)) + " dB.")
             parser.set_threshold(threshold)
+        
 
     # send audio data to model for processing when threshold breached and shortly afterward
     elif dB > threshold or wait == True:
@@ -188,6 +189,18 @@ while True:
                 elif dB >= 35:
                     print("WOW")
                     parser.volumeParser.setVolumeCoord(90)
+                    command_buffer = []
+
+        elif parser.state == "horizontal":
+            if parser.horizontalParser.volumeStarted == True:
+                print(dB)
+                if dB < 35:
+                    print("MOM")
+                    y = parser.horizontalParser.setVolumeCoord(180)
+                    print(y)
+                elif dB >= 35:
+                    print("WOW")
+                    parser.horizontalParser.setVolumeCoord(0)
                     command_buffer = []
 
         else:

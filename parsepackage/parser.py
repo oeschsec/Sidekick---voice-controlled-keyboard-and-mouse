@@ -22,6 +22,7 @@ from .text_parser import TextParser
 from .command_parser import CommandParser
 from .alpha_parser import AlphaParser
 from .volume_parser import VolumeParser
+from .horizontal_parser import HorizontalParser
 
 class Parser:
     def __init__(self):
@@ -47,7 +48,7 @@ class Parser:
             "at": 1500,
         }
 
-        self.states = ["text", "command", "pause", "alpha", "volume"] #mouse
+        self.states = ["text", "command", "pause", "alpha", "volume", "horizontal"] #mouse
         self.steps = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
         self.mouseParser = MouseParser(self.os, self.stepmapping)
@@ -55,6 +56,7 @@ class Parser:
         self.commandParser = CommandParser(self.os, self.stepmapping)
         self.alphaParser = AlphaParser(self.os)
         self.volumeParser = VolumeParser(self.os, self.stepmapping)
+        self.horizontalParser = HorizontalParser(self.os, self.stepmapping)
 
         # nontextcommands can be fed to a speech to text model to make it work more effectively for commands
         self.nontextcommands = list(
@@ -74,9 +76,13 @@ class Parser:
     # ingest string that may contain multiple space delimited words, where each word is a sent to parser individually
     def set_threshold(self, threshold):
         self.volumeParser.set_threshold(threshold)
+        self.horizontalParser.set_threshold(threshold)
 
     def set_audio_stream(self, stream):
         self.volumeParser.set_audio_stream(stream)
+        self.horizontalParser.set_audio_stream(stream)
+
+        
 
 
     def ingest(self, words):
@@ -142,6 +148,13 @@ class Parser:
                 self.command_buffer, self.state = self.volumeParser.evaluate_volume(
                     self.command_buffer
                 )
+            elif self.command_buffer[-1] == "horizontal":
+                print("~\n~\n~\nSwitch to horizontal\n~\n~\n~\n")
+                self.state = "horizontal"
+                self.command_buffer = []
+                self.command_buffer, self.state = self.horizontalParser.evaluate_volume(
+                    self.command_buffer
+                )
             else:  # send command to appropriate parsing function
                 if len(self.command_buffer) > 0:
                     (
@@ -174,9 +187,16 @@ class Parser:
                             (
                                 self.command_buffer,
                                 self.state,
-                            ) = self.volumeParser.evaluate_volume(self.command_buffer)            
+                            ) = self.volumeParser.evaluate_volume(self.command_buffer)
+                        elif self.state == "horizontal":
+                            (
+                                self.command_buffer,
+                                self.state,
+                            ) = self.volumeParser.evaluate_volume(self.command_buffer)        
         # stop mouse if state is switched before stopping
         if not self.mouseParser.stopMouse and self.state != "mouse":
             self.mouseParser.stopMouse = True
         if not self.volumeParser.stopVolume and self.state != "volume":
+            self.volumeParser.stopVolume = True
+        if not self.volumeParser.stopVolume and self.state != "horizontal":
             self.volumeParser.stopVolume = True
