@@ -36,7 +36,7 @@ for x in x_pos:
     draw.line(line, fill="red", width=2)
     del draw
 
-for y in x_pos:
+for y in y_pos:
     draw = ImageDraw.Draw(new_image)
     #x = new_image.width / 2
     x0 = 0
