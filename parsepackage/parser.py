@@ -65,8 +65,6 @@ class Parser:
             | set(self.commandParser.commandlist)
             | set(self.mouseParser.commands)
         )
-        print(self.nontextcommands)
-        print(set(self.states))
         self.alphavalues = (
             self.alphaParser.keywords
             + self.states
@@ -101,7 +99,7 @@ class Parser:
             self.evaluate()
 
     def evaluate(self):
-
+        print("evaluate")
         if self.pause:
 
             if self.command_buffer[0] == "time":
@@ -142,14 +140,13 @@ class Parser:
                     self.command_buffer
                 )
             elif self.command_buffer[-1] == "volume":
-                print("S\n~\n~\n~witch to volume\n\n\n\n\n\n")
+                print("This was executed")
                 self.state = "volume"
                 self.command_buffer = []
                 self.command_buffer, self.state = self.volumeParser.evaluate_volume(
                     self.command_buffer
                 )
             elif self.command_buffer[-1] == "horizontal":
-                print("~\n~\n~\nSwitch to horizontal\n~\n~\n~\n")
                 self.state = "horizontal"
                 self.command_buffer = []
                 self.command_buffer, self.state = self.horizontalParser.evaluate_volume(
@@ -192,11 +189,11 @@ class Parser:
                             (
                                 self.command_buffer,
                                 self.state,
-                            ) = self.volumeParser.evaluate_volume(self.command_buffer)        
+                            ) = self.horizontalParser.evaluate_volume(self.command_buffer)        
         # stop mouse if state is switched before stopping
         if not self.mouseParser.stopMouse and self.state != "mouse":
             self.mouseParser.stopMouse = True
         if not self.volumeParser.stopVolume and self.state != "volume":
             self.volumeParser.stopVolume = True
-        if not self.volumeParser.stopVolume and self.state != "horizontal":
-            self.volumeParser.stopVolume = True
+        if not self.horizontalParser.stopVolume and self.state != "horizontal":
+            self.horizontalParser.stopVolume = True

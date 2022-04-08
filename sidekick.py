@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from errno import EHOSTDOWN
 from black import wrap_stream_for_windows
 from vosk import Model, KaldiRecognizer
+import sys
 import os
 import json
 import audioop
@@ -46,7 +47,7 @@ def setRec(state,crec,trec,arec, prec):
         return trec
     elif state == "program":
         return prec
-    elif state == "command" or state == "mouse":
+    elif state == "command" or state == "mouse" or state == "volume":
         return crec
     else:
         return arec 
@@ -77,6 +78,7 @@ def stateSwap(nextstate,crec,trec,arec, prec):
     clearRec(crec,trec,arec,prec)
 
 def ingest(currentstate,crec,trec,arec, prec):
+    #print(currentstate, crec, trec, arec, prec)
     rec = setRec(currentstate,crec,trec,arec, prec)
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
@@ -99,6 +101,16 @@ def ingest(currentstate,crec,trec,arec, prec):
     clearRec(crec,trec,arec, prec)
 
 # create wordlist for our command model so that commands will be more accurately detected
+lower_buffer = 0
+upper_buffer = 0
+if len(sys.argv) >= 2:
+    lower_buffer = sys.argv[1]
+
+if len(sys.argv) >= 3: 
+    upper_buffer = sys.argv[2]
+
+
+
 commandwords = listToList(parser.nontextcommands)
 #print(parser.nontextcommands)
 #print(commandwords)
@@ -161,7 +173,7 @@ while True:
         #print(parser.state)
         if len(data) == 0:
             break
-        
+        print(parser.state)
         if parser.state == "text":
             if trec: # if this returns true model has determined best word candidate
                 ingest(parser.state,commandrec,textrec,alpharec, programrec) 
@@ -180,16 +192,22 @@ while True:
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)                 
         
         elif parser.state == "volume":
+            #ingest(parser.state,commandrec,textrec,alpharec,programrec) 
             if parser.volumeParser.volumeStarted == True:
-                print(dB)
-                if dB < 35:
-                    print("MOM")
+                lower_threshold = threshold + float(lower_buffer)
+                upper_threshold = 50 + float(upper_buffer)
+                print(dB, lower_threshold)
+
+                if dB < 35 and dB > lower_threshold:
                     y = parser.volumeParser.setVolumeCoord(270)
-                    print(y)
-                elif dB >= 35:
-                    print("WOW")
+                elif dB >= upper_threshold:
                     parser.volumeParser.setVolumeCoord(90)
                     command_buffer = []
+                
+                ingest(parser.state,commandrec,textrec,alpharec, programrec)   
+                if parser.volumeParser.stopVolume == True:
+                    print("Setting to command")
+                    parser.state = "command"              
 
         elif parser.state == "horizontal":
             if parser.horizontalParser.volumeStarted == True:
@@ -202,6 +220,7 @@ while True:
                     print("WOW")
                     parser.horizontalParser.setVolumeCoord(0)
                     command_buffer = []
+                
 
         else:
             if crec: # if this returns true model has determined best word candidate

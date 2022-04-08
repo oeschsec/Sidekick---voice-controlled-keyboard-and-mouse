@@ -30,27 +30,7 @@ class VolumeParser:
         self.stopVolume = True
 
         self.commands = [
-            "stop",
-            "snail",
-            "slow",
-            "fast",
-            "medium",
-            "up",
-            "down",
-            "counter",
-            "clock",
-            "north",
-            "south",
-            "east",
-            "west",
-            "one",
-            "two",
-            "three",
-            "four",
-            "northeast",
-            "northwest",
-            "southeast",
-            "southwest",
+            "stop"
         ]
     def set_threshold(self, threshold):
         self.threshold = threshold
@@ -67,7 +47,12 @@ class VolumeParser:
             self.magnitude = 5  # in pixels
             self.sleep = 0.2
             self.setVolumeCoord(90)
-        
+
+        if len(command_buffer) != 0:
+            if command_buffer[0] == 'stop':
+                self.stopVolume = True
+                self.volumeStarted = False
+
         data = self.stream.read(4000,exception_on_overflow = False)
         # calculate decibels
         dB = 20 * math.log10(audioop.rms(data,2)+1)
@@ -85,6 +70,7 @@ class VolumeParser:
         if not self.volumeStarted:
             self.startVolume()
 
+
         return [command_buffer, "volume"]
 
     def startVolume(self):
@@ -94,12 +80,10 @@ class VolumeParser:
         self.volumeStarted = True
 
     def setVolumeCoord(self, degrees):
-        print("start")
-        self.currentangle = degrees
-        self.x = self.magnitude * math.cos(math.radians(degrees))
-        print(self.x)
-        self.y = -1 * self.magnitude * math.sin(math.radians(degrees))
-        print(self.y)
+        if self.stopVolume == False:
+            self.currentangle = degrees
+            self.x = self.magnitude * math.cos(math.radians(degrees))
+            self.y = -1 * self.magnitude * math.sin(math.radians(degrees))
         return
 
     def volume_thread(self):
