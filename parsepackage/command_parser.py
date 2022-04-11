@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from actions import *
+from screenshot import *
 import string
 
 
@@ -125,6 +126,7 @@ class CommandParser:
             "west",
             "save",
             "scroll",
+            "screenshot",
         ]
 
         self.commandlist = (
@@ -548,6 +550,11 @@ class CommandParser:
                     return self.handle_invalid_command(
                         command_buffer[1], command_buffer
                     )
+        elif command_buffer[0] == "screenshot":
+            if len(command_buffer) == 1:
+                w = 1920
+                h = 1080
+                
         else:
             command_buffer = []
 
