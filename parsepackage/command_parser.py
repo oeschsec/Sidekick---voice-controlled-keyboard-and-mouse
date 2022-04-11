@@ -18,7 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from actions import *
 from screenshot import *
 import string
-
+import multiprocessing as mp
+from os.path import exists
 
 class CommandParser:
     def __init__(self, system, steps):
@@ -554,7 +555,15 @@ class CommandParser:
             if len(command_buffer) == 1:
                 w = 1920
                 h = 1080
+                grid = "Images/{}x{}_grid.png".format(w,h)
+                if not exists(grid):
+                    create_gridlines(w, h)
+                take_screenshot(w, h, grid)
                 
+                mp.set_start_method('spawn')
+                p = mp.Process(target=take_screenshot, args=(w, h, grid))
+                p.start()
+                p.kill()
         else:
             command_buffer = []
 

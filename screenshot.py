@@ -67,14 +67,5 @@ def take_screenshot(w, h, grid_file):
     im = cv2.imread("Images/tmp.png") 
     imS = cv2.resize(im, (w, h))                  
     cv2.imshow("output", imS)
-    k = cv2.waitKey(33)        
-
-
-
-def main():
-    w = 1920
-    h = 1080
-    while True:
-        take_screenshot(w, h, create_gridlines(w, h))  
-
-
+    k = cv2.waitKey(1000)       
+    return
