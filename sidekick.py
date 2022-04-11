@@ -203,7 +203,6 @@ while True:
                 elif dB >= upper_threshold:
                     parser.volumeParser.setVolumeCoord(90)
                     command_buffer = []
-                
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)   
                 if parser.volumeParser.stopVolume == True:
                     print("Setting to command")

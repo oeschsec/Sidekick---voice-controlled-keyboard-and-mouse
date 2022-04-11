@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from actions import *
 from screenshot import *
 import string
-import multiprocessing as mp
+import threading
 from os.path import exists
 
 class CommandParser:
@@ -552,18 +552,17 @@ class CommandParser:
                         command_buffer[1], command_buffer
                     )
         elif command_buffer[0] == "screenshot":
-            if len(command_buffer) == 1:
-                w = 1920
-                h = 1080
-                grid = "Images/{}x{}_grid.png".format(w,h)
-                if not exists(grid):
-                    create_gridlines(w, h)
-                take_screenshot(w, h, grid)
-                
-                mp.set_start_method('spawn')
-                p = mp.Process(target=take_screenshot, args=(w, h, grid))
-                p.start()
-                p.kill()
+            print(command_buffer)
+            w = 1920
+            h = 1080
+            grid = "Images/{}x{}_grid.png".format(w,h)
+            if not exists(grid):
+                create_gridlines(w, h)
+            
+            p = threading.Thread(target=take_screenshot, args=(w, h, grid))
+            p.start()
+            command_buffer=[]
+
         else:
             command_buffer = []
 

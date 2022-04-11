@@ -54,7 +54,7 @@ def create_gridlines(w, h):
 
 def take_screenshot(w, h, grid_file):
     cv2.namedWindow("output", cv2.WINDOW_NORMAL)    
-    
+    print("werewrewrwerwerwerwrwerwerwerwe")
     image = pyautogui.screenshot()
     image = cv2.cvtColor(np.array(image),
                         cv2.COLOR_RGB2BGR)
@@ -67,5 +67,6 @@ def take_screenshot(w, h, grid_file):
     im = cv2.imread("Images/tmp.png") 
     imS = cv2.resize(im, (w, h))                  
     cv2.imshow("output", imS)
-    k = cv2.waitKey(1000)       
-    return
+    k = cv2.waitKey(1000)  
+    cv2.destroyAllWindows()
+    exit()
