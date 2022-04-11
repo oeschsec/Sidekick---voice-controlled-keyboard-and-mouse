@@ -30,6 +30,7 @@ class Parser:
         self.state = "command"
         self.command_buffer = []
         self.pause = False
+        self.dB = 0
 
         self.stepmapping = {
             "one": 10,
@@ -144,7 +145,8 @@ class Parser:
                 self.state = "volume"
                 self.command_buffer = []
                 self.command_buffer, self.state = self.volumeParser.evaluate_volume(
-                    self.command_buffer
+                    self.command_buffer,
+                    self.dB
                 )
             elif self.command_buffer[-1] == "horizontal":
                 self.state = "horizontal"
@@ -184,7 +186,7 @@ class Parser:
                             (
                                 self.command_buffer,
                                 self.state,
-                            ) = self.volumeParser.evaluate_volume(self.command_buffer)
+                            ) = self.volumeParser.evaluate_volume(self.command_buffer, self.dB)
                         elif self.state == "horizontal":
                             (
                                 self.command_buffer,

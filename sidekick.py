@@ -194,15 +194,18 @@ while True:
         elif parser.state == "volume":
             #ingest(parser.state,commandrec,textrec,alpharec,programrec) 
             if parser.volumeParser.volumeStarted == True:
+                parser.dB = dB
+                
                 lower_threshold = threshold + float(lower_buffer)
                 upper_threshold = 50 + float(upper_buffer)
+
+                parser.volumeParser.thresh.append(lower_threshold)
+                parser.volumeParser.thresh.append((upper_threshold-lower_threshold) + lower_threshold)
+                parser.volumeParser.thresh.append(upper_threshold)
                 print(dB, lower_threshold)
 
-                if dB < 35 and dB > lower_threshold:
-                    y = parser.volumeParser.setVolumeCoord(270)
-                elif dB >= upper_threshold:
-                    parser.volumeParser.setVolumeCoord(90)
-                    command_buffer = []
+                parser.volumeParser.evaluate_volume(parser.command_buffer, parser.dB)
+
                 
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)   
                 if parser.volumeParser.stopVolume == True:

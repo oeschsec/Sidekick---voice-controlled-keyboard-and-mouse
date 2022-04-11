@@ -28,9 +28,13 @@ class VolumeParser:
         self.os = system
         self.steps = steps
         self.stopVolume = True
+        self.dB = 0.0
+        self.thresh = [0, 0, 0]
 
         self.commands = [
-            "stop"
+            "stop",
+            "knocks", #left and right
+            "math" #up and down
         ]
     def set_threshold(self, threshold):
         self.threshold = threshold
@@ -40,7 +44,7 @@ class VolumeParser:
     def set_audio_stream(self, stream):
         self.stream = stream
 
-    def evaluate_volume(self, command_buffer):
+    def evaluate_volume(self, command_buffer, dB):
         if not self.volumeStarted:
             
             self.stopVolume = False
@@ -52,19 +56,25 @@ class VolumeParser:
             if command_buffer[0] == 'stop':
                 self.stopVolume = True
                 self.volumeStarted = False
+            if command_buffer[0] == 'math':
+
+                if self.dB < 35 and self.dB > self.thresh[0]:
+                    self.setVolumeCoord(270)
+                elif self.dB >= self.thresh[2]:
+                    self.setVolumeCoord(90)
+                    command_buffer = []
+                
+            if command_buffer[0] == 'knocks':
+                if self.dB < 35 and self.dB > self.thresh[0]:
+                    self.setVolumeCoord(0)
+                elif self.dB >= self.thresh[2]:
+                    self.setVolumeCoord(180)
+                    command_buffer = []
 
         data = self.stream.read(4000,exception_on_overflow = False)
         # calculate decibels
         dB = 20 * math.log10(audioop.rms(data,2)+1)
 
-       # if len(command_buffer) > 0:     
-        """print("Volume " + str(dB))
-        if dB < 45:
-            print("MOM")
-            self.setVolumeCoord(self.currentangle + 15)
-        elif dB >= 45:
-            print("WOW")
-            self.setVolumeCoord(self.currentangle - 15)"""
         command_buffer = []
 
         if not self.volumeStarted:
