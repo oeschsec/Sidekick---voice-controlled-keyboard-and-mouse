@@ -213,11 +213,9 @@ while True:
             if parser.horizontalParser.volumeStarted == True:
                 print(dB)
                 if dB < 35:
-                    print("MOM")
                     y = parser.horizontalParser.setVolumeCoord(180)
                     print(y)
                 elif dB >= 35:
-                    print("WOW")
                     parser.horizontalParser.setVolumeCoord(0)
                     command_buffer = []
                 
