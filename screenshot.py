@@ -54,7 +54,6 @@ def create_gridlines(w, h):
 
 def take_screenshot(w, h, grid_file):
     cv2.namedWindow("output", cv2.WINDOW_NORMAL)    
-    print("werewrewrwerwerwerwrwerwerwerwe")
     image = pyautogui.screenshot()
     image = cv2.cvtColor(np.array(image),
                         cv2.COLOR_RGB2BGR)
