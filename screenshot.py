@@ -52,20 +52,21 @@ def create_gridlines(w, h):
 #https://www.geeksforgeeks.org/overlay-an-image-on-another-image-in-python/
 #https://www.codegrepper.com/code-examples/python/display+image+python+small+screen
 
-def take_screenshot(w, h, grid_file):
-    cv2.namedWindow("output", cv2.WINDOW_NORMAL)    
-    image = pyautogui.screenshot()
-    image = cv2.cvtColor(np.array(image),
-                        cv2.COLOR_RGB2BGR)
-    cv2.imwrite("Images/screenshot.png", image)
-    im1 = Image.open("Images/screenshot.png").convert("RGBA")
-    im2 = Image.open(grid_file).convert("RGBA")
-    im1.paste(im2, (0,0), mask = im2)
-    # Displaying the image
-    im1.save("Images/tmp.png")
-    im = cv2.imread("Images/tmp.png") 
-    imS = cv2.resize(im, (w, h))                  
-    cv2.imshow("output", imS)
-    k = cv2.waitKey(1000)  
+def take_screenshot(w, h, grid_file, stop):
+    while not stop[0]:
+        cv2.namedWindow("output", cv2.WINDOW_NORMAL)    
+        image = pyautogui.screenshot()
+        image = cv2.cvtColor(np.array(image),
+                            cv2.COLOR_RGB2BGR)
+        cv2.imwrite("Images/screenshot.png", image)
+        im1 = Image.open("Images/screenshot.png").convert("RGBA")
+        im2 = Image.open(grid_file).convert("RGBA")
+        im1.paste(im2, (0,0), mask = im2)
+        # Displaying the image
+        im1.save("Images/tmp.png")
+        im = cv2.imread("Images/tmp.png") 
+        imS = cv2.resize(im, (w, h))                  
+        cv2.imshow("output", imS)
+        k = cv2.waitKey(17)  
     cv2.destroyAllWindows()
     exit()

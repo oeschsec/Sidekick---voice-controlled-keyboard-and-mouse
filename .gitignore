@@ -2,3 +2,5 @@ __pycache__/
 model*/*
 env/*
 .DS_Store
+Images/tmp.png
+Images/screenshot.png

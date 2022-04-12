@@ -26,7 +26,8 @@ class CommandParser:
         self.os = system
         self.steps = steps 
         self.tempvar = ""
-
+        self.stop_screenshot = [False]
+        self.screenshot_started = False
         self.keys = ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','alt','delete','control','shift','tab','apple']
 
@@ -552,15 +553,23 @@ class CommandParser:
                         command_buffer[1], command_buffer
                     )
         elif command_buffer[0] == "screenshot":
-            print(command_buffer)
-            w = 1920
-            h = 1080
-            grid = "Images/{}x{}_grid.png".format(w,h)
-            if not exists(grid):
-                create_gridlines(w, h)
+            if self.screenshot_started == False and self.stop_screenshot[0] == True:
+                self.stop_screenshot[0] = False
             
-            p = threading.Thread(target=take_screenshot, args=(w, h, grid))
-            p.start()
+            if self.screenshot_started == False:
+                print(command_buffer)
+                w = 1920
+                h = 1080
+                grid = "Images/{}x{}_grid.png".format(w,h)
+                if not exists(grid):
+                    create_gridlines(w, h)
+                
+                p = threading.Thread(target=take_screenshot, args=(w, h, grid, self.stop_screenshot))
+                p.start()
+                self.screenshot_started = True
+            else:
+                self.stop_screenshot[0] = True
+                self.screenshot_started = False
             command_buffer=[]
 
         else:
