@@ -68,12 +68,12 @@ def stateSwap(nextstate,crec,trec,arec, prec):
 
         if res["text"] == nextstate:
             swap = True
-    elif res["program"] != "":
+    """ elif res["program"] != "":
         if swap:
             parser.ingest(res["program"]) 
 
         if res["program"] == nextstate:
-            swap = True    
+            swap = True """
     
     clearRec(crec,trec,arec,prec)
 

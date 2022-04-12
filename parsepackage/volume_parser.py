@@ -36,7 +36,10 @@ class VolumeParser:
         self.commands = [
             "stop",
             "left", #left and right
-            "up" #up and down
+            "up", #up and down
+            "slow",
+            "medium",
+            "fast",
         ]
     def set_threshold(self, threshold):
         self.threshold = threshold
@@ -51,11 +54,11 @@ class VolumeParser:
         
         if not self.volumeStarted:
             self.stopVolume = False
-            self.magnitude = 5  # in pixels
+            self.magnitude = 10  # in pixels
             self.sleep = 0.2
             self.setVolumeCoord(90)
+            print("Starting...")
 
-        print(self.dB)
         if len(command_buffer) != 0:
             if command_buffer[0] == 'stop':
                 self.stopVolume = True
@@ -68,6 +71,13 @@ class VolumeParser:
             if command_buffer[0] == 'left':
                 self.vert = False
                 self.horiz = True
+
+            if command_buffer[0] == "slow":
+                self.magnitude = 5
+            if command_buffer[0] == "medium":
+                self.magnitude = 10
+            if command_buffer[0] == "fast":
+                self.magnitude = 20
 
         # calculate decibels
         data = self.stream.read(4000,exception_on_overflow = False)
