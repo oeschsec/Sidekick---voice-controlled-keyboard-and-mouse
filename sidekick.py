@@ -206,6 +206,7 @@ while True:
 
                 parser.volumeParser.evaluate_volume(parser.command_buffer, parser.dB)
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)   
+                
                 if parser.volumeParser.stopVolume == True:
                     print("Setting to command")
                     parser.state = "command"  

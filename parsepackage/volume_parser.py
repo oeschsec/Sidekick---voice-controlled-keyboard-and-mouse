@@ -30,11 +30,13 @@ class VolumeParser:
         self.stopVolume = True
         self.dB = 0.0
         self.thresh = [0, 0, 0]
+        self.vert = True
+        self.horiz = False
 
         self.commands = [
             "stop",
-            "knocks", #left and right
-            "math" #up and down
+            "left", #left and right
+            "up" #up and down
         ]
     def set_threshold(self, threshold):
         self.threshold = threshold
@@ -45,35 +47,50 @@ class VolumeParser:
         self.stream = stream
 
     def evaluate_volume(self, command_buffer, dB):
+        
+        
         if not self.volumeStarted:
-            
             self.stopVolume = False
             self.magnitude = 5  # in pixels
             self.sleep = 0.2
             self.setVolumeCoord(90)
 
+        print(self.dB)
         if len(command_buffer) != 0:
             if command_buffer[0] == 'stop':
                 self.stopVolume = True
                 self.volumeStarted = False
-            if command_buffer[0] == 'math':
+            
+            if command_buffer[0] == 'up':
+                self.vert = True
+                self.horiz = False
+            
+            if command_buffer[0] == 'left':
+                self.vert = False
+                self.horiz = True
 
-                if self.dB < 35 and self.dB > self.thresh[0]:
-                    self.setVolumeCoord(270)
-                elif self.dB >= self.thresh[2]:
-                    self.setVolumeCoord(90)
-                    command_buffer = []
-                
-            if command_buffer[0] == 'knocks':
-                if self.dB < 35 and self.dB > self.thresh[0]:
-                    self.setVolumeCoord(0)
-                elif self.dB >= self.thresh[2]:
-                    self.setVolumeCoord(180)
-                    command_buffer = []
-
-        data = self.stream.read(4000,exception_on_overflow = False)
         # calculate decibels
-        dB = 20 * math.log10(audioop.rms(data,2)+1)
+        data = self.stream.read(4000,exception_on_overflow = False)
+        self.dB = 20 * math.log10(audioop.rms(data,2)+1)
+        
+        if self.vert:
+            print("vert")
+            if self.dB < 35 and self.dB > self.thresh[0]:
+                self.setVolumeCoord(270)
+            elif self.dB >= self.thresh[2]:
+                self.setVolumeCoord(90)
+                command_buffer = []
+            
+        if self.horiz:
+            print("horiz")
+            if self.dB < 35 and self.dB > self.thresh[0]:
+                self.setVolumeCoord(0)
+            elif self.dB >= self.thresh[2]:
+                self.setVolumeCoord(180)
+                command_buffer = []
+
+       
+       
 
         command_buffer = []
 
