@@ -204,7 +204,11 @@ while True:
                 parser.volumeParser.thresh.append(upper_threshold)
                 print(dB, lower_threshold)
 
-                parser.volumeParser.evaluate_volume(parser.command_buffer, parser.dB)            
+                parser.volumeParser.evaluate_volume(parser.command_buffer, parser.dB)
+                ingest(parser.state,commandrec,textrec,alpharec, programrec)   
+                if parser.volumeParser.stopVolume == True:
+                    print("Setting to command")
+                    parser.state = "command"  
 
         elif parser.state == "horizontal":
             if parser.horizontalParser.volumeStarted == True:
