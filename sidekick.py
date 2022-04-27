@@ -32,6 +32,8 @@ if not os.path.exists("model"):
     exit (1)
 
 import pyaudio
+import json
+import json
 
 parser = parser.Parser() 
 
@@ -99,6 +101,20 @@ def ingest(currentstate,crec,trec,arec, prec):
                 parser.ingest(text)"""
     
     clearRec(crec,trec,arec, prec)
+
+def load_config():
+    f =open("sidekick.cfg")
+    config = json.load(f)
+    f.close()
+    return config
+
+config = load_config()
+
+# Set the screen resolution for screenshots from config file
+resolution = config['resolution'].split("x")
+screen_size = (int(resolution[0]), int(resolution[1]))
+print(screen_size)
+parser.set_screen_size(screen_size)
 
 # create wordlist for our command model so that commands will be more accurately detected
 lower_buffer = 0

@@ -81,7 +81,8 @@ class Parser:
         self.volumeParser.set_audio_stream(stream)
         self.horizontalParser.set_audio_stream(stream)
 
-        
+    def set_screen_size(self, screen_size):
+        self.commandParser.screen_size = screen_size 
 
 
     def ingest(self, words):
