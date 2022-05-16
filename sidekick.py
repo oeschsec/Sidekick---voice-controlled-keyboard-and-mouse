@@ -70,12 +70,6 @@ def stateSwap(nextstate,crec,trec,arec, prec):
 
         if res["text"] == nextstate:
             swap = True
-    """ elif res["program"] != "":
-        if swap:
-            parser.ingest(res["program"]) 
-
-        if res["program"] == nextstate:
-            swap = True """
     
     clearRec(crec,trec,arec,prec)
 
@@ -90,15 +84,6 @@ def ingest(currentstate,crec,trec,arec, prec):
                 stateSwap(text,crec,trec,arec, prec)
             else:
                 parser.ingest(text) 
-    """
-    I think this breaks things
-    if res["program"] != "":
-        for text in res["program"].split(" "):
-            if text in ["text","alpha","command", "program"] and text != currentstate:
-                parser.ingest(text)
-                stateSwap(text,crec,trec,arec, prec)
-            else:
-                parser.ingest(text)"""
     
     clearRec(crec,trec,arec, prec)
 
@@ -128,8 +113,6 @@ if len(sys.argv) >= 3:
 
 
 commandwords = listToList(parser.nontextcommands)
-#print(parser.nontextcommands)
-#print(commandwords)
 alphavals = listToList(parser.alphavalues)
 
 model = Model("model")
@@ -186,7 +169,6 @@ while True:
         prec = programrec.AcceptWaveform(data)
         crec = commandrec.AcceptWaveform(data)
         arec = alpharec.AcceptWaveform(data)
-        #print(parser.state)
         if len(data) == 0:
             break
         print(parser.state)
@@ -218,7 +200,7 @@ while True:
                 parser.volumeParser.thresh.append(lower_threshold)
                 parser.volumeParser.thresh.append((upper_threshold-lower_threshold) + lower_threshold)
                 parser.volumeParser.thresh.append(upper_threshold)
-                print(dB, lower_threshold)
+                print(dB, upper_threshold)
 
                 parser.volumeParser.evaluate_volume(parser.command_buffer, parser.dB)
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)   

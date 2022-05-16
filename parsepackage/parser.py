@@ -49,7 +49,7 @@ class Parser:
             "at": 1500,
         }
 
-        self.states = ["text", "command", "pause", "alpha", "volume", "horizontal"] #mouse
+        self.states = ["text", "command", "pause", "alpha", "volume", "horizontal", "mouse"] #mouse
         self.steps = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
         self.mouseParser = MouseParser(self.os, self.stepmapping)
