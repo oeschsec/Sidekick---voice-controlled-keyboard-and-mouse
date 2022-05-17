@@ -74,7 +74,6 @@ def stateSwap(nextstate,crec,trec,arec, prec):
     clearRec(crec,trec,arec,prec)
 
 def ingest(currentstate,crec,trec,arec, prec):
-    #print(currentstate, crec, trec, arec, prec)
     rec = setRec(currentstate,crec,trec,arec, prec)
     res = json.loads(rec.Result()) # this not only returns the most accurate result, but also flushes the list of words stored internally
     if res["text"] != "":
@@ -200,21 +199,17 @@ while True:
                 parser.volumeParser.thresh.append(lower_threshold)
                 parser.volumeParser.thresh.append((upper_threshold-lower_threshold) + lower_threshold)
                 parser.volumeParser.thresh.append(upper_threshold)
-                print(dB, upper_threshold)
 
                 parser.volumeParser.evaluate_volume(parser.command_buffer, parser.dB)
                 ingest(parser.state,commandrec,textrec,alpharec, programrec)   
                 
                 if parser.volumeParser.stopVolume == True:
-                    print("Setting to command")
                     parser.state = "command"  
 
         elif parser.state == "horizontal":
             if parser.horizontalParser.volumeStarted == True:
-                print(dB)
                 if dB < 35:
                     y = parser.horizontalParser.setVolumeCoord(180)
-                    print(y)
                 elif dB >= 35:
                     parser.horizontalParser.setVolumeCoord(0)
                     command_buffer = []

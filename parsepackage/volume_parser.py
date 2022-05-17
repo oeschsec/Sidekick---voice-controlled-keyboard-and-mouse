@@ -84,7 +84,6 @@ class VolumeParser:
         self.dB = 20 * math.log10(audioop.rms(data,2)+1)
         
         if self.vert:
-            print("vert")
             if self.dB < 35 and self.dB > self.thresh[0]:
                 self.setVolumeCoord(270)
             elif self.dB >= self.thresh[2]:
@@ -92,7 +91,6 @@ class VolumeParser:
                 command_buffer = []
             
         if self.horiz:
-            print("horiz")
             if self.dB < 35 and self.dB > self.thresh[0]:
                 self.setVolumeCoord(0)
             elif self.dB >= self.thresh[2]:
