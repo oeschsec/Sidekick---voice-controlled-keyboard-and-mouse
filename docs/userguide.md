@@ -59,7 +59,7 @@ Some commands are stateless, in that they function no matter what state/mode you
 
 #### New Stateful commands
 - `screenshot` opens a window that shows a real time screenshot with a red grid overlay. This overlay corresponds to the grid-based mouse control. To turn of screenshot, say the `screenshot` keyword again
-- `overlay` overlays a red grid over the entire screen. To turn of the overlay, close the window manually
+- `overlay` overlays a red grid over the entire screen. To turn off the overlay, close the window manually
 
 
 #### Examples
