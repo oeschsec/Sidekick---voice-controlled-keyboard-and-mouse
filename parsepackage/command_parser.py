@@ -16,20 +16,15 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from actions import *
-from screenshot import *
-from overlay import overlay
 import string
-import threading
-from os.path import exists
+
 
 class CommandParser:
     def __init__(self, system, steps):
         self.os = system
         self.steps = steps 
         self.tempvar = ""
-        self.stop_screenshot = [False]
-        self.screenshot_started = False
-        self.screen_size = (1920, 1080)
+
         self.keys = ['a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','alt','delete','control','shift','tab','apple']
 
@@ -130,8 +125,6 @@ class CommandParser:
             "west",
             "save",
             "scroll",
-            "screenshot",
-            "over",
         ]
 
         self.commandlist = (
@@ -388,6 +381,36 @@ class CommandParser:
             else:
                 hotKeyPress(["ctrl", "s"])
             command_buffer = []
+        elif command_buffer[0] == "line": 
+            hotKeyPress(["end"])
+            hotKeyPress(["shift", "home"])
+            command_buffer = []
+        elif command_buffer[0] == "copy line": 
+            hotKeyPress(["end"])
+            hotKeyPress(["shift", "home"])
+            if self.os == "Darwin":
+                hotKeyPress(["command", "c"])
+            else:
+                hotKeyPress(["ctrl", "c"])
+            command_buffer = []
+        elif command_buffer[0] == "cut line": 
+            hotKeyPress(["end"])
+            hotKeyPress(["shift", "home"])
+            if self.os == "Darwin":
+                hotKeyPress(["command", "x"])
+            else:
+                hotKeyPress(["ctrl", "x"])
+            command_buffer = []
+        elif command_buffer[0] == "loop": 
+            pyautogui.write("for (int i = 0; i < N; i++) {")
+            hotKeyPress(["enter"])
+            pyautogui.write("continue;")
+            hotKeyPress(["enter"])
+            pyautogui.write("}")
+            hotKeyPress(["enter"])
+            hotKeyPress(["up", "up", "end"])
+            command_buffer = []
+        
         elif command_buffer[0] == "switch":
 
             if self.os == "Darwin":
@@ -555,36 +578,6 @@ class CommandParser:
                     return self.handle_invalid_command(
                         command_buffer[1], command_buffer
                     )
-        elif command_buffer[0] == "screenshot":
-            if self.screenshot_started == False and self.stop_screenshot[0] == True:
-                self.stop_screenshot[0] = False
-            
-            if self.screenshot_started == False:
-                print(command_buffer)
-                w = self.screen_size[0]
-                h = self.screen_size[1]
-                grid = "Images/{}x{}_grid.png".format(w,h)
-                if not exists(grid):
-                    create_gridlines(w, h)
-                
-                p = threading.Thread(target=take_screenshot, args=(w, h, grid, self.stop_screenshot))
-                p.start()
-                self.screenshot_started = True
-            else:
-                self.stop_screenshot[0] = True
-                self.screenshot_started = False
-            command_buffer=[]
-        
-        elif command_buffer[0] == "over":
-            print("Showing grid overlay. Close the window manually to continue using Sidekick.")
-            w = self.screen_size[0]
-            h = self.screen_size[1]
-            grid = "Images/{}x{}_grid.png".format(w,h)
-            if not exists(grid):
-                create_gridlines(w, h)           
-            overlay(grid)
-            command_buffer=[]
-
         else:
             command_buffer = []
 
