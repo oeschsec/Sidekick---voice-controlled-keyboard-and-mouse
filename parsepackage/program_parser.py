@@ -127,7 +127,7 @@ class ProgramParser:
         elif text == "mod":
             text = text.replace("mod", "%")
         elif text == "assign":
-            text = text.replace("assign", "==")
+            text = text.replace("assign", "=")
         elif text == "same":
             text = text.replace("same", "===")
 
