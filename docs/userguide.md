@@ -7,6 +7,7 @@ Sidekick takes voice commands and converts them to actions on the computer. It u
 - `text` - this mode transcribes spoken speech to text
 - `alpha` - this mode provides the ability to write individual letters, numbers, and punctuation
 - `pause` - in this mode no commands are processed (convenient if afk). 
+- `volume` - this mode allows the user to control the mouse with the volume of their voice
 
 In each mode certain keywords are linked to certain actions. To switch between modes, simply say `command`, `mouse`, `text`, or `alpha`. Say `pause` once to pause. Say `time to work` to restart back in the `command` state. 
 
@@ -55,6 +56,11 @@ Some commands are stateless, in that they function no matter what state/mode you
 - `key` + lower case letter - hold letter - can be useful for game if want to just hold button down (ex: `key a w stop`) will hold down `a` until you say `w`, hold down `w` until you say `stop`and then exit that command
 - `hold` - holds down left mouse button until you say another word - useful for drag and drop or on Mac when need to hold and release to switch windows
 - `hot` - hot key press (ex: `hot control alt delete go` presses `ctrl alt delete`) - using the word `apple` for the command key (ex: `hot apple f go` presses `command f`)
+
+#### New Stateful commands
+- `screenshot` opens a window that shows a real time screenshot with a red grid overlay. This overlay corresponds to the grid-based mouse control. To turn of screenshot, say the `screenshot` keyword again
+- `overlay` overlays a red grid over the entire screen. To turn off the overlay, close the window manually
+
 
 #### Examples
 
@@ -116,3 +122,15 @@ The alpha mode enables punctuation as well as single alphanumeric characters.
 #### Examples
 
 - `cap hello alpha comma text how are you alpha question` - will produce the text 'Hello, how are you?'
+
+## Volume
+Volume mode allows the mouse to be controlled using the volume of your voice
+- `up` switch to vertical movement (default)
+- `left` switch to horizontal movement
+- `slow` mouse moves at a slow speed
+- `medium` mouse moves at a medium speed (default)
+- `fast` mouse moves at a fast speed
+- `stop` exits to command mode
+
+
+

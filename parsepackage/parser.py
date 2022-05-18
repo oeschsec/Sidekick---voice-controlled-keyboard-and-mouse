@@ -17,11 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from actions import *
 import platform
+
+from parsepackage.program_parser import ProgramParser
 from .mouse_parser import MouseParser
 from .text_parser import TextParser
 from .command_parser import CommandParser
 from .alpha_parser import AlphaParser
-
+from .volume_parser import VolumeParser
+from .horizontal_parser import HorizontalParser
 
 class Parser:
     def __init__(self):
@@ -29,6 +32,7 @@ class Parser:
         self.state = "command"
         self.command_buffer = []
         self.pause = False
+        self.dB = 0
 
         self.stepmapping = {
             "one": 10,
@@ -47,13 +51,16 @@ class Parser:
             "at": 1500,
         }
 
-        self.states = ["text", "command", "mouse", "pause", "alpha"]
+        self.states = ["text", "command", "pause", "alpha", "volume", "horizontal", "mouse"] #mouse
         self.steps = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
         self.mouseParser = MouseParser(self.os, self.stepmapping)
         self.textParser = TextParser(self.os, self.stepmapping)
         self.commandParser = CommandParser(self.os, self.stepmapping)
+        self.programParser = ProgramParser(self.os)
         self.alphaParser = AlphaParser(self.os)
+        self.volumeParser = VolumeParser(self.os, self.stepmapping)
+        self.horizontalParser = HorizontalParser(self.os, self.stepmapping)
 
         # nontextcommands can be fed to a speech to text model to make it work more effectively for commands
         self.nontextcommands = list(
@@ -69,6 +76,18 @@ class Parser:
         )
 
     # ingest string that may contain multiple space delimited words, where each word is a sent to parser individually
+    def set_threshold(self, threshold):
+        self.volumeParser.set_threshold(threshold)
+        self.horizontalParser.set_threshold(threshold)
+
+    def set_audio_stream(self, stream):
+        self.volumeParser.set_audio_stream(stream)
+        self.horizontalParser.set_audio_stream(stream)
+
+    def set_screen_size(self, screen_size):
+        self.commandParser.screen_size = screen_size 
+
+
     def ingest(self, words):
         # print(word.lower())
         for word in words.split(" "):
@@ -85,7 +104,7 @@ class Parser:
             self.evaluate()
 
     def evaluate(self):
-
+        print("evaluate")
         if self.pause:
 
             if self.command_buffer[0] == "time":
@@ -113,13 +132,30 @@ class Parser:
             elif self.command_buffer[-1] == "text":
                 self.state = "text"
                 self.command_buffer = []
+            elif self.command_buffer[-1] == "code":
+                self.state = "program"
+                self.command_buffer = []
             elif self.command_buffer[-1] == "alpha":
                 self.state = "alpha"
                 self.command_buffer = []
-            elif self.command_buffer[-1] == "mouse":
+            elif self.command_buffer[-1] == "mouse": 
                 self.state = "mouse"
                 self.command_buffer = []
                 self.command_buffer, self.state = self.mouseParser.evaluate_mouse(
+                    self.command_buffer
+                )
+            elif self.command_buffer[-1] == "volume":
+                print("This was executed")
+                self.state = "volume"
+                self.command_buffer = []
+                self.command_buffer, self.state = self.volumeParser.evaluate_volume(
+                    self.command_buffer,
+                    self.dB
+                )
+            elif self.command_buffer[-1] == "horizontal":
+                self.state = "horizontal"
+                self.command_buffer = []
+                self.command_buffer, self.state = self.horizontalParser.evaluate_volume(
                     self.command_buffer
                 )
             else:  # send command to appropriate parsing function
@@ -137,6 +173,10 @@ class Parser:
                             self.command_buffer = self.textParser.evaluate_text(
                                 self.command_buffer
                             )
+                        elif self.state == "program":
+                            self.command_buffer = self.programParser.evaluate_text(
+                                self.command_buffer
+                            )
                         elif self.state == "alpha":
                             self.command_buffer = self.alphaParser.evaluate_text(
                                 self.command_buffer
@@ -146,7 +186,20 @@ class Parser:
                                 self.command_buffer,
                                 self.state,
                             ) = self.mouseParser.evaluate_mouse(self.command_buffer)
-            
+                        elif self.state == "volume":
+                            (
+                                self.command_buffer,
+                                self.state,
+                            ) = self.volumeParser.evaluate_volume(self.command_buffer, self.dB)
+                        elif self.state == "horizontal":
+                            (
+                                self.command_buffer,
+                                self.state,
+                            ) = self.horizontalParser.evaluate_volume(self.command_buffer)        
         # stop mouse if state is switched before stopping
         if not self.mouseParser.stopMouse and self.state != "mouse":
             self.mouseParser.stopMouse = True
+        if not self.volumeParser.stopVolume and self.state != "volume":
+            self.volumeParser.stopVolume = True
+        if not self.horizontalParser.stopVolume and self.state != "horizontal":
+            self.horizontalParser.stopVolume = True
