@@ -130,7 +130,6 @@ class ProgramParser:
             text = text.replace("assign", "=")
         elif text == "same":
             text = text.replace("same", "===")
-
         return text
 
     def evaluate_text(self, command_buffer):
@@ -144,6 +143,7 @@ class ProgramParser:
         else:
             for i in range(0, len(command_buffer)):
                 # some punctuation includes backspace and space after - other does not
+    
                 if command_buffer[i] in self.punctuation:
                     writeToScreen(self.insert_punctuation(command_buffer[i]))
                 elif command_buffer[i] in self.numbers:

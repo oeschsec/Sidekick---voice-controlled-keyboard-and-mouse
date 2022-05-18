@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from actions import *
 import platform
+
+from parsepackage.program_parser import ProgramParser
 from .mouse_parser import MouseParser
 from .text_parser import TextParser
 from .command_parser import CommandParser
@@ -55,6 +57,7 @@ class Parser:
         self.mouseParser = MouseParser(self.os, self.stepmapping)
         self.textParser = TextParser(self.os, self.stepmapping)
         self.commandParser = CommandParser(self.os, self.stepmapping)
+        self.programParser = ProgramParser(self.os)
         self.alphaParser = AlphaParser(self.os)
         self.volumeParser = VolumeParser(self.os, self.stepmapping)
         self.horizontalParser = HorizontalParser(self.os, self.stepmapping)
@@ -129,7 +132,7 @@ class Parser:
             elif self.command_buffer[-1] == "text":
                 self.state = "text"
                 self.command_buffer = []
-            elif self.command_buffer[-1] == "program":
+            elif self.command_buffer[-1] == "code":
                 self.state = "program"
                 self.command_buffer = []
             elif self.command_buffer[-1] == "alpha":
@@ -171,7 +174,7 @@ class Parser:
                                 self.command_buffer
                             )
                         elif self.state == "program":
-                            self.command_buffer = self.textParser.evaluate_text(
+                            self.command_buffer = self.programParser.evaluate_text(
                                 self.command_buffer
                             )
                         elif self.state == "alpha":

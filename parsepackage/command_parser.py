@@ -131,7 +131,7 @@ class CommandParser:
             "save",
             "scroll",
             "screenshot",
-            "over",
+            "overlay",
         ]
 
         self.commandlist = (
@@ -604,7 +604,7 @@ class CommandParser:
                 self.screenshot_started = False
             command_buffer=[]
         
-        elif command_buffer[0] == "over":
+        elif command_buffer[0] == "overlay":
             print("Showing grid overlay. Close the window manually to continue using Sidekick.")
             w = self.screen_size[0]
             h = self.screen_size[1]
